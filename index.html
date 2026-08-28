@@ -8,20 +8,30 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0A4228;
-      --primary-light: #185C38;
-      --accent: #D4AF37;
-      --card-bg: rgba(255, 255, 255, 0.96);
-      --text-dark: #1C2B24;
-      --text-muted: #55635C;
+      --primary: #0F4C2E;
+      --primary-light: #1E6B43;
+      --accent-gold: #D4AF37;
+      --wood-warm: #8B5E3C;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --text-dark: #1A2820;
+      --text-muted: #52635A;
       --radius: 20px;
-      --shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+      --shadow: 0 15px 35px rgba(0, 0, 0, 0.22);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
 
+    /* Fundo com fusão de Verde Frescor, Toque Amadeirado e Padrão Botânico de Folhas (CSS SVG) */
     body {
-      background: radial-gradient(circle at top, #154d32 0%, #072617 100%);
+      background-color: #0A321E;
+      background-image: 
+        /* Camada SVG de padrão de folhas botânicas suaves */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath fill='%23D4AF37' fill-opacity='0.06' d='M60 10 C45 35 25 45 10 60 C35 60 50 80 60 110 C70 80 85 60 110 60 C95 45 75 35 60 10 Z'/%3E%3Cpath fill='%23ffffff' fill-opacity='0.04' d='M20 20 C10 35 5 45 0 55 C15 55 25 65 30 80 C35 65 45 55 60 55 C45 45 35 35 20 20 Z'/%3E%3C/svg%3E"),
+        /* Degradê multicamadas: Verde Esmeralda (Frescor) -> Amadeirado Quente -> Verde Profundo */
+        radial-gradient(circle at 20% 20%, rgba(30, 107, 67, 0.85) 0%, transparent 60%),
+        radial-gradient(circle at 80% 80%, rgba(139, 94, 60, 0.35) 0%, transparent 65%),
+        linear-gradient(165deg, #092e1b 0%, #124d2e 45%, #2d2217 85%, #071f13 100%);
+      background-attachment: fixed;
       color: var(--text-dark);
       min-height: 100vh;
       display: flex;
@@ -35,42 +45,45 @@
       max-width: 480px;
       text-align: center;
       padding: 18px 15px;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.92);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      border: 1px solid rgba(212, 175, 55, 0.5);
+      border: 1px solid rgba(212, 175, 55, 0.4);
       margin-bottom: 20px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
 
-    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; }
-    .brand-sub { font-size: 0.78rem; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
+    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; letter-spacing: 0.3px; }
+    .brand-sub { font-size: 0.78rem; color: #8B5E3C; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
 
     main { width: 100%; max-width: 480px; }
 
-    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #25D366, var(--accent)); transition: width 0.4s ease; }
+    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.25); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, var(--accent-gold)); transition: width 0.4s ease; }
 
-    .screen { display: none; background: var(--card-bg); border-radius: var(--radius); padding: 25px 20px; box-shadow: var(--shadow); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeIn 0.35s ease-out forwards; }
+    .screen { display: none; background: var(--card-bg); border-radius: var(--radius); padding: 25px 20px; box-shadow: var(--shadow); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.7); animation: fadeIn 0.35s ease-out forwards; }
     .screen.active { display: block; }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Banner em CSS puro para evitar erro de imagem */
+    /* Banner Banner com Textura Orgânica e Sensação de Natureza & Elegância */
     .hero-banner {
       height: 150px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #0A4228 0%, #185C38 60%, #D4AF37 100%);
+      background: 
+        linear-gradient(135deg, rgba(15, 76, 46, 0.9) 0%, rgba(139, 94, 60, 0.75) 60%, rgba(212, 175, 55, 0.85) 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath fill='%23ffffff' fill-opacity='0.08' d='M40 0 C20 20 0 40 40 80 C80 40 60 20 40 0 Z'/%3E%3C/svg%3E");
+      background-size: cover;
       margin-bottom: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
       text-align: center;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
-      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      border: 1px solid rgba(212, 175, 55, 0.5);
     }
-    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.4; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.45; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
 
     h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.35rem; }
     p.subtitle { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
@@ -78,21 +91,21 @@
     .options-grid { display: flex; flex-direction: column; gap: 12px; }
 
     .btn-option { background: #FFFFFF; border: 1.5px solid #E2D9CC; border-radius: 14px; padding: 15px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
-    .btn-option:hover { border-color: var(--primary); background: #F2F7F4; transform: translateY(-2px); }
+    .btn-option:hover { border-color: var(--primary); background: #F3F8F5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
 
-    .btn-primary { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(10, 66, 40, 0.25); }
-    .btn-primary:hover { background: var(--primary-light); }
+    .btn-primary { background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(15, 76, 46, 0.35); }
+    .btn-primary:hover { background: linear-gradient(135deg, #1E6B43 0%, #0F4C2E 100%); }
 
     .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid #CCC; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-top: 10px; }
 
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    .form-group input, .form-group textarea { width: 100%; padding: 13px; border: 1.5px solid #CCC; border-radius: 10px; outline: none; font-size: 0.9rem; background: #fff; }
+    .form-group input, .form-group textarea { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 0.9rem; background: #FFF; }
     .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
 
     .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
 
-    .discount-badge { background: linear-gradient(135deg, #FFF8E7, #FFF3CD); border: 1.5px solid var(--accent); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
+    .discount-badge { background: linear-gradient(135deg, #FFFDF8 0%, #F9F2E7 100%); border: 1.5px solid var(--accent-gold); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
     .discount-badge strong { color: var(--primary); font-size: 1rem; }
     .discount-badge p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
 
@@ -101,7 +114,7 @@
     .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
     .img-aura::before {
       content: ''; position: absolute; inset: -14px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(10,66,40,0.12) 55%, transparent 75%);
+      background: radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(139,94,60,0.15) 55%, transparent 75%);
       animation: auraPulse 3.2s ease-in-out infinite;
     }
     @keyframes auraPulse { 0%, 100% { transform: scale(0.94); opacity: 0.7; } 50% { transform: scale(1.06); opacity: 1; } }
@@ -111,11 +124,11 @@
     .tag-pronta { background: #D4EDDA; color: #155724; }
     .tag-encomenda { background: #FFF3CD; color: #856404; }
 
-    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F8F5F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
+    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
     .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
     .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
     .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
-    .btn-feedback-choice:hover { border-color: var(--primary); background: #F2F7F4; }
+    .btn-feedback-choice:hover { border-color: var(--primary); background: #F3F8F5; }
     .btn-feedback-choice.active-gostou { background: #D4EDDA; border-color: #28A745; color: #155724; }
     .btn-feedback-choice.active-medio { background: #FFF3CD; border-color: #FFC107; color: #856404; }
     .btn-feedback-choice.active-naocompra { background: #F8D7DA; border-color: #DC3545; color: #721C24; }
@@ -143,7 +156,7 @@
       <p class="subtitle">Encontre o produto ideal do Boticário para você, para os pequenos ou para presentear quem ama — e garanta 5% de desconto na primeira compra.</p>
       <div class="options-grid">
         <button type="button" class="btn-primary" onclick="goToLeadStep()">✨ Iniciar Quiz Personalizado</button>
-        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #F8F5F0; border-color: var(--accent);">🛍️ Ver Catálogo na Loja da Letícia</a>
+        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #FDFBF7; border-color: var(--accent-gold);">🛍️ Ver Catálogo na Loja da Letícia</a>
       </div>
     </div>
 
@@ -239,7 +252,7 @@
       <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
       <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados! Obrigado por participar. 💛</p>
 
-      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
+      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
       <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
     </div>
   </main>
@@ -371,9 +384,9 @@
 
     function buildPlaceholderImg(prodName) {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-        <rect width="100%" height="100%" fill="#F2F7F4" rx="12"/>
-        <circle cx="90" cy="70" r="30" fill="#0A4228" opacity="0.1"/>
-        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="10" fill="#0A4228">${prodName}</text>
+        <rect width="100%" height="100%" fill="#F3F8F5" rx="12"/>
+        <circle cx="90" cy="70" r="30" fill="#0F4C2E" opacity="0.1"/>
+        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="10" fill="#0F4C2E">${prodName}</text>
         <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="9" fill="#D4AF37">O Boticário</text>
       </svg>`;
       return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
