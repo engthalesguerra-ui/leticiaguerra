@@ -2,504 +2,368 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Consultoria Exclusiva Letícia | Quiz & Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Consultoria O Boticário | Quiz de Beleza Exclusivo</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #0F4C2E;
-      --primary-light: #1E6B43;
+      --primary-hover: #0B3A22;
       --accent-gold: #D4AF37;
-      --bg-light: #F4F6F5;
+      --bg-color: #F8F9F8;
       --card-bg: #FFFFFF;
       --text-dark: #1A2820;
       --text-muted: #66776D;
       --border-color: #E2E8E4;
-      --radius: 14px;
+      --radius: 16px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
-      background-color: var(--bg-light);
+      background-color: var(--bg-color);
       color: var(--text-dark);
-      padding: 12px;
-      max-width: 650px;
+      padding: 16px 12px;
+      max-width: 500px;
       margin: 0 auto;
-      padding-bottom: 40px;
-    }
-
-    /* Top Navigation Tabs */
-    .top-nav {
+      min-height: 100vh;
       display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      background: var(--card-bg);
-      padding: 6px;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      flex-direction: column;
+      justify-content: center;
     }
 
-    .nav-tab {
-      flex: 1;
-      padding: 10px;
-      border: none;
-      background: transparent;
-      border-radius: 10px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: center;
-    }
-
-    .nav-tab.active {
-      background: var(--primary);
-      color: #FFFFFF;
-      box-shadow: 0 2px 8px rgba(15, 76, 46, 0.25);
-    }
-
+    /* Header Padrão O Boticário */
     header {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 20px 16px;
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
       border: 1px solid var(--border-color);
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
-    .brand-title { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 1.25rem; font-weight: 700; }
-    .brand-sub { font-size: 0.72rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-top: 3px; }
+    .brand-logo {
+      font-family: 'Playfair Display', serif;
+      color: var(--primary);
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
 
-    /* QUIZ STYLES */
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* Container do Quiz */
     .quiz-card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      padding: 20px;
+      padding: 24px 20px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      position: relative;
     }
 
-    .step { display: none; }
-    .step.active { display: block; }
+    /* Barra de Progresso */
+    .progress-bar-container {
+      height: 6px;
+      background: #E9ECEF;
+      border-radius: 3px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--accent-gold) 100%);
+      width: 14%;
+      transition: width 0.3s ease;
+    }
+
+    /* Steps */
+    .step {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     .step-title {
-      font-size: 1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 14px;
+      margin-bottom: 18px;
       text-align: center;
+      line-height: 1.4;
     }
 
+    /* Form Fields (Evita zoom automático do Safari no iPhone) */
     .form-group {
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 600;
       margin-bottom: 6px;
       color: var(--text-dark);
     }
 
-    .form-group input, .form-group select {
+    .form-group input {
       width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border-color);
-      font-size: 0.88rem;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border-color);
+      font-size: 16px; /* Ajuste crítico para iPhone não dar zoom */
       outline: none;
+      background: #FAFAFA;
+      transition: border-color 0.2s;
     }
 
+    .form-group input:focus {
+      border-color: var(--primary);
+      background: #FFFFFF;
+    }
+
+    /* Grid de Opções */
     .options-grid {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 10px;
     }
 
     .option-btn {
-      background: var(--bg-light);
-      border: 1px solid var(--border-color);
-      padding: 12px;
-      border-radius: 10px;
-      font-size: 0.85rem;
+      background: var(--bg-color);
+      border: 1.5px solid var(--border-color);
+      padding: 14px 16px;
+      border-radius: 12px;
+      font-size: 0.9rem;
       font-weight: 600;
       color: var(--text-dark);
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .option-btn:hover, .option-btn.selected {
+    .option-btn:active, .option-btn:hover {
       background: var(--primary);
-      color: #FFF;
+      color: #FFFFFF;
       border-color: var(--primary);
     }
 
+    /* Botão Principal */
     .btn-next {
       width: 100%;
       background: var(--primary);
-      color: #FFF;
-      padding: 12px;
+      color: #FFFFFF;
+      padding: 14px;
       border: none;
-      border-radius: 8px;
-      font-size: 0.9rem;
+      border-radius: 10px;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      margin-top: 14px;
+      margin-top: 16px;
+      transition: background 0.2s;
     }
 
+    .btn-next:active {
+      background: var(--primary-hover);
+    }
+
+    /* Caixa de Recomendação */
     .recommendation-box {
-      background: #E8F5E9;
-      border: 1px solid #A5D6A7;
-      border-radius: 10px;
-      padding: 16px;
+      background: #F2F8F4;
+      border: 1.5px dashed var(--primary);
+      border-radius: 12px;
+      padding: 18px 14px;
       text-align: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .product-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-gold);
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
     .product-title {
-      font-size: 1.1rem;
+      font-size: 1.15rem;
       font-weight: 700;
       color: var(--primary);
-      margin-top: 6px;
+      line-height: 1.3;
     }
 
-    /* DASHBOARD STYLES */
-    .metrics-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-
-    .metric-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 12px;
+    /* Sucesso */
+    .success-box {
       text-align: center;
-      border: 1px solid var(--border-color);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      padding: 10px 0;
     }
 
-    .metric-card.highlight {
-      background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%);
-      color: #FFF;
-    }
-    .metric-card.highlight .metric-num,
-    .metric-card.highlight .metric-label { color: #FFF; }
-
-    .metric-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
-    .metric-label { font-size: 0.68rem; color: var(--text-muted); margin-top: 3px; font-weight: 600; text-transform: uppercase; }
-
-    .ratings-widget {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 14px;
-      border: 1px solid var(--border-color);
-      margin-bottom: 14px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-    }
-
-    .widget-title { font-size: 0.82rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; display: flex; justify-content: space-between; }
-    
-    .rating-bar-container {
-      height: 12px;
-      background: #E9ECEF;
-      border-radius: 6px;
-      overflow: hidden;
-      display: flex;
+    .success-icon {
+      font-size: 3rem;
       margin-bottom: 10px;
     }
 
-    .bar-gostou { background: #28A745; width: 0%; transition: width 0.5s; }
-    .bar-medio { background: #FFC107; width: 0%; transition: width 0.5s; }
-    .bar-nao { background: #DC3545; width: 0%; transition: width 0.5s; }
-
-    .rating-legend {
-      display: flex;
-      justify-content: space-around;
-      font-size: 0.72rem;
-      font-weight: 600;
-    }
-    .legend-item { display: flex; align-items: center; gap: 4px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-
-    .chips-container {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      margin-bottom: 14px;
-      scrollbar-width: none;
-    }
-    .chips-container::-webkit-scrollbar { display: none; }
-
-    .chip-btn {
-      white-space: nowrap;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-dark);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .chip-btn.active {
-      background: var(--primary);
-      color: #FFF;
-      border-color: var(--primary);
-    }
-
-    .leads-container { display: flex; flex-direction: column; gap: 10px; }
-
-    .lead-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      border: 1px solid var(--border-color);
-      padding: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .lead-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-    .lead-name { font-weight: 700; font-size: 0.95rem; color: var(--text-dark); }
-    .lead-time { font-size: 0.72rem; color: var(--text-muted); }
-
-    .urgency-badge {
+    .coupon-badge {
       display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      margin-bottom: 8px;
-    }
-    .badge-today { background: #F8D7DA; color: #721C24; }
-    .badge-soon { background: #FFF3CD; color: #856404; }
-    .badge-normal { background: #E2E8E4; color: #333; }
-    .badge-expired { background: #E9ECEF; color: #6C757D; }
-
-    .lead-product { font-size: 0.85rem; font-weight: 600; color: var(--primary); margin-bottom: 4px; }
-    .lead-rating { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px; }
-
-    .lead-actions { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
-
-    .btn-wa {
-      flex: 1;
-      background: #25D366;
-      color: #FFF;
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 700;
-      padding: 9px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    .btn-expand {
-      background: #F0F4F2;
-      border: none;
+      background: #E8F5E9;
       color: var(--primary);
-      padding: 9px;
-      border-radius: 8px;
-      font-size: 0.78rem;
       font-weight: 700;
-      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin: 12px 0;
+      border: 1px solid #A5D6A7;
     }
-
-    .status-select {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid var(--border-color);
-      background: #FFF;
-    }
-
-    .lead-details {
-      display: none;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed var(--border-color);
-      font-size: 0.78rem;
-      line-height: 1.5;
-    }
-
-    .loader { text-align: center; padding: 30px; font-size: 0.9rem; color: var(--text-muted); font-weight: 600; }
   </style>
 </head>
 <body>
 
-  <!-- Tab Selection Bar -->
-  <div class="top-nav">
-    <button type="button" class="nav-tab active" id="tabQuizBtn" onclick="switchView('quiz')">🛍️ Quiz de Beleza</button>
-    <button type="button" class="nav-tab" id="tabDashBtn" onclick="switchView('dashboard')">📊 Painel Admin</button>
-  </div>
-
+  <!-- Cabeçalho O Boticário -->
   <header>
-    <div class="brand-title" id="pageTitle">Quiz de Beleza Exclusivo</div>
-    <div class="brand-sub">Consultoria Letícia</div>
+    <div class="brand-logo">O BOTICÁRIO</div>
+    <div class="brand-sub">Consultoria Exclusiva • Letícia</div>
   </header>
 
-  <!-- SECTION 1: QUIZ FORM -->
-  <section id="quizSection">
-    <div class="quiz-card">
-      <!-- Step 1 -->
-      <div class="step active" id="quizStep1">
-        <div class="step-title">1. Digite seus dados para começar</div>
-        <div class="form-group">
-          <label>Seu Nome Completo:</label>
-          <input type="text" id="quizNome" placeholder="Ex: Maria Silva">
-        </div>
-        <div class="form-group">
-          <label>Seu WhatsApp (com DDD):</label>
-          <input type="tel" id="quizPhone" placeholder="Ex: 31999998888">
-        </div>
-        <button type="button" class="btn-next" onclick="nextQuizStep(2)">Avançar ➔</button>
+  <!-- Card do Quiz -->
+  <main class="quiz-card">
+
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+
+    <!-- Etapa 1: Dados Pessoais -->
+    <div class="step active" id="step1">
+      <div class="step-title">Descubra os produtos ideais para o seu perfil ✨</div>
+      <div class="form-group">
+        <label for="quizNome">Seu Nome Completo:</label>
+        <input type="text" id="quizNome" placeholder="Ex: Maria Silva" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="quizPhone">Seu WhatsApp (com DDD):</label>
+        <input type="tel" id="quizPhone" placeholder="Ex: 31999998888" autocomplete="tel">
+      </div>
+      <button type="button" class="btn-next" onclick="nextStep(2)">Começar Quiz ➔</button>
+    </div>
+
+    <!-- Etapa 2: Gênero / Público -->
+    <div class="step" id="step2">
+      <div class="step-title">Para quem você está procurando o produto hoje?</div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" onclick="selectOption('genero', 'Feminino', 3)"><span>Feminino</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('genero', 'Masculino', 3)"><span>Masculino</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('genero', 'Infantil / Bebê', 3)"><span>Infantil / Bebê</span> ➔</button>
+      </div>
+    </div>
+
+    <!-- Etapa 3: Categoria -->
+    <div class="step" id="step3">
+      <div class="step-title">Qual linha principal você deseja explorar?</div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" onclick="selectOption('categoria', 'Perfumaria / Colônias', 4)"><span>Perfumaria</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('categoria', 'Cuidados Corporais', 4)"><span>Corpo & Banho</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('categoria', 'Tratamento Capilar', 4)"><span>Cabelos (Match)</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('categoria', 'Rosto e Barba', 4)"><span>Rosto / Barba</span> ➔</button>
+      </div>
+    </div>
+
+    <!-- Etapa 4: Objetivo -->
+    <div class="step" id="step4">
+      <div class="step-title">Qual é o objetivo principal desta compra?</div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" onclick="selectOption('objetivo', 'Uso Pessoal', 5)"><span>Uso Pessoal (Para mim)</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('objetivo', 'Presente Especial', 5)"><span>Presentear alguém</span> ➔</button>
+      </div>
+    </div>
+
+    <!-- Etapa 5: Perfil Olfativo / Preferência -->
+    <div class="step" id="step5">
+      <div class="step-title">Qual estilo mais combina com você?</div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" onclick="selectOption('perfil', 'Suave & Delicado', 6)"><span>Suave & Delicado</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('perfil', 'Marcante & Envolvente', 6)"><span>Marcante & Envolvente</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('perfil', 'Doce & Adocicado', 6)"><span>Doce & Adocicado</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('perfil', 'Cítrico & Fresco', 6)"><span>Cítrico & Fresco</span> ➔</button>
+      </div>
+    </div>
+
+    <!-- Etapa 6: Ocasião / Ambiente -->
+    <div class="step" id="step6">
+      <div class="step-title">Em qual ocasião prefere usar?</div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" onclick="selectOption('ambiente', 'Dia a Dia / Rotina', 7)"><span>Dia a dia / Casa</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('ambiente', 'Trabalho / Eventos', 7)"><span>Trabalho / Eventos</span> ➔</button>
+        <button type="button" class="option-btn" onclick="selectOption('ambiente', 'Noite / Festas', 7)"><span>Noite / Encontros</span> ➔</button>
+      </div>
+    </div>
+
+    <!-- Etapa 7: Indicação + Avaliação -->
+    <div class="step" id="step7">
+      <div class="step-title">Sua recomendação exclusiva O Boticário:</div>
+      
+      <div class="recommendation-box">
+        <div class="product-label">Produto Indicado</div>
+        <div class="product-title" id="recommendedProductName">Carregando indicação...</div>
       </div>
 
-      <!-- Step 2 -->
-      <div class="step" id="quizStep2">
-        <div class="step-title">2. Para quem é o produto?</div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Feminino', 3)">Feminino</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Masculino', 3)">Masculino</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Infantil', 3)">Infantil / Bebê</button>
-        </div>
+      <div style="text-align: center; font-weight: 600; font-size: 0.88rem; margin-bottom: 12px;">
+        O que achou desta sugestão?
       </div>
 
-      <!-- Step 3 -->
-      <div class="step" id="quizStep3">
-        <div class="step-title">3. Qual categoria você procura?</div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Perfumaria', 4)">Perfumaria / Colônias</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Corpo e Banho', 4)">Cuidados com o Corpo</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Cabelos', 4)">Tratamento para Cabelos</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Barba e Rosto', 4)">Barba / Rosto</button>
-        </div>
+      <div class="options-grid">
+        <button type="button" class="option-btn" style="border-left: 5px solid #28A745;" onclick="submitQuizData('Gostou / Amei')">😍 Gostei / Quero Saber Mais</button>
+        <button type="button" class="option-btn" style="border-left: 5px solid #FFC107;" onclick="submitQuizData('Achei Médio')">😐 Achei Médio</button>
+        <button type="button" class="option-btn" style="border-left: 5px solid #DC3545;" onclick="submitQuizData('Não Compraria')">🙁 Ver Outra Opção</button>
       </div>
+    </div>
 
-      <!-- Step 4 -->
-      <div class="step" id="quizStep4">
-        <div class="step-title">4. Qual é o seu objetivo?</div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" onclick="selectQuizOption('objetivo', 'Uso Pessoal', 5)">Uso Pessoal (Para mim)</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('objetivo', 'Presente', 5)">Presente Especial</button>
-        </div>
-      </div>
-
-      <!-- Step 5 -->
-      <div class="step" id="quizStep5">
-        <div class="step-title">5. Qual estilo/perfil olfativo mais gosta?</div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Suave & Delicado', 6)">Suave & Delicado</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Marcante & Envolvente', 6)">Marcante & Envolvente</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Doce & Adocicado', 6)">Doce & Adocicado</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Cítrico & Fresco', 6)">Cítrico & Fresco</button>
-        </div>
-      </div>
-
-      <!-- Step 6 -->
-      <div class="step" id="quizStep6">
-        <div class="step-title">6. Em qual ambiente pretenda usar mais?</div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Dia a dia / Casa', 7)">Dia a dia / Casa</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Trabalho / Reuniões', 7)">Trabalho / Reuniões</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Noite / Festas', 7)">Noite / Festas</button>
-          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Academia / Esportes', 7)">Academia / Esportes</button>
-        </div>
-      </div>
-
-      <!-- Step 7: Result & Assessment -->
-      <div class="step" id="quizStep7">
-        <div class="step-title">✨ Recomendação Ideal para Você!</div>
-        <div class="recommendation-box">
-          <div>Com base nas suas respostas, indicamos:</div>
-          <div class="product-title" id="recommendedProductName">Kit Men Barba (Espuma + Balm Pós-Barba)</div>
-        </div>
-
-        <div style="text-align: center; font-weight: 700; margin-bottom: 10px; font-size: 0.85rem;">
-          O que achou desta indicação?
-        </div>
-        <div class="options-grid">
-          <button type="button" class="option-btn" style="border-left: 5px solid #28A745;" onclick="submitQuiz('Gostou / Amei')">😍 Gostei / Amei</button>
-          <button type="button" class="option-btn" style="border-left: 5px solid #FFC107;" onclick="submitQuiz('Médio')">😐 Achei Médio</button>
-          <button type="button" class="option-btn" style="border-left: 5px solid #DC3545;" onclick="submitQuiz('Não Compraria')">🙁 Não Compraria</button>
-        </div>
-      </div>
-
-      <!-- Step 8: Thank You -->
-      <div class="step" id="quizStep8" style="text-align: center;">
-        <div class="step-title" style="color: #28A745;">🎉 Resposta Cadastrada com Sucesso!</div>
-        <p style="font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5;">
-          Seu cupom de <strong>5% de desconto</strong> foi ativado. A consultora Letícia entrará em contato via WhatsApp com as ofertas exclusivas!
+    <!-- Etapa 8: Tela de Sucesso -->
+    <div class="step" id="step8">
+      <div class="success-box">
+        <div class="success-icon">🎁</div>
+        <div class="step-title" style="color: var(--primary); margin-bottom: 8px;">Cadastro Realizado!</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+          A consultora <strong>Letícia</strong> recebeu seu perfil e enviará as melhores ofertas disponíveis diretamente no seu WhatsApp!
         </p>
-        <button type="button" class="btn-next" onclick="restartQuiz()">Fazer Outro Quiz</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 2: DASHBOARD ADMIN -->
-  <section id="dashboardSection" style="display: none;">
-    <div class="metrics-grid">
-      <div class="metric-card highlight">
-        <div class="metric-num" id="totalLeads">0</div>
-        <div class="metric-label">Clientes Cadastrados</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num" id="possibilidadeCompra" style="color: #28A745;">0</div>
-        <div class="metric-label">🔥 Possíveis Compras</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num" id="diaPicoMax" style="font-size: 0.95rem; color: #0F4C2E;">-</div>
-        <div class="metric-label">📅 Dia com Mais Vendas</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-num" id="cuponsUrgentes" style="color: #DC3545;">0</div>
-        <div class="metric-label">⏱️ Cupons Vencendo (24h)</div>
+        <div class="coupon-badge">🏷️ Cupom de 5% OFF Ativado</div>
+        <button type="button" class="btn-next" onclick="restartQuiz()">Fazer Novamente</button>
       </div>
     </div>
 
-    <div class="ratings-widget">
-      <div class="widget-title">
-        <span>📊 Termômetro de Satisfação do Quiz</span>
-        <span id="percentGostou" style="color: #28A745;">0% de intenção alta</span>
-      </div>
-      <div class="rating-bar-container">
-        <div class="bar-gostou" id="barGostou"></div>
-        <div class="bar-medio" id="barMedio"></div>
-        <div class="bar-nao" id="barNao"></div>
-      </div>
-      <div class="rating-legend">
-        <div class="legend-item"><span class="dot" style="background:#28A745;"></span> Gostou/Amei (<span id="cntGostou">0</span>)</div>
-        <div class="legend-item"><span class="dot" style="background:#FFC107;"></span> Médio (<span id="cntMedio">0</span>)</div>
-        <div class="legend-item"><span class="dot" style="background:#DC3545;"></span> Não Compraria (<span id="cntNao">0</span>)</div>
-      </div>
-    </div>
-
-    <div class="chips-container">
-      <button type="button" class="chip-btn active" onclick="filterLeads('todos', this)">Todos os Clientes</button>
-      <button type="button" class="chip-btn" onclick="filterLeads('gostou', this)">🔥 Alta Chance de Compra</button>
-      <button type="button" class="chip-btn" onclick="filterLeads('urgente', this)">⏱️ Cupons Vencendo</button>
-      <button type="button" class="chip-btn" onclick="filterLeads('pendente', this)">🟡 Pendentes</button>
-    </div>
-
-    <div class="leads-container" id="leadsList">
-      <div class="loader">Carregando dados da planilha... 🔄</div>
-    </div>
-  </section>
+  </main>
 
   <script>
+    // URL da sua Web App do Google Apps Script
     const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUUfvD7KUm6cySUXCwO0pK-sDANm-8xNwPES8noX0EeEnQENHDDTvvGOaywzXX2Z4z/exec";
 
-    // Quiz Data Object
-    let quizFormData = {
+    // Objeto contendo os dados do Quiz
+    let quizData = {
       nome: '',
       phone: '',
       genero: '',
@@ -511,323 +375,100 @@
       avaliacao: ''
     };
 
-    let rawLeadsData = [];
-    let currentFilter = 'todos';
-
-    // TAB SWITCHING
-    function switchView(view) {
-      const quizSec = document.getElementById('quizSection');
-      const dashSec = document.getElementById('dashboardSection');
-      const tabQuiz = document.getElementById('tabQuizBtn');
-      const tabDash = document.getElementById('tabDashBtn');
-      const title = document.getElementById('pageTitle');
-
-      if (view === 'quiz') {
-        quizSec.style.display = 'block';
-        dashSec.style.display = 'none';
-        tabQuiz.classList.add('active');
-        tabDash.classList.remove('active');
-        title.textContent = 'Quiz de Beleza Exclusivo';
-      } else {
-        quizSec.style.display = 'none';
-        dashSec.style.display = 'block';
-        tabDash.classList.add('active');
-        tabQuiz.classList.remove('active');
-        title.textContent = 'Painel de Vendas & Inteligência';
-        fetchLeadsData();
-      }
+    function updateProgress(stepNum) {
+      const percentage = Math.min((stepNum / 7) * 100, 100);
+      document.getElementById('progressBar').style.width = percentage + '%';
     }
 
-    // QUIZ LOGIC
-    function nextQuizStep(stepNum) {
+    function nextStep(stepNum) {
       if (stepNum === 2) {
-        quizFormData.nome = document.getElementById('quizNome').value.trim();
-        quizFormData.phone = document.getElementById('quizPhone').value.trim();
-        if (!quizFormData.nome || !quizFormData.phone) {
-          alert("Por favor, informe seu nome e WhatsApp.");
+        quizData.nome = document.getElementById('quizNome').value.trim();
+        quizData.phone = document.getElementById('quizPhone').value.trim();
+
+        if (!quizData.nome || !quizData.phone) {
+          alert("Por favor, preencha seu Nome e WhatsApp para continuar.");
           return;
         }
       }
 
-      document.querySelectorAll('.quiz-card .step').forEach(s => s.classList.remove('active'));
-      document.getElementById(`quizStep${stepNum}`).classList.add('active');
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+      document.getElementById(`step${stepNum}`).classList.add('active');
+      updateProgress(stepNum);
     }
 
-    function selectQuizOption(field, value, nextStep) {
-      quizFormData[field] = value;
+    function selectOption(field, value, nextStepNum) {
+      quizData[field] = value;
 
-      if (nextStep === 7) {
-        // Simple Recommendation Engine
-        if (quizFormData.genero === 'Masculino') {
-          quizFormData.produto = quizFormData.categoria === 'Barba e Rosto' 
-            ? 'Kit Men Barba (Espuma de Barbear + Balm Pós-Barba)' 
-            : 'Malbec Desodorante Colônia 100ml';
-        } else if (quizFormData.genero === 'Infantil') {
-          quizFormData.produto = 'Boti Baby Colônia do Sol 100ml';
-        } else {
-          quizFormData.produto = quizFormData.perfil.includes('Marcante') 
-            ? 'Elysée Eau de Parfum 50ml' 
-            : 'Lily Leite Perfumado Desodorante Corporal';
-        }
-        document.getElementById('recommendedProductName').textContent = quizFormData.produto;
+      // Monta recomendação ao chegar no passo 7
+      if (nextStepNum === 7) {
+        generateRecommendation();
       }
 
-      nextQuizStep(nextStep);
+      nextStep(nextStepNum);
     }
 
-    function submitQuiz(ratingValue) {
-      quizFormData.avaliacao = ratingValue;
+    function generateRecommendation() {
+      let prod = "Floratta Red Desodorante Colônia 75ml";
 
-      // Submit Data to Google Sheets via fetch
+      if (quizData.genero === 'Masculino') {
+        if (quizData.categoria.includes('Rosto')) {
+          prod = "Kit Men Barba (Espuma + Balm Pós-Barba)";
+        } else if (quizData.perfil.includes('Marcante')) {
+          prod = "Malbec Desodorante Colônia 100ml";
+        } else {
+          prod = "Arbo Desodorante Colônia 100ml";
+        }
+      } else if (quizData.genero === 'Infantil / Bebê') {
+        prod = "Boti Baby Colônia do Sol 100ml";
+      } else {
+        if (quizData.perfil.includes('Marcante')) {
+          prod = "Elysée Eau de Parfum 50ml";
+        } else if (quizData.categoria.includes('Corporais')) {
+          prod = "Lily Leite Perfumado Desodorante Corporal 250ml";
+        } else if (quizData.perfil.includes('Doce')) {
+          prod = "Egeo Dolce Desodorante Colônia 90ml";
+        }
+      }
+
+      quizData.produto = prod;
+      document.getElementById('recommendedProductName').textContent = prod;
+    }
+
+    function submitQuizData(rating) {
+      quizData.avaliacao = rating;
+
       const payload = {
-        "Nome": quizFormData.nome,
-        "WhatsApp": quizFormData.phone,
-        "Gênero": quizFormData.genero,
-        "Categoria": quizFormData.categoria,
-        "Objetivo": quizFormData.objetivo,
-        "Perfil": quizFormData.perfil,
-        "Ambiente": quizFormData.ambiente,
-        "Produto Indicado": quizFormData.produto,
-        "Avaliação": quizFormData.avaliacao,
+        "Nome": quizData.nome,
+        "WhatsApp": quizData.phone,
+        "Gênero": quizData.genero,
+        "Categoria": quizData.categoria,
+        "Objetivo": quizData.objetivo,
+        "Perfil": quizData.perfil,
+        "Ambiente": quizData.ambiente,
+        "Produto Indicado": quizData.produto,
+        "Avaliação": quizData.avaliacao,
         "Data/Hora": new Date().toLocaleString('pt-BR')
       };
 
+      // Envia os dados para a planilha
       fetch(GOOGLE_SHEETS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).then(() => {
-        nextQuizStep(8);
+        nextStep(8);
       }).catch(err => {
-        console.error("Erro ao salvar:", err);
-        nextQuizStep(8);
+        console.error("Erro no envio:", err);
+        nextStep(8);
       });
     }
 
     function restartQuiz() {
-      quizFormData = { nome: '', phone: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', produto: '', avaliacao: '' };
+      quizData = { nome: '', phone: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', produto: '', avaliacao: '' };
       document.getElementById('quizNome').value = '';
       document.getElementById('quizPhone').value = '';
-      nextQuizStep(1);
-    }
-
-    // DASHBOARD LOGIC
-    function fetchLeadsData() {
-      fetch(GOOGLE_SHEETS_SCRIPT_URL, { redirect: 'follow' })
-        .then(res => res.json())
-        .then(data => {
-          const items = Array.isArray(data) ? data : (data.data || data.leads || []);
-          if (items.length === 0) {
-            document.getElementById('leadsList').innerHTML = `<div class="loader">Nenhum cliente cadastrado até o momento.</div>`;
-            return;
-          }
-          rawLeadsData = processAndSortLeads(items);
-          updateMetrics();
-          renderLeads();
-        })
-        .catch(err => {
-          console.error("Erro ao carregar:", err);
-          document.getElementById('leadsList').innerHTML = `<div class="loader" style="color:#DC3545;">
-            Não foi possível carregar os dados. Verifique a conexão com a planilha.
-          </div>`;
-        });
-    }
-
-    function parseBrazilianDate(dateStr) {
-      if (!dateStr) return new Date();
-      if (dateStr instanceof Date) return dateStr;
-      
-      const parts = String(dateStr).split(' ');
-      const dateParts = parts[0].split('/');
-      if (dateParts.length === 3) {
-        const day = parseInt(dateParts[0], 10);
-        const month = parseInt(dateParts[1], 10) - 1;
-        const year = parseInt(dateParts[2], 10);
-        return new Date(year, month, day);
-      }
-      return new Date(dateStr);
-    }
-
-    function processAndSortLeads(items) {
-      const now = new Date();
-
-      return items.map((item, index) => {
-        const timestampStr = item["Data/Hora"] || item.Timestamp || item.data || "";
-        const dateObj = parseBrazilianDate(timestampStr);
-        
-        const expirationDate = new Date(dateObj.getTime() + (7 * 24 * 60 * 60 * 1000));
-        const diffHours = (expirationDate - now) / (1000 * 60 * 60);
-        const diffDays = Math.ceil(diffHours / 24);
-
-        let urgency = 'normal';
-        if (diffHours <= 0) urgency = 'expired';
-        else if (diffHours <= 24) urgency = 'today';
-        else if (diffHours <= 48) urgency = 'soon';
-
-        const leadId = `lead_status_${item.WhatsApp || item.phone}_${index}`;
-        const savedStatus = localStorage.getItem(leadId) || 'Pendente';
-
-        return {
-          id: leadId,
-          nome: item.Nome || item.nome || 'Cliente',
-          phone: String(item.WhatsApp || item.phone || '').replace(/\D/g, ''),
-          genero: item["Gênero"] || item.genero || '-',
-          categoria: item.Categoria || item.categoria || '-',
-          objetivo: item.Objetivo || item.objetivo || '-',
-          perfil: item.Perfil || item.perfil || '-',
-          ambiente: item.Ambiente || item.ambiente || '-',
-          produto: item["Produto Indicado"] || item.produto || '-',
-          avaliacao: item["Avaliação"] || item.avaliacao || 'Ainda não avaliou',
-          dateStr: dateObj.toLocaleDateString('pt-BR'),
-          dateObj: dateObj,
-          urgency: urgency,
-          daysLeft: diffDays,
-          status: savedStatus
-        };
-      }).sort((a, b) => b.dateObj - a.dateObj);
-    }
-
-    function updateMetrics() {
-      const total = rawLeadsData.length;
-      document.getElementById('totalLeads').textContent = total;
-
-      const gostaram = rawLeadsData.filter(l => l.avaliacao.includes('Gostou') || l.avaliacao.includes('Amei')).length;
-      const medios = rawLeadsData.filter(l => l.avaliacao.includes('Médio')).length;
-      const naoCompraria = rawLeadsData.filter(l => l.avaliacao.includes('Não')).length;
-
-      document.getElementById('possibilidadeCompra').textContent = gostaram;
-
-      const urgentes = rawLeadsData.filter(l => l.urgency === 'today' && l.status !== 'Venda Efetuada').length;
-      document.getElementById('cuponsUrgentes').textContent = urgentes;
-
-      const dateCounts = {};
-      rawLeadsData.forEach(l => {
-        dateCounts[l.dateStr] = (dateCounts[l.dateStr] || 0) + 1;
-      });
-      let maxDate = '-';
-      let maxCount = 0;
-      for (const [d, count] of Object.entries(dateCounts)) {
-        if (count > maxCount) {
-          maxCount = count;
-          maxDate = d;
-        }
-      }
-      document.getElementById('diaPicoMax').textContent = maxDate !== '-' ? `${maxDate} (${maxCount})` : '-';
-
-      const pGostou = total > 0 ? Math.round((gostaram / total) * 100) : 0;
-      const pMedio = total > 0 ? Math.round((medios / total) * 100) : 0;
-      const pNao = total > 0 ? Math.round((naoCompraria / total) * 100) : 0;
-
-      document.getElementById('barGostou').style.width = `${pGostou}%`;
-      document.getElementById('barMedio').style.width = `${pMedio}%`;
-      document.getElementById('barNao').style.width = `${pNao}%`;
-
-      document.getElementById('cntGostou').textContent = gostaram;
-      document.getElementById('cntMedio').textContent = medios;
-      document.getElementById('cntNao').textContent = naoCompraria;
-      document.getElementById('percentGostou').textContent = `${pGostou}% com intenção alta`;
-    }
-
-    function buildWhatsAppLink(lead) {
-      if (!lead.phone) return '#';
-      let msg = "";
-      const CupomTxt = lead.urgency === 'today' ? 'vence HOJE' : `vence em ${lead.daysLeft} dias`;
-
-      if (lead.avaliacao.includes('Gostou') || lead.avaliacao.includes('Amei')) {
-        msg = `Oi ${lead.nome}! Tudo bem? Vi no quiz que você adorou a indicação do *${lead.produto}*! ✨\n\nSeu cupom de *5% de desconto* na loja da Letícia ${CupomTxt}.\n\nQuer o link direto para aproveitar? 🛍️`;
-      } else {
-        msg = `Oi ${lead.nome}! Tudo bem? Vi que você fez nosso Quiz de Beleza O Boticário! ✨\n\nSeu cupom de *5% de desconto* ${CupomTxt}.\n\nComo posso te ajudar a escolher o produto ideal hoje?`;
-      }
-      return `https://wa.me/55${lead.phone}?text=${encodeURIComponent(msg)}`;
-    }
-
-    function renderLeads() {
-      const container = document.getElementById('leadsList');
-      
-      let filtered = rawLeadsData.filter(lead => {
-        if (currentFilter === 'urgente') return lead.urgency === 'today' || lead.urgency === 'soon';
-        if (currentFilter === 'gostou') return lead.avaliacao.includes('Gostou') || lead.avaliacao.includes('Amei');
-        if (currentFilter === 'pendente') return lead.status === 'Pendente';
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="loader">Nenhum cliente encontrado para este filtro.</div>`;
-        return;
-      }
-
-      let html = '';
-      filtered.forEach((lead) => {
-        let badgeClass = 'badge-normal';
-        let badgeTxt = `⏱️ Cupom: ${lead.daysLeft} dias restantes`;
-
-        if (lead.urgency === 'today') {
-          badgeClass = 'badge-today';
-          badgeTxt = '⚠️ ATENÇÃO: Cupom vence HOJE!';
-        } else if (lead.urgency === 'soon') {
-          badgeClass = 'badge-soon';
-          badgeTxt = '⏱️ Cupom vence em 48h';
-        } else if (lead.urgency === 'expired') {
-          badgeClass = 'badge-expired';
-          badgeTxt = '⚪ Cupom Expirado';
-        }
-
-        const waLink = buildWhatsAppLink(lead);
-
-        html += `
-          <div class="lead-card">
-            <div class="lead-header">
-              <div class="lead-name">${lead.nome}</div>
-              <div class="lead-time">${lead.dateStr}</div>
-            </div>
-
-            <span class="urgency-badge ${badgeClass}">${badgeTxt}</span>
-
-            <div class="lead-product">🛍️ ${lead.produto}</div>
-            <div class="lead-rating"><strong>Avaliação:</strong> ${lead.avaliacao}</div>
-
-            <div class="lead-actions">
-              <a href="${waLink}" target="_blank" class="btn-wa">💬 WhatsApp</a>
-              <select class="status-select" onchange="changeLeadStatus('${lead.id}', this.value)">
-                <option value="Pendente" ${lead.status === 'Pendente' ? 'selected' : ''}>🟡 Pendente</option>
-                <option value="Em Conversa" ${lead.status === 'Em Conversa' ? 'selected' : ''}>🔵 Em Conversa</option>
-                <option value="Venda Efetuada" ${lead.status === 'Venda Efetuada' ? 'selected' : ''}>🟢 Venda</option>
-                <option value="Expirado" ${lead.status === 'Expirado' ? 'selected' : ''}>⚪ Expirado</option>
-              </select>
-              <button type="button" class="btn-expand" onclick="toggleDetails('${lead.id}')">Mais</button>
-            </div>
-
-            <div class="lead-details" id="details-${lead.id}">
-              <p><strong>Linha/Gênero:</strong> ${lead.genero}</p>
-              <p><strong>Categoria:</strong> ${lead.categoria}</p>
-              <p><strong>Objetivo:</strong> ${lead.objetivo}</p>
-              <p><strong>Perfil Olfativo:</strong> ${lead.perfil}</p>
-              <p><strong>Ambiente:</strong> ${lead.ambiente}</p>
-            </div>
-          </div>
-        `;
-      });
-
-      container.innerHTML = html;
-    }
-
-    function toggleDetails(id) {
-      const elem = document.getElementById(`details-${id}`);
-      elem.style.display = elem.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function changeLeadStatus(id, newStatus) {
-      localStorage.setItem(id, newStatus);
-      const item = rawLeadsData.find(l => l.id === id);
-      if (item) item.status = newStatus;
-    }
-
-    function filterLeads(type, btn) {
-      currentFilter = type;
-      document.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      renderLeads();
+      nextStep(1);
     }
   </script>
 </body>
