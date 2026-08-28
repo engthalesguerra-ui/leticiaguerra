@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Inteligente | Consultoria Letícia</title>
+  <title>Consultoria Exclusiva Letícia | Quiz & Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -23,10 +23,42 @@
     body {
       background-color: var(--bg-light);
       color: var(--text-dark);
-      padding: 14px;
+      padding: 12px;
       max-width: 650px;
       margin: 0 auto;
       padding-bottom: 40px;
+    }
+
+    /* Top Navigation Tabs */
+    .top-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      background: var(--card-bg);
+      padding: 6px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .nav-tab {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+
+    .nav-tab.active {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(15, 76, 46, 0.25);
     }
 
     header {
@@ -42,6 +74,102 @@
     .brand-title { font-family: 'Playfair Display', serif; color: var(--primary); font-size: 1.25rem; font-weight: 700; }
     .brand-sub { font-size: 0.72rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-top: 3px; }
 
+    /* QUIZ STYLES */
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .step { display: none; }
+    .step.active { display: block; }
+
+    .step-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-dark);
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-btn {
+      background: var(--bg-light);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .option-btn:hover, .option-btn.selected {
+      background: var(--primary);
+      color: #FFF;
+      border-color: var(--primary);
+    }
+
+    .btn-next {
+      width: 100%;
+      background: var(--primary);
+      color: #FFF;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 14px;
+    }
+
+    .recommendation-box {
+      background: #E8F5E9;
+      border: 1px solid #A5D6A7;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-top: 6px;
+    }
+
+    /* DASHBOARD STYLES */
     .metrics-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -208,68 +336,283 @@
 </head>
 <body>
 
+  <!-- Tab Selection Bar -->
+  <div class="top-nav">
+    <button type="button" class="nav-tab active" id="tabQuizBtn" onclick="switchView('quiz')">🛍️ Quiz de Beleza</button>
+    <button type="button" class="nav-tab" id="tabDashBtn" onclick="switchView('dashboard')">📊 Painel Admin</button>
+  </div>
+
   <header>
-    <div class="brand-title">Painel de Vendas & Inteligência</div>
-    <div class="brand-sub">Consultoria Exclusiva Letícia</div>
+    <div class="brand-title" id="pageTitle">Quiz de Beleza Exclusivo</div>
+    <div class="brand-sub">Consultoria Letícia</div>
   </header>
 
-  <div class="metrics-grid">
-    <div class="metric-card highlight">
-      <div class="metric-num" id="totalLeads">0</div>
-      <div class="metric-label">Clientes Cadastrados</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-num" id="possibilidadeCompra" style="color: #28A745;">0</div>
-      <div class="metric-label">🔥 Possíveis Compras</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-num" id="diaPicoMax" style="font-size: 0.95rem; color: #0F4C2E;">-</div>
-      <div class="metric-label">📅 Dia com Mais Vendas</div>
-    </div>
-    <div class="metric-card">
-      <div class="metric-num" id="cuponsUrgentes" style="color: #DC3545;">0</div>
-      <div class="metric-label">⏱️ Cupons Vencendo (24h)</div>
-    </div>
-  </div>
+  <!-- SECTION 1: QUIZ FORM -->
+  <section id="quizSection">
+    <div class="quiz-card">
+      <!-- Step 1 -->
+      <div class="step active" id="quizStep1">
+        <div class="step-title">1. Digite seus dados para começar</div>
+        <div class="form-group">
+          <label>Seu Nome Completo:</label>
+          <input type="text" id="quizNome" placeholder="Ex: Maria Silva">
+        </div>
+        <div class="form-group">
+          <label>Seu WhatsApp (com DDD):</label>
+          <input type="tel" id="quizPhone" placeholder="Ex: 31999998888">
+        </div>
+        <button type="button" class="btn-next" onclick="nextQuizStep(2)">Avançar ➔</button>
+      </div>
 
-  <div class="ratings-widget">
-    <div class="widget-title">
-      <span>📊 Termômetro de Satisfação do Quiz</span>
-      <span id="percentGostou" style="color: #28A745;">0% de intenção alta</span>
-    </div>
-    <div class="rating-bar-container">
-      <div class="bar-gostou" id="barGostou"></div>
-      <div class="bar-medio" id="barMedio"></div>
-      <div class="bar-nao" id="barNao"></div>
-    </div>
-    <div class="rating-legend">
-      <div class="legend-item"><span class="dot" style="background:#28A745;"></span> Gostou/Amei (<span id="cntGostou">0</span>)</div>
-      <div class="legend-item"><span class="dot" style="background:#FFC107;"></span> Médio (<span id="cntMedio">0</span>)</div>
-      <div class="legend-item"><span class="dot" style="background:#DC3545;"></span> Não Compraria (<span id="cntNao">0</span>)</div>
-    </div>
-  </div>
+      <!-- Step 2 -->
+      <div class="step" id="quizStep2">
+        <div class="step-title">2. Para quem é o produto?</div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Feminino', 3)">Feminino</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Masculino', 3)">Masculino</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('genero', 'Infantil', 3)">Infantil / Bebê</button>
+        </div>
+      </div>
 
-  <div class="chips-container">
-    <button type="button" class="chip-btn active" onclick="filterLeads('todos', this)">Todos os Clientes</button>
-    <button type="button" class="chip-btn" onclick="filterLeads('gostou', this)">🔥 Alta Chance de Compra</button>
-    <button type="button" class="chip-btn" onclick="filterLeads('urgente', this)">⏱️ Cupons Vencendo</button>
-    <button type="button" class="chip-btn" onclick="filterLeads('pendente', this)">🟡 Pendentes</button>
-  </div>
+      <!-- Step 3 -->
+      <div class="step" id="quizStep3">
+        <div class="step-title">3. Qual categoria você procura?</div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Perfumaria', 4)">Perfumaria / Colônias</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Corpo e Banho', 4)">Cuidados com o Corpo</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Cabelos', 4)">Tratamento para Cabelos</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('categoria', 'Barba e Rosto', 4)">Barba / Rosto</button>
+        </div>
+      </div>
 
-  <div class="leads-container" id="leadsList">
-    <div class="loader">Carregando dados da planilha... 🔄</div>
-  </div>
+      <!-- Step 4 -->
+      <div class="step" id="quizStep4">
+        <div class="step-title">4. Qual é o seu objetivo?</div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" onclick="selectQuizOption('objetivo', 'Uso Pessoal', 5)">Uso Pessoal (Para mim)</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('objetivo', 'Presente', 5)">Presente Especial</button>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step" id="quizStep5">
+        <div class="step-title">5. Qual estilo/perfil olfativo mais gosta?</div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Suave & Delicado', 6)">Suave & Delicado</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Marcante & Envolvente', 6)">Marcante & Envolvente</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Doce & Adocicado', 6)">Doce & Adocicado</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('perfil', 'Cítrico & Fresco', 6)">Cítrico & Fresco</button>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step" id="quizStep6">
+        <div class="step-title">6. Em qual ambiente pretenda usar mais?</div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Dia a dia / Casa', 7)">Dia a dia / Casa</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Trabalho / Reuniões', 7)">Trabalho / Reuniões</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Noite / Festas', 7)">Noite / Festas</button>
+          <button type="button" class="option-btn" onclick="selectQuizOption('ambiente', 'Academia / Esportes', 7)">Academia / Esportes</button>
+        </div>
+      </div>
+
+      <!-- Step 7: Result & Assessment -->
+      <div class="step" id="quizStep7">
+        <div class="step-title">✨ Recomendação Ideal para Você!</div>
+        <div class="recommendation-box">
+          <div>Com base nas suas respostas, indicamos:</div>
+          <div class="product-title" id="recommendedProductName">Kit Men Barba (Espuma + Balm Pós-Barba)</div>
+        </div>
+
+        <div style="text-align: center; font-weight: 700; margin-bottom: 10px; font-size: 0.85rem;">
+          O que achou desta indicação?
+        </div>
+        <div class="options-grid">
+          <button type="button" class="option-btn" style="border-left: 5px solid #28A745;" onclick="submitQuiz('Gostou / Amei')">😍 Gostei / Amei</button>
+          <button type="button" class="option-btn" style="border-left: 5px solid #FFC107;" onclick="submitQuiz('Médio')">😐 Achei Médio</button>
+          <button type="button" class="option-btn" style="border-left: 5px solid #DC3545;" onclick="submitQuiz('Não Compraria')">🙁 Não Compraria</button>
+        </div>
+      </div>
+
+      <!-- Step 8: Thank You -->
+      <div class="step" id="quizStep8" style="text-align: center;">
+        <div class="step-title" style="color: #28A745;">🎉 Resposta Cadastrada com Sucesso!</div>
+        <p style="font-size: 0.85rem; margin-bottom: 14px; line-height: 1.5;">
+          Seu cupom de <strong>5% de desconto</strong> foi ativado. A consultora Letícia entrará em contato via WhatsApp com as ofertas exclusivas!
+        </p>
+        <button type="button" class="btn-next" onclick="restartQuiz()">Fazer Outro Quiz</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: DASHBOARD ADMIN -->
+  <section id="dashboardSection" style="display: none;">
+    <div class="metrics-grid">
+      <div class="metric-card highlight">
+        <div class="metric-num" id="totalLeads">0</div>
+        <div class="metric-label">Clientes Cadastrados</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="possibilidadeCompra" style="color: #28A745;">0</div>
+        <div class="metric-label">🔥 Possíveis Compras</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="diaPicoMax" style="font-size: 0.95rem; color: #0F4C2E;">-</div>
+        <div class="metric-label">📅 Dia com Mais Vendas</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num" id="cuponsUrgentes" style="color: #DC3545;">0</div>
+        <div class="metric-label">⏱️ Cupons Vencendo (24h)</div>
+      </div>
+    </div>
+
+    <div class="ratings-widget">
+      <div class="widget-title">
+        <span>📊 Termômetro de Satisfação do Quiz</span>
+        <span id="percentGostou" style="color: #28A745;">0% de intenção alta</span>
+      </div>
+      <div class="rating-bar-container">
+        <div class="bar-gostou" id="barGostou"></div>
+        <div class="bar-medio" id="barMedio"></div>
+        <div class="bar-nao" id="barNao"></div>
+      </div>
+      <div class="rating-legend">
+        <div class="legend-item"><span class="dot" style="background:#28A745;"></span> Gostou/Amei (<span id="cntGostou">0</span>)</div>
+        <div class="legend-item"><span class="dot" style="background:#FFC107;"></span> Médio (<span id="cntMedio">0</span>)</div>
+        <div class="legend-item"><span class="dot" style="background:#DC3545;"></span> Não Compraria (<span id="cntNao">0</span>)</div>
+      </div>
+    </div>
+
+    <div class="chips-container">
+      <button type="button" class="chip-btn active" onclick="filterLeads('todos', this)">Todos os Clientes</button>
+      <button type="button" class="chip-btn" onclick="filterLeads('gostou', this)">🔥 Alta Chance de Compra</button>
+      <button type="button" class="chip-btn" onclick="filterLeads('urgente', this)">⏱️ Cupons Vencendo</button>
+      <button type="button" class="chip-btn" onclick="filterLeads('pendente', this)">🟡 Pendentes</button>
+    </div>
+
+    <div class="leads-container" id="leadsList">
+      <div class="loader">Carregando dados da planilha... 🔄</div>
+    </div>
+  </section>
 
   <script>
     const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwUUfvD7KUm6cySUXCwO0pK-sDANm-8xNwPES8noX0EeEnQENHDDTvvGOaywzXX2Z4z/exec";
 
+    // Quiz Data Object
+    let quizFormData = {
+      nome: '',
+      phone: '',
+      genero: '',
+      categoria: '',
+      objetivo: '',
+      perfil: '',
+      ambiente: '',
+      produto: '',
+      avaliacao: ''
+    };
+
     let rawLeadsData = [];
     let currentFilter = 'todos';
 
-    document.addEventListener("DOMContentLoaded", function() {
-      fetchLeadsData();
-    });
+    // TAB SWITCHING
+    function switchView(view) {
+      const quizSec = document.getElementById('quizSection');
+      const dashSec = document.getElementById('dashboardSection');
+      const tabQuiz = document.getElementById('tabQuizBtn');
+      const tabDash = document.getElementById('tabDashBtn');
+      const title = document.getElementById('pageTitle');
 
+      if (view === 'quiz') {
+        quizSec.style.display = 'block';
+        dashSec.style.display = 'none';
+        tabQuiz.classList.add('active');
+        tabDash.classList.remove('active');
+        title.textContent = 'Quiz de Beleza Exclusivo';
+      } else {
+        quizSec.style.display = 'none';
+        dashSec.style.display = 'block';
+        tabDash.classList.add('active');
+        tabQuiz.classList.remove('active');
+        title.textContent = 'Painel de Vendas & Inteligência';
+        fetchLeadsData();
+      }
+    }
+
+    // QUIZ LOGIC
+    function nextQuizStep(stepNum) {
+      if (stepNum === 2) {
+        quizFormData.nome = document.getElementById('quizNome').value.trim();
+        quizFormData.phone = document.getElementById('quizPhone').value.trim();
+        if (!quizFormData.nome || !quizFormData.phone) {
+          alert("Por favor, informe seu nome e WhatsApp.");
+          return;
+        }
+      }
+
+      document.querySelectorAll('.quiz-card .step').forEach(s => s.classList.remove('active'));
+      document.getElementById(`quizStep${stepNum}`).classList.add('active');
+    }
+
+    function selectQuizOption(field, value, nextStep) {
+      quizFormData[field] = value;
+
+      if (nextStep === 7) {
+        // Simple Recommendation Engine
+        if (quizFormData.genero === 'Masculino') {
+          quizFormData.produto = quizFormData.categoria === 'Barba e Rosto' 
+            ? 'Kit Men Barba (Espuma de Barbear + Balm Pós-Barba)' 
+            : 'Malbec Desodorante Colônia 100ml';
+        } else if (quizFormData.genero === 'Infantil') {
+          quizFormData.produto = 'Boti Baby Colônia do Sol 100ml';
+        } else {
+          quizFormData.produto = quizFormData.perfil.includes('Marcante') 
+            ? 'Elysée Eau de Parfum 50ml' 
+            : 'Lily Leite Perfumado Desodorante Corporal';
+        }
+        document.getElementById('recommendedProductName').textContent = quizFormData.produto;
+      }
+
+      nextQuizStep(nextStep);
+    }
+
+    function submitQuiz(ratingValue) {
+      quizFormData.avaliacao = ratingValue;
+
+      // Submit Data to Google Sheets via fetch
+      const payload = {
+        "Nome": quizFormData.nome,
+        "WhatsApp": quizFormData.phone,
+        "Gênero": quizFormData.genero,
+        "Categoria": quizFormData.categoria,
+        "Objetivo": quizFormData.objetivo,
+        "Perfil": quizFormData.perfil,
+        "Ambiente": quizFormData.ambiente,
+        "Produto Indicado": quizFormData.produto,
+        "Avaliação": quizFormData.avaliacao,
+        "Data/Hora": new Date().toLocaleString('pt-BR')
+      };
+
+      fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(() => {
+        nextQuizStep(8);
+      }).catch(err => {
+        console.error("Erro ao salvar:", err);
+        nextQuizStep(8);
+      });
+    }
+
+    function restartQuiz() {
+      quizFormData = { nome: '', phone: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', produto: '', avaliacao: '' };
+      document.getElementById('quizNome').value = '';
+      document.getElementById('quizPhone').value = '';
+      nextQuizStep(1);
+    }
+
+    // DASHBOARD LOGIC
     function fetchLeadsData() {
       fetch(GOOGLE_SHEETS_SCRIPT_URL, { redirect: 'follow' })
         .then(res => res.json())
@@ -286,7 +629,7 @@
         .catch(err => {
           console.error("Erro ao carregar:", err);
           document.getElementById('leadsList').innerHTML = `<div class="loader" style="color:#DC3545;">
-            Erro ao conectar com a planilha. Verifique as permissões do Apps Script.
+            Não foi possível carregar os dados. Verifique a conexão com a planilha.
           </div>`;
         });
     }
@@ -475,7 +818,6 @@
     }
 
     function changeLeadStatus(id, newStatus) {
-      localStorage.getItem(id);
       localStorage.setItem(id, newStatus);
       const item = rawLeadsData.find(l => l.id === id);
       if (item) item.status = newStatus;
