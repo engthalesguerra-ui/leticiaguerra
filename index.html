@@ -2,408 +2,335 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Boticário Arcade | Consultoria Letícia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boticário 1975 Retro Quest</title>
   <style>
-    :root {
-      --arcade-green: #00FF66;
-      --arcade-gold: #FFD700;
-      --arcade-bg: #0D1B1E;
-      --arcade-card: #162A2D;
-      --arcade-red: #FF3366;
-      --text-main: #FFFFFF;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      background: #050B0C;
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 15px;
-    }
-
-    .retro-title {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.85rem;
-      color: var(--arcade-gold);
-      text-align: center;
-      text-shadow: 2px 2px #000;
-      margin: 10px 0 15px;
-      line-height: 1.4;
-    }
-
-    .arcade-machine {
-      width: 100%;
-      max-width: 440px;
-      background: var(--arcade-card);
-      border: 4px solid var(--arcade-green);
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0,0,0,0.8);
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .level-badge {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.65rem;
-      background: var(--arcade-green);
-      color: #000;
-      padding: 6px 10px;
-      border-radius: 4px;
-      display: inline-block;
-      margin-bottom: 12px;
-      font-weight: bold;
-    }
-
-    .screen { display: none; animation: retroFade 0.3s ease-in-out; }
-    .screen.active { display: block; }
-    @keyframes retroFade { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
-
-    /* FASE 1: MARIO BROS BLOCKS */
-    .mario-grid { display: flex; justify-content: space-around; gap: 10px; margin-top: 25px; }
-    .mario-block {
-      background: #E66C00;
-      border: 3px solid #FFF;
-      box-shadow: 0 4px #803C00, inset -2px -2px 0px #803C00;
-      width: 100px;
-      height: 100px;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', Courier, monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: transform 0.1s;
+      min-height: 100vh;
+      overflow: hidden;
     }
-    .mario-block:active { transform: translateY(4px); box-shadow: 0 0 #803C00; }
-    .mario-block span { font-size: 2rem; margin-bottom: 4px; }
-    .mario-block p { font-size: 0.7rem; font-weight: bold; text-align: center; color: #FFF; }
-
-    /* FASE 2: ENDURO TRACK */
-    .track { background: #222; border-left: 4px dashed #FFF; border-right: 4px dashed #FFF; padding: 15px 5px; border-radius: 8px; }
-    .car-lane {
-      background: #333;
-      border: 2px solid var(--arcade-gold);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
+    #gameContainer {
+      position: relative;
+      border: 4px solid #fff;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
     }
-    .car-lane:hover, .car-lane:active { background: #1E6B43; border-color: var(--arcade-green); }
-
-    /* FASE 3: RIVER RAID */
-    .river { background: #004488; border: 3px solid #002244; border-radius: 10px; padding: 15px; }
-    .fuel-tank {
-      background: #CC0000;
-      color: #FFF;
-      border: 2px solid #FFF;
-      padding: 14px;
-      border-radius: 8px;
-      margin-bottom: 12px;
-      font-weight: bold;
-      text-align: center;
-      cursor: pointer;
-      box-shadow: 0 4px #660000;
-    }
-    .fuel-tank:active { transform: translateY(3px); box-shadow: none; }
-
-    /* FASE 4: SNAKE */
-    .snake-container { display: flex; flex-direction: column; gap: 10px; }
-    .snake-node {
-      background: #111;
-      border: 2px solid var(--arcade-green);
-      padding: 12px 15px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-    .snake-node:active { background: #00FF66; color: #000; }
-
-    /* FASE 5: TIRO AO ALVO */
-    .target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .target-card {
-      background: #2A0934;
-      border: 2px solid #FF00FF;
-      border-radius: 12px;
-      padding: 15px 10px;
-      text-align: center;
-      cursor: pointer;
-    }
-    .target-card:active { background: #FF00FF; color: #000; }
-
-    /* FORM & BUTTONS */
-    .retro-input {
-      width: 100%;
-      padding: 12px;
+    canvas {
       background: #000;
-      border: 2px solid var(--arcade-green);
-      color: #FFF;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      font-size: 0.9rem;
+      display: block;
+      cursor: crosshair;
     }
-    .btn-arcade {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 0.75rem;
-      background: var(--arcade-green);
-      color: #000;
-      border: none;
-      padding: 14px;
-      width: 100%;
-      border-radius: 8px;
-      cursor: pointer;
-      box-shadow: 0 5px #009933;
-      margin-top: 10px;
-    }
-    .btn-arcade:active { transform: translateY(4px); box-shadow: none; }
-
-    .result-card {
-      background: #FFF;
-      color: #000;
-      border-radius: 12px;
-      padding: 15px;
-      text-align: center;
-      margin: 15px 0;
+    .hud {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 1px;
     }
   </style>
 </head>
 <body>
 
-  <div class="retro-title">🎮 BOTICÁRIO QUEST 8-BIT</div>
-
-  <div class="arcade-machine">
-    
-    <!-- SETUP / DADOS -->
-    <div class="screen active" id="s-start">
-      <div class="level-badge">PRESS START</div>
-      <h2 style="font-size: 1.1rem; margin-bottom: 10px;">Identificação do Jogador</h2>
-      <p style="font-size: 0.82rem; color: #AAA; margin-bottom: 15px;">Informe seus dados para liberar o bônus de 5% OFF ao concluir as fases.</p>
-      
-      <input type="text" id="playerName" class="retro-input" placeholder="Seu Nome">
-      <input type="tel" id="playerPhone" class="retro-input" placeholder="WhatsApp (DDD)">
-      
-      <label style="font-size: 0.75rem; color: #DDD; display: flex; gap: 8px; margin-bottom: 15px;">
-        <input type="checkbox" id="playerConsent" checked> Aceito receber a recomendação via WhatsApp.
-      </label>
-
-      <button class="btn-arcade" onclick="startGame()">START GAME ➔</button>
-    </div>
-
-    <!-- FASE 1: MARIO BROS -->
-    <div class="screen" id="s-fase1">
-      <div class="level-badge">STAGE 1: MARIO BROS</div>
-      <h3>Quem é o jogador principal?</h3>
-      <p style="font-size: 0.8rem; color: #AAA; margin-top: 4px;">Pule no bloco [ ? ] desejado:</p>
-      
-      <div class="mario-grid">
-        <div class="mario-block" onclick="chooseFase1('Feminino')">
-          <span>👩</span>
-          <p>ELA</p>
-        </div>
-        <div class="mario-block" onclick="chooseFase1('Masculino')">
-          <span>👨</span>
-          <p>ELE</p>
-        </div>
-        <div class="mario-block" onclick="chooseFase1('KidsBebe')">
-          <span>👶</span>
-          <p>KIDS</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FASE 2: ENDURO -->
-    <div class="screen" id="s-fase2">
-      <div class="level-badge">STAGE 2: ENDURO ATARI</div>
-      <h3>Escolha a pista de produtos</h3>
-      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Desvie o carro para a faixa certa:</p>
-      
-      <div class="track" id="enduroLanes">
-        <!-- Gerado via JS -->
-      </div>
-    </div>
-
-    <!-- FASE 3: RIVER RAID -->
-    <div class="screen" id="s-fase3">
-      <div class="level-badge">STAGE 3: RIVER RAID</div>
-      <h3>Abasteça o Caça!</h3>
-      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Qual o objetivo do voo?</p>
-      
-      <div class="river">
-        <div class="fuel-tank" onclick="chooseFase3('Uso Pessoal')">⛽ FUEL: Uso Pessoal / Diário</div>
-        <div class="fuel-tank" onclick="chooseFase3('Presente Especial')">🎁 FUEL: Presente Especial</div>
-      </div>
-    </div>
-
-    <!-- FASE 4: SNAKE -->
-    <div class="screen" id="s-fase4">
-      <div class="level-badge">STAGE 4: SNAKE GAME</div>
-      <h3>Capture a Essência!</h3>
-      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Guie a cobrinha até o aroma preferido:</p>
-      
-      <div class="snake-container" id="snakeOptions">
-        <!-- Gerado via JS -->
-      </div>
-    </div>
-
-    <!-- FASE 5: TIRO AO ALVO -->
-    <div class="screen" id="s-fase5">
-      <div class="level-badge">STAGE 5: TIRO AO ALVO</div>
-      <h3>Mire na Ocasião!</h3>
-      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Acerta no alvo de onde vai usar:</p>
-      
-      <div class="target-grid" id="targetOptions">
-        <!-- Gerado via JS -->
-      </div>
-    </div>
-
-    <!-- GAME OVER / RESULTADO -->
-    <div class="screen" id="s-result">
-      <div class="level-badge" style="background: var(--arcade-gold);">STAGE CLEAR! 🏆</div>
-      <h3 style="text-align: center;">Recompensa Desbloqueada</h3>
-      
-      <div class="result-card" id="resultCard">
-        <!-- Gerado via JS -->
-      </div>
-
-      <button class="btn-arcade" onclick="enviarWhatsApp()">💬 PEDIR NO WHATSAPP</button>
-      <button class="btn-arcade" style="background:#555; color:#FFF; margin-top: 8px;" onclick="location.reload()">🔄 JOGAR NOVAMENTE</button>
-    </div>
-
+<div id="gameContainer">
+  <div class="hud">
+    <span id="stageTitle">STAGE 1: MARIO JUMP</span>
+    <span id="scoreText">SCORE: 0000</span>
   </div>
+  <canvas id="arcadeCanvas" width="600" height="450"></canvas>
+</div>
 
-  <script>
-    const gameState = { nome: '', phone: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '' };
+<script>
+const canvas = document.getElementById('arcadeCanvas');
+const ctx = canvas.getContext('2d');
+const stageTitle = document.getElementById('stageTitle');
+const scoreText = document.getElementById('scoreText');
 
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
+let mouseX = canvas.width / 2;
+let mouseY = canvas.height / 2;
+let currentStage = 1;
+let score = 0;
+let answers = {};
+
+// Dados dos Jogadores / Física
+let player = {
+  x: 300,
+  y: 380,
+  vx: 0,
+  vy: 0,
+  radius: 12,
+  isGrounded: true
+};
+
+let bullets = [];
+let targets = [];
+
+// Atualização de posição do Mouse
+canvas.addEventListener('mousemove', (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = e.clientX - rect.left;
+  mouseY = e.clientY - rect.top;
+});
+
+// Ação por Clique (Pulo / Disparo / Seleção)
+canvas.addEventListener('mousedown', () => {
+  if (currentStage === 1 && player.isGrounded) {
+    // Pulo estilo Mario
+    player.vy = -11;
+    player.isGrounded = false;
+  } else if (currentStage === 3) {
+    // Disparo estilo River Raid
+    bullets.push({ x: player.x, y: player.y - 15, vy: -8 });
+  } else if (currentStage === 5) {
+    // Tiro ao Alvo Direto
+    checkTargetHit(mouseX, mouseY);
+  }
+});
+
+function initStage(stageNum) {
+  currentStage = stageNum;
+  bullets = [];
+  targets = [];
+  
+  if (stageNum === 1) {
+    stageTitle.innerText = "FASE 1: PULE NO BLOCO (MARIO)";
+    targets = [
+      { id: 'Feminino', text: '[?] ELA', x: 100, y: 150, w: 100, h: 40 },
+      { id: 'Masculino', text: '[?] ELE', x: 250, y: 150, w: 100, h: 40 },
+      { id: 'Kids', text: '[?] KIDS', x: 400, y: 150, w: 100, h: 40 }
+    ];
+  } else if (stageNum === 2) {
+    stageTitle.innerText = "FASE 2: CORRIDA E DESVIO (ENDURO)";
+    targets = [
+      { id: 'Perfumaria', text: '1: PERFUMARIA', x: 80, y: -50, w: 130, h: 35, vy: 2 },
+      { id: 'Cremes', text: '2: CREMES', x: 235, y: -150, w: 130, h: 35, vy: 2 },
+      { id: 'BodySplash', text: '3: SPLASH', x: 390, y: -250, w: 130, h: 35, vy: 2 }
+    ];
+  } else if (stageNum === 3) {
+    stageTitle.innerText = "FASE 3: ATIRE NO OBJETIVO (RIVER RAID)";
+    targets = [
+      { id: 'Uso Pessoal', text: '=== USO PESSOAL ===', x: 100, y: 100, w: 180, h: 30, vx: 2 },
+      { id: 'Presente', text: '=== PRESENTE ===', x: 320, y: 160, w: 180, h: 30, vx: -2 }
+    ];
+  } else if (stageNum === 4) {
+    stageTitle.innerText = "FASE 4: CAPTURE O PERFIL (SNAKE)";
+    targets = [
+      { id: 'Marcante', text: 'O MARCANTE', x: 150, y: 120, r: 25 },
+      { id: 'Suave', text: 'O SUAVE', x: 450, y: 120, r: 25 },
+      { id: 'Fresco', text: 'O FRESCO', x: 300, y: 280, r: 25 }
+    ];
+  } else if (stageNum === 5) {
+    stageTitle.innerText = "FASE 5: MIRE E ATIRE NA OCASIÃO";
+    targets = [
+      { id: 'Trabalho', text: '+ TRABALHO', x: 100, y: 150, vx: 3, vy: 2 },
+      { id: 'Festa', text: '+ FESTA', x: 400, y: 200, vx: -2, vy: 3 },
+      { id: 'Dia a Dia', text: '+ DIA A DIA', x: 200, y: 300, vx: 2, vy: -2 }
+    ];
+  }
+}
+
+function nextStage(choice) {
+  score += 500;
+  scoreText.innerText = `SCORE: ${String(score).padStart(4, '0')}`;
+  if (currentStage < 5) {
+    initStage(currentStage + 1);
+  } else {
+    currentStage = 6;
+    stageTitle.innerText = "GAME OVER - VICTORY!";
+  }
+}
+
+function checkTargetHit(x, y) {
+  for (let t of targets) {
+    if (x > t.x - 30 && x < t.x + 130 && y > t.y - 20 && y < t.y + 40) {
+      nextStage(t.id);
+      break;
+    }
+  }
+}
+
+// Loop Principal de Renderização e Física
+function gameLoop() {
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Desenhar bordas de vetor em branco
+  ctx.strokeStyle = "#fff";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(5, 40, canvas.width - 10, canvas.height - 45);
+
+  if (currentStage === 1) {
+    // FASE 1: MARIO BROS (Pulo + Mouse X)
+    player.x = mouseX;
+    player.y += player.vy;
+    player.vy += 0.5; // Gravidade
+
+    if (player.y >= 380) {
+      player.y = 380;
+      player.vy = 0;
+      player.isGrounded = true;
     }
 
-    function startGame() {
-      const name = document.getElementById('playerName').value.trim();
-      const phone = document.getElementById('playerPhone').value.trim();
-      if (!name || !phone) return alert('Por favor, digite seu nome e WhatsApp!');
-      gameState.nome = name;
-      gameState.phone = phone;
-      showScreen('s-fase1');
-    }
+    // Desenha Jogador
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+    ctx.stroke();
 
-    /* FASE 1 */
-    function chooseFase1(gen) {
-      gameState.genero = gen;
-      renderEnduro();
-      showScreen('s-fase2');
-    }
+    // Desenha Blocos [?]
+    targets.forEach(t => {
+      ctx.strokeRect(t.x, t.y, t.w, t.h);
+      ctx.fillStyle = "#fff";
+      ctx.font = "12px 'Courier New'";
+      ctx.fillText(t.text, t.x + 15, t.y + 24);
 
-    /* FASE 2 - ENDURO */
-    function renderEnduro() {
-      const container = document.getElementById('enduroLanes');
-      let options = [];
-      if (gameState.genero === 'Feminino') {
-        options = [
-          { key: 'perfumaria', label: '🏎️ Perfumaria & Colônias' },
-          { key: 'cremes', label: '🏎️ Cremes & Hidratantes' },
-          { key: 'splash', label: '🏎️ Body Splash' }
-        ];
-      } else if (gameState.genero === 'Masculino') {
-        options = [
-          { key: 'perfumaria', label: '🏎️ Perfumaria Masculina' },
-          { key: 'barba', label: '🏎️ Cuidados com a Barba' },
-          { key: 'desodorantes', label: '🏎️ Desodorantes / Spray' }
-        ];
-      } else {
-        options = [
-          { key: 'perfumaria', label: '🏎️ Colônias Infantis' },
-          { key: 'banho', label: '🏎️ Linha de Banho' }
-        ];
+      // Colisão por baixo (cabeçada no bloco)
+      if (player.y - player.radius <= t.y + t.h && player.y - player.radius >= t.y &&
+          player.x >= t.x && player.x <= t.x + t.w && player.vy < 0) {
+        nextStage(t.id);
       }
+    });
 
-      container.innerHTML = options.map(o => `
-        <div class="car-lane" onclick="chooseFase2('${o.key}')">
-          <span>${o.label}</span>
-          <span>➔</span>
-        </div>
-      `).join('');
-    }
+  } else if (currentStage === 2) {
+    // FASE 2: ENDURO (Guiar com Mouse X)
+    player.x = mouseX;
+    player.y = 390;
 
-    function chooseFase2(cat) {
-      gameState.categoria = cat;
-      showScreen('s-fase3');
-    }
+    // Desenha Carro (Vetor Triângulo)
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y - 15);
+    ctx.lineTo(player.x - 15, player.y + 15);
+    ctx.lineTo(player.x + 15, player.y + 15);
+    ctx.closePath();
+    ctx.stroke();
 
-    /* FASE 3 */
-    function chooseFase3(obj) {
-      gameState.objetivo = obj;
-      renderSnake();
-      showScreen('s-fase4');
-    }
+    // Movimentar e Desenhar Portas de Seleção
+    targets.forEach(t => {
+      t.y += t.vy;
+      if (t.y > canvas.height) t.y = -40;
 
-    /* FASE 4 - SNAKE */
-    function renderSnake() {
-      const container = document.getElementById('snakeOptions');
-      const profiles = [
-        { key: 'Marcante & Intenso', label: '🐍 Fragrância Marcante & Intensa' },
-        { key: 'Suave & Delicado', label: '🐍 Fragrância Suave & Delicada' },
-        { key: 'Refrescante & Leve', label: '🐍 Sensação Refrescante & Leve' }
-      ];
-      container.innerHTML = profiles.map(p => `
-        <div class="snake-node" onclick="chooseFase4('${p.key}')">
-          <span>🟢</span>
-          <span style="font-size:0.85rem; font-weight:bold;">${p.label}</span>
-        </div>
-      `).join('');
-    }
+      ctx.strokeRect(t.x, t.y, t.w, t.h);
+      ctx.fillStyle = "#fff";
+      ctx.fillText(t.text, t.x + 10, t.y + 22);
 
-    function chooseFase4(prof) {
-      gameState.perfil = prof;
-      renderTargets();
-      showScreen('s-fase5');
-    }
+      // Colisão Carro vs Bloco
+      if (player.x > t.x && player.x < t.x + t.w && player.y - 15 < t.y + t.h && player.y + 15 > t.y) {
+        nextStage(t.id);
+      }
+    });
 
-    /* FASE 5 - TIRO AO ALVO */
-    function renderTargets() {
-      const container = document.getElementById('targetOptions');
-      const ambientes = ['Trabalho', 'Festa / Encontro', 'Academia / Dia a Dia', 'Casa / Pós-Banho'];
-      container.innerHTML = ambientes.map(a => `
-        <div class="target-card" onclick="chooseFase5('${a}')">
-          <div style="font-size:1.8rem;">🎯</div>
-          <div style="font-size:0.75rem; font-weight:bold; margin-top:5px;">${a}</div>
-        </div>
-      `).join('');
-    }
+  } else if (currentStage === 3) {
+    // FASE 3: RIVER RAID (Nave + Tiros no Clique)
+    player.x = mouseX;
+    player.y = 400;
 
-    function chooseFase5(amb) {
-      gameState.ambiente = amb;
-      renderResult();
-      showScreen('s-result');
-    }
+    // Nave
+    ctx.beginPath();
+    ctx.moveTo(player.x, player.y - 15);
+    ctx.lineTo(player.x - 12, player.y + 10);
+    ctx.lineTo(player.x + 12, player.y + 10);
+    ctx.closePath();
+    ctx.stroke();
 
-    /* RESULTADO */
-    function renderResult() {
-      const card = document.getElementById('resultCard');
-      card.innerHTML = `
-        <h4 style="color:#009933; margin-bottom:5px;">MATCH PERFEITO! 🎯</h4>
-        <h3 style="font-size:1rem; margin-bottom:8px;">Floratta Red Desodorante Colônia 75ml</h3>
-        <p style="font-size:0.8rem; color:#555;">Fragrância floral frutal marcante, ideal para suas ocasiões de ${gameState.ambiente}.</p>
-        <div style="margin-top:10px; font-weight:bold; color:#E66C00; font-size:0.85rem;">🎁 Bônus: 5% OFF Liberado!</div>
-      `;
-    }
+    // Atualiza Tiros
+    bullets.forEach((b, index) => {
+      b.y += b.vy;
+      ctx.fillRect(b.x - 2, b.y, 4, 10);
 
-    function enviarWhatsApp() {
-      const text = `Olá Letícia! Concluí o Quiz 8-Bits Game!%0A*Nome:* ${gameState.nome}%0A*Opções:* ${gameState.genero} | ${gameState.categoria} | ${gameState.ambiente}`;
-      window.open(`https://wa.me/5531999999999?text=${text}`, '_blank');
-    }
-  </script>
+      // Checa se tiro acertou alvos
+      targets.forEach(t => {
+        if (b.x > t.x && b.x < t.x + t.w && b.y > t.y && b.y < t.y + t.h) {
+          bullets.splice(index, 1);
+          nextStage(t.id);
+        }
+      });
+    });
+
+    // Mover Alvos no Rio
+    targets.forEach(t => {
+      t.x += t.vx;
+      if (t.x <= 10 || t.x + t.w >= canvas.width - 10) t.vx *= -1;
+
+      ctx.strokeRect(t.x, t.y, t.w, t.h);
+      ctx.fillStyle = "#fff";
+      ctx.fillText(t.text, t.x + 15, t.y + 20);
+    });
+
+  } else if (currentStage === 4) {
+    // FASE 4: SNAKE (Seguir o Cursor do Mouse)
+    player.x += (mouseX - player.x) * 0.1;
+    player.y += (mouseY - player.y) * 0.1;
+
+    // Desenha Cobrinha
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 8, 0, Math.PI * 2);
+    ctx.stroke();
+
+    targets.forEach(t => {
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.fillStyle = "#fff";
+      ctx.fillText(t.text, t.x - 30, t.y + 4);
+
+      // Colisão por aproximação
+      let dist = Math.hypot(player.x - t.x, player.y - t.y);
+      if (dist < t.r + 8) {
+        nextStage(t.id);
+      }
+    });
+
+  } else if (currentStage === 5) {
+    // FASE 5: TIRO AO ALVO (Mira no Mouse X/Y)
+    targets.forEach(t => {
+      t.x += t.vx;
+      t.y += t.vy;
+
+      if (t.x < 20 || t.x > canvas.width - 120) t.vx *= -1;
+      if (t.y < 60 || t.y > canvas.height - 60) t.vy *= -1;
+
+      ctx.strokeRect(t.x, t.y, 110, 35);
+      ctx.fillStyle = "#fff";
+      ctx.fillText(t.text, t.x + 10, t.y + 22);
+    });
+
+    // Desenhar Mira do Mouse (Crosshair Veto)
+    ctx.strokeStyle = "#fff";
+    ctx.beginPath();
+    ctx.arc(mouseX, mouseY, 12, 0, Math.PI * 2);
+    ctx.moveTo(mouseX - 18, mouseY); ctx.lineTo(mouseX + 18, mouseY);
+    ctx.moveTo(mouseX, mouseY - 18); ctx.lineTo(mouseX, mouseY + 18);
+    ctx.stroke();
+
+  } else if (currentStage === 6) {
+    // FIM DE JOGO
+    ctx.fillStyle = "#fff";
+    ctx.font = "16px 'Courier New'";
+    ctx.fillText("PARABENS! CONSULTORIA CONCLUIDA", 140, 200);
+    ctx.fillText("SEU BOTICARIO IDEAL FOI GERADO!", 140, 240);
+    ctx.fillText("CLIQUE PARA REINICIAR", 190, 300);
+  }
+
+  requestAnimationFrame(gameLoop);
+}
+
+canvas.addEventListener('click', () => {
+  if (currentStage === 6) initStage(1);
+});
+
+// Inicialização
+initStage(1);
+gameLoop();
+</script>
 </body>
 </html>
