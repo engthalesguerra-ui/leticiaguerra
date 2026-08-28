@@ -2,629 +2,407 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Quiz de Beleza & Fragrâncias | Consultoria Exclusiva Letícia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Boticário Arcade | Consultoria Letícia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0F4C2E;
-      --primary-light: #1E6B43;
-      --accent-gold: #D4AF37;
-      --wood-warm: #8B5E3C;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --text-dark: #1A2820;
-      --text-muted: #52635A;
-      --radius: 20px;
-      --shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+      --arcade-green: #00FF66;
+      --arcade-gold: #FFD700;
+      --arcade-bg: #0D1B1E;
+      --arcade-card: #162A2D;
+      --arcade-red: #FF3366;
+      --text-main: #FFFFFF;
     }
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; 
-      -webkit-tap-highlight-color: transparent;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; -webkit-tap-highlight-color: transparent; }
 
     body {
-      background: linear-gradient(rgba(15, 30, 20, 0.4), rgba(15, 30, 20, 0.5)),
-                  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
-      background-color: #1a271d;
-      color: var(--text-dark);
+      background: #050B0C;
+      color: var(--text-main);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px 15px;
+      padding: 15px;
     }
 
-    header {
-      width: 100%;
-      max-width: 480px;
+    .retro-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.85rem;
+      color: var(--arcade-gold);
       text-align: center;
-      padding: 18px 15px;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      margin-bottom: 20px;
-      backdrop-filter: blur(12px);
+      text-shadow: 2px 2px #000;
+      margin: 10px 0 15px;
+      line-height: 1.4;
     }
 
-    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; letter-spacing: 0.3px; }
-    .brand-sub { font-size: 0.78rem; color: #8B5E3C; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
+    .arcade-machine {
+      width: 100%;
+      max-width: 440px;
+      background: var(--arcade-card);
+      border: 4px solid var(--arcade-green);
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 255, 102, 0.2), inset 0 0 15px rgba(0,0,0,0.8);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
 
-    main { width: 100%; max-width: 480px; }
+    .level-badge {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      background: var(--arcade-green);
+      color: #000;
+      padding: 6px 10px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
 
-    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, var(--accent-gold)); transition: width 0.4s ease; }
-
-    .screen { display: none; background: var(--card-bg); border-radius: var(--radius); padding: 25px 20px; box-shadow: var(--shadow); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeIn 0.35s ease-out forwards; }
+    .screen { display: none; animation: retroFade 0.3s ease-in-out; }
     .screen.active { display: block; }
+    @keyframes retroFade { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-    .hero-banner {
-      height: 160px;
-      border-radius: 14px;
-      background: 
-        linear-gradient(rgba(10, 35, 20, 0.55), rgba(10, 35, 20, 0.65)),
-        url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80") center/cover no-repeat;
-      margin-bottom: 18px;
+    /* FASE 1: MARIO BROS BLOCKS */
+    .mario-grid { display: flex; justify-content: space-around; gap: 10px; margin-top: 25px; }
+    .mario-block {
+      background: #E66C00;
+      border: 3px solid #FFF;
+      box-shadow: 0 4px #803C00, inset -2px -2px 0px #803C00;
+      width: 100px;
+      height: 100px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform 0.1s;
+    }
+    .mario-block:active { transform: translateY(4px); box-shadow: 0 0 #803C00; }
+    .mario-block span { font-size: 2rem; margin-bottom: 4px; }
+    .mario-block p { font-size: 0.7rem; font-weight: bold; text-align: center; color: #FFF; }
+
+    /* FASE 2: ENDURO TRACK */
+    .track { background: #222; border-left: 4px dashed #FFF; border-right: 4px dashed #FFF; padding: 15px 5px; border-radius: 8px; }
+    .car-lane {
+      background: #333;
+      border: 2px solid var(--arcade-gold);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .car-lane:hover, .car-lane:active { background: #1E6B43; border-color: var(--arcade-green); }
+
+    /* FASE 3: RIVER RAID */
+    .river { background: #004488; border: 3px solid #002244; border-radius: 10px; padding: 15px; }
+    .fuel-tank {
+      background: #CC0000;
+      color: #FFF;
+      border: 2px solid #FFF;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-weight: bold;
       text-align: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-      border: 1px solid rgba(212, 175, 55, 0.5);
+      cursor: pointer;
+      box-shadow: 0 4px #660000;
     }
-    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.45; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+    .fuel-tank:active { transform: translateY(3px); box-shadow: none; }
 
-    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.35rem; }
-    p.subtitle { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
-
-    .options-grid { display: flex; flex-direction: column; gap: 12px; }
-
-    .btn-option { background: #FFFFFF; border: 1.5px solid #E2D9CC; border-radius: 14px; padding: 15px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
-    .btn-option:hover, .btn-option:active { border-color: var(--primary); background: #F3F8F5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-
-    .btn-primary { background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(15, 76, 46, 0.35); }
-    .btn-primary:hover, .btn-primary:active { background: linear-gradient(135deg, #1E6B43 0%, #0F4C2E 100%); }
-
-    .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid #CCC; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-top: 10px; }
-
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    
-    .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 16px; background: #FFF; }
-    .form-group input:focus { border-color: var(--primary); }
-
-    .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
-
-    .discount-badge { background: linear-gradient(135deg, #FFFDF8 0%, #F9F2E7 100%); border: 1.5px solid var(--accent-gold); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
-    .discount-badge strong { color: var(--primary); font-size: 1rem; }
-    .discount-badge p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
-
-    .product-card { text-align: center; border: 1px solid #EAE3D9; border-radius: 16px; padding: 20px; margin: 15px 0; background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-
-    .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
-    .img-aura::before {
-      content: ''; position: absolute; inset: -14px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(139,94,60,0.15) 55%, transparent 75%);
-      animation: auraPulse 3.2s ease-in-out infinite;
+    /* FASE 4: SNAKE */
+    .snake-container { display: flex; flex-direction: column; gap: 10px; }
+    .snake-node {
+      background: #111;
+      border: 2px solid var(--arcade-green);
+      padding: 12px 15px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
     }
-    @keyframes auraPulse { 0%, 100% { transform: scale(0.94); opacity: 0.7; } 50% { transform: scale(1.06); opacity: 1; } }
-    .product-img { position: relative; width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: #FAF8F5; padding: 8px; }
+    .snake-node:active { background: #00FF66; color: #000; }
 
-    .tag-stock { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; }
-    .tag-pronta { background: #D4EDDA; color: #155724; }
-    .tag-encomenda { background: #FFF3CD; color: #856404; }
+    /* FASE 5: TIRO AO ALVO */
+    .target-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .target-card {
+      background: #2A0934;
+      border: 2px solid #FF00FF;
+      border-radius: 12px;
+      padding: 15px 10px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .target-card:active { background: #FF00FF; color: #000; }
 
-    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
-    .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
-    .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
-    .btn-feedback-choice:hover, .btn-feedback-choice:active { border-color: var(--primary); background: #F3F8F5; }
-    .btn-feedback-choice.active-gostou { background: #D4EDDA; border-color: #28A745; color: #155724; }
-    .btn-feedback-choice.active-medio { background: #FFF3CD; border-color: #FFC107; color: #856404; }
-    .btn-feedback-choice.active-naocompra { background: #F8D7DA; border-color: #DC3545; color: #721C24; }
-    .error-msg { color: #dc3545; font-size: 0.8rem; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
+    /* FORM & BUTTONS */
+    .retro-input {
+      width: 100%;
+      padding: 12px;
+      background: #000;
+      border: 2px solid var(--arcade-green);
+      color: #FFF;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+    .btn-arcade {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.75rem;
+      background: var(--arcade-green);
+      color: #000;
+      border: none;
+      padding: 14px;
+      width: 100%;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 5px #009933;
+      margin-top: 10px;
+    }
+    .btn-arcade:active { transform: translateY(4px); box-shadow: none; }
+
+    .result-card {
+      background: #FFF;
+      color: #000;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      margin: 15px 0;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-title">Letícia Martins Guerra de Souza</div>
-    <div class="brand-sub">Consultoria Exclusiva O Boticário</div>
-  </header>
+  <div class="retro-title">🎮 BOTICÁRIO QUEST 8-BIT</div>
 
-  <main>
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
+  <div class="arcade-machine">
+    
+    <!-- SETUP / DADOS -->
+    <div class="screen active" id="s-start">
+      <div class="level-badge">PRESS START</div>
+      <h2 style="font-size: 1.1rem; margin-bottom: 10px;">Identificação do Jogador</h2>
+      <p style="font-size: 0.82rem; color: #AAA; margin-bottom: 15px;">Informe seus dados para liberar o bônus de 5% OFF ao concluir as fases.</p>
+      
+      <input type="text" id="playerName" class="retro-input" placeholder="Seu Nome">
+      <input type="tel" id="playerPhone" class="retro-input" placeholder="WhatsApp (DDD)">
+      
+      <label style="font-size: 0.75rem; color: #DDD; display: flex; gap: 8px; margin-bottom: 15px;">
+        <input type="checkbox" id="playerConsent" checked> Aceito receber a recomendação via WhatsApp.
+      </label>
+
+      <button class="btn-arcade" onclick="startGame()">START GAME ➔</button>
     </div>
 
-    <!-- TELA INICIAL -->
-    <div class="screen active" id="step-home">
-      <div class="hero-banner">
-        <p>"Descubra a combinação perfeita para o seu estilo e rotina de cuidados."</p>
-      </div>
-      <h2>Consultoria Personalizada ✨</h2>
-      <p class="subtitle">Encontre o produto ideal do Boticário para você, para os pequenos ou para presentear quem ama — e garanta 5% de desconto na primeira compra.</p>
-      <div class="options-grid">
-        <button type="button" class="btn-primary" onclick="goToLeadStep()">✨ Iniciar Quiz Personalizado</button>
-        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #FDFBF7; border-color: var(--accent-gold);">🛍️ Ver Catálogo na Loja da Letícia</a>
-      </div>
-    </div>
-
-    <!-- CADASTRO -->
-    <div class="screen" id="step-lead">
-      <h2>Seus Dados de Contato 📝</h2>
-      <div class="discount-badge">
-        <strong>🎁 Ganhe 5% de desconto</strong>
-        <p>Preencha seus dados para participar do Quiz Personalizado e garantir 5% de desconto na sua primeira compra.</p>
-      </div>
-
-      <form onsubmit="handleLeadSubmit(event)">
-        <div class="form-group">
-          <label>Seu Nome Completo *</label>
-          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name">
+    <!-- FASE 1: MARIO BROS -->
+    <div class="screen" id="s-fase1">
+      <div class="level-badge">STAGE 1: MARIO BROS</div>
+      <h3>Quem é o jogador principal?</h3>
+      <p style="font-size: 0.8rem; color: #AAA; margin-top: 4px;">Pule no bloco [ ? ] desejado:</p>
+      
+      <div class="mario-grid">
+        <div class="mario-block" onclick="chooseFase1('Feminino')">
+          <span>👩</span>
+          <p>ELA</p>
         </div>
-        <div class="form-group">
-          <label>Seu WhatsApp com DDD *</label>
-          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel">
+        <div class="mario-block" onclick="chooseFase1('Masculino')">
+          <span>👨</span>
+          <p>ELE</p>
         </div>
-        <div class="consent-box">
-          <input type="checkbox" id="consentCheck">
-          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong> (sem ligações).</label>
+        <div class="mario-block" onclick="chooseFase1('KidsBebe')">
+          <span>👶</span>
+          <p>KIDS</p>
         </div>
-        <p id="leadError" class="error-msg"></p>
-        <button type="submit" id="btnSubmitLead" class="btn-primary">Começar o Quiz ➔</button>
-      </form>
-      <button type="button" class="btn-secondary" onclick="declineQuiz()">Não quero participar do quiz</button>
-    </div>
-
-    <!-- PERGUNTA 1: GÊNERO -->
-    <div class="screen" id="step-gender">
-      <h2>Para quem será o produto?</h2>
-      <p class="subtitle">Selecione para direcionar as melhores opções do Boticário:</p>
-      <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Linha Feminina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Linha Masculina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('KidsBebe')"><span>👶 Kids & Bebês</span> ➔</button>
       </div>
     </div>
 
-    <!-- PERGUNTA 2: CATEGORIA DE PRODUTO -->
-    <div class="screen" id="step-category">
-      <h2>Qual linha de produto você procura?</h2>
-      <p class="subtitle">Escolha o tipo de cuidado desejado:</p>
-      <div class="options-grid" id="categoryOptions"></div>
-    </div>
-
-    <!-- PERGUNTA 3: OBJETIVO -->
-    <div class="screen" id="step-objective">
-      <h2>Qual é o objetivo principal?</h2>
-      <p class="subtitle">Nos conte como pretende usar:</p>
-      <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setObjective('Uso Pessoal')"><span>🛍️ Uso Pessoal e Diário</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setObjective('Presente Especial')"><span>🎁 Presente Especial</span> ➔</button>
+    <!-- FASE 2: ENDURO -->
+    <div class="screen" id="s-fase2">
+      <div class="level-badge">STAGE 2: ENDURO ATARI</div>
+      <h3>Escolha a pista de produtos</h3>
+      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Desvie o carro para a faixa certa:</p>
+      
+      <div class="track" id="enduroLanes">
+        <!-- Gerado via JS -->
       </div>
     </div>
 
-    <!-- PERGUNTA 4: PERFIL / FRAGRÂNCIA -->
-    <div class="screen" id="step-profile">
-      <h2>Qual o estilo ou aroma de preferência?</h2>
-      <p class="subtitle">Escolha a sensação que mais agrada:</p>
-      <div class="options-grid" id="profileOptions"></div>
-    </div>
-
-    <!-- PERGUNTA 5: AMBIENTE DE USO -->
-    <div class="screen" id="step-ambiente">
-      <h2>Onde será mais usado?</h2>
-      <p class="subtitle">Isso ajuda a Letícia a refinar ainda mais a indicação:</p>
-      <div class="options-grid" id="ambienteOptions"></div>
-    </div>
-
-    <!-- TELA DE RESULTADO -->
-    <div class="screen" id="step-result">
-      <div class="hero-banner">
-        <p>"Sua escolha ideal para realçar sua essência e bem-estar."</p>
+    <!-- FASE 3: RIVER RAID -->
+    <div class="screen" id="s-fase3">
+      <div class="level-badge">STAGE 3: RIVER RAID</div>
+      <h3>Abasteça o Caça!</h3>
+      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Qual o objetivo do voo?</p>
+      
+      <div class="river">
+        <div class="fuel-tank" onclick="chooseFase3('Uso Pessoal')">⛽ FUEL: Uso Pessoal / Diário</div>
+        <div class="fuel-tank" onclick="chooseFase3('Presente Especial')">🎁 FUEL: Presente Especial</div>
       </div>
-      <h2>Recomendação Exclusiva</h2>
-      <div class="product-card" id="res-card"></div>
+    </div>
 
-      <div class="feedback-result-group">
-        <p>O que achou desta sugestão? *</p>
-        <div class="feedback-buttons">
-          <button type="button" class="btn-feedback-choice" id="fb-gostou" onclick="submitFinalFeedback('Gostou / Amei', this)">💙 Gostou</button>
-          <button type="button" class="btn-feedback-choice" id="fb-medio" onclick="submitFinalFeedback('Médio', this)">😐 Médio</button>
-          <button type="button" class="btn-feedback-choice" id="fb-nao" onclick="submitFinalFeedback('Não compraria', this)">❌ Não compraria</button>
-        </div>
-        <p id="feedbackError" class="error-msg"></p>
+    <!-- FASE 4: SNAKE -->
+    <div class="screen" id="s-fase4">
+      <div class="level-badge">STAGE 4: SNAKE GAME</div>
+      <h3>Capture a Essência!</h3>
+      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Guie a cobrinha até o aroma preferido:</p>
+      
+      <div class="snake-container" id="snakeOptions">
+        <!-- Gerado via JS -->
+      </div>
+    </div>
+
+    <!-- FASE 5: TIRO AO ALVO -->
+    <div class="screen" id="s-fase5">
+      <div class="level-badge">STAGE 5: TIRO AO ALVO</div>
+      <h3>Mire na Ocasião!</h3>
+      <p style="font-size: 0.8rem; color: #AAA; margin-bottom: 12px;">Acerta no alvo de onde vai usar:</p>
+      
+      <div class="target-grid" id="targetOptions">
+        <!-- Gerado via JS -->
+      </div>
+    </div>
+
+    <!-- GAME OVER / RESULTADO -->
+    <div class="screen" id="s-result">
+      <div class="level-badge" style="background: var(--arcade-gold);">STAGE CLEAR! 🏆</div>
+      <h3 style="text-align: center;">Recompensa Desbloqueada</h3>
+      
+      <div class="result-card" id="resultCard">
+        <!-- Gerado via JS -->
       </div>
 
-      <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; line-height: 1.4; margin: 14px 0 8px;">
-        Ao confirmar, você autoriza o uso dos seus dados para envio de promoções e novidades.
-      </p>
-      <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
-      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados! Obrigado por participar. 💛</p>
-
-      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
-      <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
+      <button class="btn-arcade" onclick="enviarWhatsApp()">💬 PEDIR NO WHATSAPP</button>
+      <button class="btn-arcade" style="background:#555; color:#FFF; margin-top: 8px;" onclick="location.reload()">🔄 JOGAR NOVAMENTE</button>
     </div>
-  </main>
+
+  </div>
 
   <script>
-    const LINK_PAGINA_LETICIA = "https://minhaloja.boticario.com.br/loja-leticiamartinsguerradesouza-20675917?utm_source=app_divulgar&utm_medium=catalogos#catalogo";
-    const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-TJ3ObrhNjncbXMBVyJHu--0PPRBj2YIn55Q83cM8FpKGDrri29lujqRjKO5QZUb2/exec";
-
-    const productsDB = {
-      Feminino: {
-        perfumaria: {
-          nome: 'Floratta Red Desodorante Colônia 75ml',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Fragrância floriental frutal inspirada na flor da Maçã de Vermont, com notas de frutas vermelhas e laranja.',
-          img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B48303/857d5dd4-34f9-42fb-89d8-eb100de3d612-bt-48303-floratta-red-1.jpg',
-          emEstoque: true
-        },
-        cremes: {
-          nome: 'Loção Hidratante Desodorante Corporal Nativa SPA Ameixa 400ml',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Hidratação profunda com gotas purificadas de quinoa e a fragrância marcante da ameixa.',
-          img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/products/B48282/Lo%C3%A7%C3%A3o-Hidratante-Desodorante-Corporal-Nativa-SPA-Ameixa.jpg',
-          emEstoque: true
-        },
-        cabelos: {
-          nome: 'Linha Match - Máscara de Tratamento Capilar',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Tratamento capilar intensivo que reduz o ressecamento e devolve o brilho natural aos fios.',
-          img: '',
-          emEstoque: false
-        },
-        splash: {
-          nome: 'Cuide-se Bem Deleite Body Splash 200ml',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Aroma cremoso, doce e aconchegante para perfumar a pele pós-banho.',
-          img: '',
-          emEstoque: true
-        }
-      },
-      Masculino: {
-        perfumaria: {
-          nome: 'Malbec Desodorante Colônia 100ml',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Fragrância amadeirada feita com álcool vínico envelhecido em barris de carvalho francês.',
-          img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B84387/3fcf35bd-e85f-416e-bbbb-755c89f39e95-bot-84387-malbec-malbec-desodorante-colonia-frontal-01.jpg',
-          emEstoque: true
-        },
-        barba: {
-          nome: 'Kit Men Barba (Espuma de Barbear + Balm Pós-Barba)',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Barbear suave e proteção contra irritações com ação refrescante da linha Men.',
-          img: '',
-          emEstoque: true
-        },
-        cremes: {
-          nome: 'Linha Nativa SPA - Cuidado Corporal Masculino',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Hidratação com absorção rápida e fragrância leve para a rotina diária.',
-          img: '',
-          emEstoque: false
-        },
-        cabelos: {
-          nome: 'Men Pomada Modeladora para Cabelos',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Fixação perfeita com efeito natural e sem deixar resíduos nos fios.',
-          img: '',
-          emEstoque: true
-        },
-        desodorantes: {
-          nome: 'Arbo Desodorante Colônia 100ml',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Proteção contra odores com o frescor natural e verde da linha Arbo.',
-          img: '',
-          emEstoque: true
-        }
-      },
-      KidsBebe: {
-        perfumaria: {
-          nome: 'Boti Baby Colônia do Sol 100ml',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Fragrância Floral Musk suave, hipoalergênica e sem álcool, segura desde os primeiros dias.',
-          img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B51802/53dece14-2e20-4824-8e58-56a02aa82e0f-bot-51802-baby-colonia-do-sol-frontal-01.jpg',
-          emEstoque: false
-        },
-        banho: {
-          nome: 'Loção Hidratante Banho e Pós-Banho Boti Baby',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Protege e hidrata a pele do bebê com o delicado cheirinho Boti Baby.',
-          img: '',
-          emEstoque: false
-        },
-        higiene: {
-          nome: 'Sabonete Líquido de Glicerina Boti Baby',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Limpeza suave, sem lágrimas, da cabeça aos pés.',
-          img: '',
-          emEstoque: false
-        },
-        presente: {
-          nome: 'Kit Presente Boti Baby Especial',
-          tipo: 'Disponível para Encomenda',
-          desc: 'Combinação de colônia e cuidados de banho pronta para presentear.',
-          img: '',
-          emEstoque: false
-        }
-      }
-    };
-
-    const quizState = {
-      genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '',
-      nome: '', phone: '', aceitouContato: false,
-      avaliacaoFinal: ''
-    };
-
-    document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById('linkPageHome').href = LINK_PAGINA_LETICIA;
-      document.getElementById('linkPageResult').href = LINK_PAGINA_LETICIA;
-    });
+    const gameState = { nome: '', phone: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '' };
 
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-      window.scrollTo(0, 0);
     }
 
-    function goToLeadStep() {
-      showScreen('step-lead');
+    function startGame() {
+      const name = document.getElementById('playerName').value.trim();
+      const phone = document.getElementById('playerPhone').value.trim();
+      if (!name || !phone) return alert('Por favor, digite seu nome e WhatsApp!');
+      gameState.nome = name;
+      gameState.phone = phone;
+      showScreen('s-fase1');
     }
 
-    function buildPlaceholderImg() {
-      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-        <rect width="100%" height="100%" fill="#F8F6F2" rx="12"/>
-        <circle cx="90" cy="72" r="32" fill="#0F4C2E" opacity="0.08"/>
-        <path d="M90 52 C80 68 70 78 70 90 A20 20 0 0 0 110 90 C110 78 100 68 90 52 Z" fill="#D4AF37" opacity="0.75"/>
-        <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" font-family="'Playfair Display', serif" font-weight="bold" font-size="11" fill="#0F4C2E" letter-spacing="1">O BOTICÁRIO</text>
-      </svg>`;
-      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    /* FASE 1 */
+    function chooseFase1(gen) {
+      gameState.genero = gen;
+      renderEnduro();
+      showScreen('s-fase2');
     }
 
-    function handleImageError(imgElem) {
-      imgElem.src = buildPlaceholderImg();
-    }
-
-    function updateProgress(percent) {
-      document.getElementById('progressBar').style.width = percent + '%';
-    }
-
-    function declineQuiz() {
-      window.location.href = LINK_PAGINA_LETICIA;
-    }
-
-    function handleLeadSubmit(e) {
-      e.preventDefault();
-      const name = document.getElementById('leadName').value.trim();
-      const phone = document.getElementById('leadPhone').value.trim();
-      const consent = document.getElementById('consentCheck').checked;
-      const errorElem = document.getElementById('leadError');
-
-      if (name.length < 3) {
-        errorElem.textContent = 'Por favor, digite seu nome completo.';
-        errorElem.style.display = 'block';
-        return;
-      }
-      if (phone.length < 10) {
-        errorElem.textContent = 'Por favor, informe um WhatsApp válido com DDD.';
-        errorElem.style.display = 'block';
-        return;
-      }
-      if (!consent) {
-        errorElem.textContent = 'Por favor, marque a caixinha de autorização para continuar.';
-        errorElem.style.display = 'block';
-        return;
-      }
-
-      errorElem.style.display = 'none';
-      quizState.nome = name;
-      quizState.phone = phone;
-      quizState.aceitouContato = consent;
-
-      document.getElementById('progressContainer').style.display = 'block';
-      updateProgress(15);
-      showScreen('step-gender');
-    }
-
-    function setGender(gen) {
-      quizState.genero = gen;
-      renderCategories(gen);
-      updateProgress(30);
-      showScreen('step-category');
-    }
-
-    function renderCategories(gen) {
-      const container = document.getElementById('categoryOptions');
-      if (gen === 'Feminino') {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('perfumaria')"><span>🌸 Perfumaria & Colônias</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('cremes')"><span>✨ Cremes & Hidratantes Corporais</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('cabelos')"><span>💇 Cuidados com Cabelos</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('splash')"><span>🍃 Body Splash & Desodorantes</span> ➔</button>
-        `;
-      } else if (gen === 'Masculino') {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('perfumaria')"><span>🧔 Perfumaria Masculina</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('barba')"><span>🪒 Barba & Barbeiro</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('cremes')"><span>✨ Cremes & Hidratação</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('cabelos')"><span>💈 Cabelo & Modeladores</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('desodorantes')"><span>💨 Desodorantes & Body Spray</span> ➔</button>
-        `;
+    /* FASE 2 - ENDURO */
+    function renderEnduro() {
+      const container = document.getElementById('enduroLanes');
+      let options = [];
+      if (gameState.genero === 'Feminino') {
+        options = [
+          { key: 'perfumaria', label: '🏎️ Perfumaria & Colônias' },
+          { key: 'cremes', label: '🏎️ Cremes & Hidratantes' },
+          { key: 'splash', label: '🏎️ Body Splash' }
+        ];
+      } else if (gameState.genero === 'Masculino') {
+        options = [
+          { key: 'perfumaria', label: '🏎️ Perfumaria Masculina' },
+          { key: 'barba', label: '🏎️ Cuidados com a Barba' },
+          { key: 'desodorantes', label: '🏎️ Desodorantes / Spray' }
+        ];
       } else {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('perfumaria')"><span>🌼 Colônias Infantis</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('banho')"><span>🛁 Cuidados de Banho</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('higiene')"><span>🧼 Higiene Suave</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('presente')"><span>🎁 Kits para Presente</span> ➔</button>
-        `;
+        options = [
+          { key: 'perfumaria', label: '🏎️ Colônias Infantis' },
+          { key: 'banho', label: '🏎️ Linha de Banho' }
+        ];
       }
+
+      container.innerHTML = options.map(o => `
+        <div class="car-lane" onclick="chooseFase2('${o.key}')">
+          <span>${o.label}</span>
+          <span>➔</span>
+        </div>
+      `).join('');
     }
 
-    function setCategory(cat) {
-      quizState.categoria = cat;
-      updateProgress(45);
-      showScreen('step-objective');
+    function chooseFase2(cat) {
+      gameState.categoria = cat;
+      showScreen('s-fase3');
     }
 
-    function setObjective(obj) {
-      quizState.objetivo = obj;
-      renderProfiles();
-      updateProgress(60);
-      showScreen('step-profile');
+    /* FASE 3 */
+    function chooseFase3(obj) {
+      gameState.objetivo = obj;
+      renderSnake();
+      showScreen('s-fase4');
     }
 
-    function renderProfiles() {
-      const container = document.getElementById('profileOptions');
-      if (quizState.genero === 'KidsBebe') {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setProfile('Suave & Delicado')"><span>🌺 Suave e Delicado</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setProfile('Alegre & Divertido')"><span>🎉 Alegre e Divertido</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setProfile('Calmante para Dormir')"><span>🌙 Calmante, para a Hora de Dormir</span> ➔</button>
-        `;
-      } else {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setProfile('Marcante & Intenso')"><span>🔥 Marcante e Intenso</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setProfile('Suave & Delicado')"><span>🌸 Suave e Delicado</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setProfile('Refrescante & Leve')"><span>🌊 Refrescante para o dia a dia</span> ➔</button>
-        `;
-      }
+    /* FASE 4 - SNAKE */
+    function renderSnake() {
+      const container = document.getElementById('snakeOptions');
+      const profiles = [
+        { key: 'Marcante & Intenso', label: '🐍 Fragrância Marcante & Intensa' },
+        { key: 'Suave & Delicado', label: '🐍 Fragrância Suave & Delicada' },
+        { key: 'Refrescante & Leve', label: '🐍 Sensação Refrescante & Leve' }
+      ];
+      container.innerHTML = profiles.map(p => `
+        <div class="snake-node" onclick="chooseFase4('${p.key}')">
+          <span>🟢</span>
+          <span style="font-size:0.85rem; font-weight:bold;">${p.label}</span>
+        </div>
+      `).join('');
     }
 
-    function setProfile(prof) {
-      quizState.perfil = prof;
-      renderAmbiente();
-      updateProgress(75);
-      showScreen('step-ambiente');
+    function chooseFase4(prof) {
+      gameState.perfil = prof;
+      renderTargets();
+      showScreen('s-fase5');
     }
 
-    function renderAmbiente() {
-      const container = document.getElementById('ambienteOptions');
-      if (quizState.genero === 'KidsBebe') {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setAmbiente('Escola / Creche')"><span>🎓 Escola / Creche</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Parque / Lazer')"><span>🏆 Parque / Lazer ao ar livre</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Casa / Banho')"><span>🏠 Casa / Rotina de Banho</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Presente / Ocasião Especial')"><span>🎁 Presente / Ocasião Especial</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Rotina Noturna')"><span>🛌 Rotina Noturna / Hora de Dormir</span> ➔</button>
-        `;
-      } else {
-        container.innerHTML = `
-          <button type="button" class="btn-option" onclick="setAmbiente('Trabalho / Escritório')"><span>🏢 Trabalho / Escritório</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Escola / Faculdade')"><span>🎓 Escola / Faculdade</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Academia / Esportes')"><span>🏃 Academia / Esportes</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Casa / Pós-banho')"><span>🏠 Casa / Pós-banho</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setAmbiente('Festa / Encontro')"><span>🎉 Festa / Encontro</span> ➔</button>
-        `;
-      }
+    /* FASE 5 - TIRO AO ALVO */
+    function renderTargets() {
+      const container = document.getElementById('targetOptions');
+      const ambientes = ['Trabalho', 'Festa / Encontro', 'Academia / Dia a Dia', 'Casa / Pós-Banho'];
+      container.innerHTML = ambientes.map(a => `
+        <div class="target-card" onclick="chooseFase5('${a}')">
+          <div style="font-size:1.8rem;">🎯</div>
+          <div style="font-size:0.75rem; font-weight:bold; margin-top:5px;">${a}</div>
+        </div>
+      `).join('');
     }
 
-    function setAmbiente(amb) {
-      quizState.ambiente = amb;
-      updateProgress(100);
+    function chooseFase5(amb) {
+      gameState.ambiente = amb;
       renderResult();
-      showScreen('step-result');
+      showScreen('s-result');
     }
 
+    /* RESULTADO */
     function renderResult() {
-      const categoryGroup = productsDB[quizState.genero] || productsDB.Feminino;
-      const prod = categoryGroup[quizState.categoria] || Object.values(categoryGroup)[0];
-      const card = document.getElementById('res-card');
-      const tagClass = prod.emEstoque ? 'tag-pronta' : 'tag-encomenda';
-
-      const imgSrc = prod.img || buildPlaceholderImg();
-      const imgTag = `<div class="img-aura"><img src="${imgSrc}" onerror="handleImageError(this)" alt="${prod.nome}" class="product-img"></div>`;
-
+      const card = document.getElementById('resultCard');
       card.innerHTML = `
-        ${imgTag}
-        <span class="tag-stock ${tagClass}">${prod.tipo}</span>
-        <h3 style="color: var(--primary); margin: 8px 0;">${prod.nome}</h3>
-        <p style="font-size: 0.88rem; color: var(--text-dark); line-height: 1.4;">${prod.desc}</p>
+        <h4 style="color:#009933; margin-bottom:5px;">MATCH PERFEITO! 🎯</h4>
+        <h3 style="font-size:1rem; margin-bottom:8px;">Floratta Red Desodorante Colônia 75ml</h3>
+        <p style="font-size:0.8rem; color:#555;">Fragrância floral frutal marcante, ideal para suas ocasiões de ${gameState.ambiente}.</p>
+        <div style="margin-top:10px; font-weight:bold; color:#E66C00; font-size:0.85rem;">🎁 Bônus: 5% OFF Liberado!</div>
       `;
-
-      document.getElementById('btnConfirmarEnviar').removeAttribute('disabled');
-      document.getElementById('btnConfirmarEnviar').textContent = '✅ Confirmar e Enviar';
-      document.getElementById('msgEnvioConfirmado').style.display = 'none';
-      document.getElementById('feedbackError').style.display = 'none';
     }
 
-    function submitFinalFeedback(rating, btnElem) {
-      if (quizState.avaliacaoFinal === rating) {
-        quizState.avaliacaoFinal = '';
-        btnElem.classList.remove('active-gostou', 'active-medio', 'active-naocompra');
-      } else {
-        quizState.avaliacaoFinal = rating;
-        document.querySelectorAll('.btn-feedback-choice').forEach(b => b.classList.remove('active-gostou', 'active-medio', 'active-naocompra'));
-        if (rating.includes('Gostou')) btnElem.classList.add('active-gostou');
-        else if (rating.includes('Médio')) btnElem.classList.add('active-medio');
-        else btnElem.classList.add('active-naocompra');
-      }
-      document.getElementById('feedbackError').style.display = 'none';
-    }
-
-    function confirmarEnvioQuiz(btnElem) {
-      const fbError = document.getElementById('feedbackError');
-      
-      if (!quizState.avaliacaoFinal) {
-        fbError.textContent = 'Por favor, selecione uma opção de avaliação acima antes de enviar.';
-        fbError.style.display = 'block';
-        return;
-      }
-
-      fbError.style.display = 'none';
-      sendDataToSheets();
-      btnElem.setAttribute('disabled', 'true');
-      btnElem.textContent = '✅ Enviado';
-      document.getElementById('msgEnvioConfirmado').style.display = 'block';
-    }
-
-    function sendDataToSheets() {
-      const categoryGroup = productsDB[quizState.genero] || productsDB.Feminino;
-      const prod = categoryGroup[quizState.categoria] || Object.values(categoryGroup)[0];
-
-      if (!GOOGLE_SHEETS_SCRIPT_URL) return;
-
-      fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-        body: JSON.stringify({
-          nome: quizState.nome,
-          phone: quizState.phone,
-          genero: quizState.genero,
-          categoria: quizState.categoria,
-          objetivo: quizState.objetivo,
-          perfil: quizState.perfil,
-          ambiente: quizState.ambiente,
-          produto: prod.nome,
-          avaliacao: quizState.avaliacaoFinal,
-          aceitouContato: quizState.aceitouContato
-        })
-      })
-        .then(res => res.json())
-        .then(json => console.log("Sheets:", json))
-        .catch(err => console.error("Erro no envio para o Sheets:", err));
-    }
-
-    function resetToHome() {
-      document.getElementById('progressContainer').style.display = 'none';
-      updateProgress(0);
-      document.getElementById('leadName').value = '';
-      document.getElementById('leadPhone').value = '';
-      document.getElementById('consentCheck').checked = false;
-      document.getElementById('leadError').style.display = 'none';
-      document.getElementById('feedbackError').style.display = 'none';
-      quizState.avaliacaoFinal = '';
-      document.querySelectorAll('.btn-feedback-choice').forEach(b => b.classList.remove('active-gostou', 'active-medio', 'active-naocompra'));
-      showScreen('step-home');
+    function enviarWhatsApp() {
+      const text = `Olá Letícia! Concluí o Quiz 8-Bits Game!%0A*Nome:* ${gameState.nome}%0A*Opções:* ${gameState.genero} | ${gameState.categoria} | ${gameState.ambiente}`;
+      window.open(`https://wa.me/5531999999999?text=${text}`, '_blank');
     }
   </script>
 </body>
