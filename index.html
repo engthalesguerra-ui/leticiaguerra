@@ -21,7 +21,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
 
-    /* Fundo da página em tom amadeirado/dourado de paisagem */
     body {
       background: linear-gradient(rgba(15, 30, 20, 0.4), rgba(15, 30, 20, 0.5)),
                   url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
@@ -60,7 +59,6 @@
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Banner com Imagem Fotográfica Real de Folhas Verdes Escuras */
     .hero-banner {
       height: 160px;
       border-radius: 14px;
@@ -93,8 +91,8 @@
 
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    .form-group input, .form-group textarea { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 0.9rem; background: #FFF; }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+    .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 0.9rem; background: #FFF; }
+    .form-group input:focus { border-color: var(--primary); }
 
     .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
 
@@ -119,7 +117,7 @@
 
     .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
     .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
     .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
     .btn-feedback-choice:hover { border-color: var(--primary); background: #F3F8F5; }
     .btn-feedback-choice.active-gostou { background: #D4EDDA; border-color: #28A745; color: #155724; }
@@ -140,7 +138,7 @@
       <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- TELA INICIAL (Com Banner de Folhas Reais) -->
+    <!-- TELA INICIAL -->
     <div class="screen active" id="step-home">
       <div class="hero-banner">
         <p>"Descubra a combinação perfeita para o seu estilo e rotina de cuidados."</p>
@@ -222,7 +220,7 @@
       <div class="options-grid" id="ambienteOptions"></div>
     </div>
 
-    <!-- TELA DE RESULTADO (Com Banner de Folhas Reais) -->
+    <!-- TELA DE RESULTADO -->
     <div class="screen" id="step-result">
       <div class="hero-banner">
         <p>"Sua escolha ideal para realçar sua essência e bem-estar."</p>
@@ -236,9 +234,6 @@
           <button type="button" class="btn-feedback-choice" id="fb-gostou" onclick="submitFinalFeedback('Gostou / Amei', this)">💙 Gostou</button>
           <button type="button" class="btn-feedback-choice" id="fb-medio" onclick="submitFinalFeedback('Médio', this)">😐 Médio</button>
           <button type="button" class="btn-feedback-choice" id="fb-nao" onclick="submitFinalFeedback('Não compraria', this)">❌ Não compraria</button>
-        </div>
-        <div class="form-group" style="margin-top: 10px; margin-bottom: 0;">
-          <textarea id="userOpinion" placeholder="Deixe sua opinião ou comentário aqui (opcional)..." rows="2" style="resize: vertical; font-size: 0.82rem;"></textarea>
         </div>
       </div>
 
@@ -360,7 +355,7 @@
     const quizState = {
       genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '',
       nome: '', phone: '', aceitouContato: false,
-      avaliacaoFinal: 'Ainda não avaliou', opiniao: ''
+      avaliacaoFinal: 'Ainda não avaliou'
     };
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -571,11 +566,6 @@
     function sendDataToSheets() {
       const categoryGroup = productsDB[quizState.genero] || productsDB.Feminino;
       const prod = categoryGroup[quizState.categoria] || Object.values(categoryGroup)[0];
-      
-      const userOpinionElem = document.getElementById('userOpinion');
-      if (userOpinionElem) {
-        quizState.opiniao = userOpinionElem.value.trim();
-      }
 
       if (!GOOGLE_SHEETS_SCRIPT_URL) return;
 
@@ -592,7 +582,6 @@
           ambiente: quizState.ambiente,
           produto: prod.nome,
           avaliacao: quizState.avaliacaoFinal,
-          opiniao: quizState.opiniao,
           aceitouContato: quizState.aceitouContato
         })
       })
@@ -608,9 +597,7 @@
       document.getElementById('leadPhone').value = '';
       document.getElementById('consentCheck').checked = false;
       document.getElementById('leadError').style.display = 'none';
-      document.getElementById('userOpinion').value = '';
       quizState.avaliacaoFinal = 'Ainda não avaliou';
-      quizState.opiniao = '';
       showScreen('step-home');
     }
   </script>
