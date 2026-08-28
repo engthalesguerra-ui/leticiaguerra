@@ -381,7 +381,6 @@
       showScreen('step-lead');
     }
 
-    /* Desenha um selo elegante do Boticário sem repetir o nome do produto no SVG */
     function buildPlaceholderImg() {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
         <rect width="100%" height="100%" fill="#F8F6F2" rx="12"/>
@@ -548,14 +547,8 @@
       card.innerHTML = `
         ${imgTag}
         <span class="tag-stock ${tagClass}">${prod.tipo}</span>
-        <div style="font-size:0.75rem; color: var(--wood-warm); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:6px;">
-          Linha ${quizState.genero} • Perfil ${quizState.perfil}
-        </div>
-        <h3 style="color: var(--primary); margin: 6px 0 10px;">${prod.nome}</h3>
-        <p style="font-size: 0.88rem; color: var(--text-dark); line-height: 1.4; margin-bottom: 12px;">${prod.desc}</p>
-        <div style="font-size: 0.8rem; background: #F3F8F5; border-radius: 8px; padding: 8px 12px; color: var(--primary-light); display: inline-block;">
-          <strong>Indicado para:</strong> ${quizState.ambiente} (${quizState.objetivo})
-        </div>
+        <h3 style="color: var(--primary); margin: 8px 0;">${prod.nome}</h3>
+        <p style="font-size: 0.88rem; color: var(--text-dark); line-height: 1.4;">${prod.desc}</p>
       `;
 
       document.getElementById('btnConfirmarEnviar').removeAttribute('disabled');
