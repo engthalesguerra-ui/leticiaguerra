@@ -529,7 +529,6 @@
       quizState.ambiente = amb;
       updateProgress(100);
       renderResult();
-      sendDataToSheets();
       showScreen('step-result');
     }
 
@@ -554,20 +553,19 @@
       document.getElementById('msgEnvioConfirmado').style.display = 'none';
     }
 
-    function confirmarEnvioQuiz(btnElem) {
-      sendDataToSheets();
-      btnElem.setAttribute('disabled', 'true');
-      btnElem.textContent = '✅ Enviado';
-      document.getElementById('msgEnvioConfirmado').style.display = 'block';
-    }
-
     function submitFinalFeedback(rating, btnElem) {
       quizState.avaliacaoFinal = rating;
       document.querySelectorAll('.btn-feedback-choice').forEach(b => b.classList.remove('active-gostou', 'active-medio', 'active-naocompra'));
       if (rating.includes('Gostou')) btnElem.classList.add('active-gostou');
       else if (rating.includes('Médio')) btnElem.classList.add('active-medio');
       else btnElem.classList.add('active-naocompra');
+    }
+
+    function confirmarEnvioQuiz(btnElem) {
       sendDataToSheets();
+      btnElem.setAttribute('disabled', 'true');
+      btnElem.textContent = '✅ Enviado';
+      document.getElementById('msgEnvioConfirmado').style.display = 'block';
     }
 
     function sendDataToSheets() {
