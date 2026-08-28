@@ -98,7 +98,6 @@
     .form-group { margin-bottom: 14px; text-align: left; }
     .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
     
-    /* Font-size 16px para evitar zoom automático no Safari do iPhone */
     .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 16px; background: #FFF; }
     .form-group input:focus { border-color: var(--primary); }
 
@@ -278,14 +277,14 @@
           emEstoque: true
         },
         cabelos: {
-          nome: 'Máscara de Tratamento Match',
+          nome: 'Linha Match - Máscara de Tratamento Capilar',
           tipo: 'Disponível para Encomenda',
-          desc: 'Tratamento capilar intensivo da linha Match, que reduz o ressecamento e devolve o brilho natural aos fios.',
+          desc: 'Tratamento capilar intensivo que reduz o ressecamento e devolve o brilho natural aos fios.',
           img: '',
           emEstoque: false
         },
         splash: {
-          nome: 'Cuide-se Bem Deleite Body Splash',
+          nome: 'Cuide-se Bem Deleite Body Splash 200ml',
           tipo: 'Pronta Entrega em Estoque',
           desc: 'Aroma cremoso, doce e aconchegante para perfumar a pele pós-banho.',
           img: '',
@@ -296,7 +295,7 @@
         perfumaria: {
           nome: 'Malbec Desodorante Colônia 100ml',
           tipo: 'Pronta Entrega em Estoque',
-          desc: 'Fragrância amadeirada feita com álcool vínico envelhecido em barris de carvalho francês, notas de pimenta, bergamota, patchouli e musgo.',
+          desc: 'Fragrância amadeirada feita com álcool vínico envelhecido em barris de carvalho francês.',
           img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B84387/3fcf35bd-e85f-416e-bbbb-755c89f39e95-bot-84387-malbec-malbec-desodorante-colonia-frontal-01.jpg',
           emEstoque: true
         },
@@ -308,21 +307,21 @@
           emEstoque: true
         },
         cremes: {
-          nome: 'Nativa SPA Cuidado Corporal Masculino',
+          nome: 'Linha Nativa SPA - Cuidado Corporal Masculino',
           tipo: 'Disponível para Encomenda',
-          desc: 'Hidratação com absorção rápida e fragrância leve para o dia a dia.',
+          desc: 'Hidratação com absorção rápida e fragrância leve para a rotina diária.',
           img: '',
           emEstoque: false
         },
         cabelos: {
-          nome: 'Men Pomada Modeladora Cabelos',
+          nome: 'Men Pomada Modeladora para Cabelos',
           tipo: 'Pronta Entrega em Estoque',
           desc: 'Fixação perfeita com efeito natural e sem deixar resíduos nos fios.',
           img: '',
           emEstoque: true
         },
         desodorantes: {
-          nome: 'Arbo Desodorante Colônia',
+          nome: 'Arbo Desodorante Colônia 100ml',
           tipo: 'Pronta Entrega em Estoque',
           desc: 'Proteção contra odores com o frescor natural e verde da linha Arbo.',
           img: '',
@@ -333,28 +332,28 @@
         perfumaria: {
           nome: 'Boti Baby Colônia do Sol 100ml',
           tipo: 'Disponível para Encomenda',
-          desc: 'Fragrância Floral Musk suave, hipoalergênica e sem álcool, segura desde os primeiros dias de vida.',
+          desc: 'Fragrância Floral Musk suave, hipoalergênica e sem álcool, segura desde os primeiros dias.',
           img: 'https://res.cloudinary.com/beleza-na-web/image/upload/w_1500,f_avif,fl_progressive,q_auto:eco,w_800/v1/imagens/product/B51802/53dece14-2e20-4824-8e58-56a02aa82e0f-bot-51802-baby-colonia-do-sol-frontal-01.jpg',
           emEstoque: false
         },
         banho: {
           nome: 'Loção Hidratante Banho e Pós-Banho Boti Baby',
           tipo: 'Disponível para Encomenda',
-          desc: 'Protege, hidrata e fortalece a pele do bebê da cabeça aos pés, com o cheirinho Boti Baby.',
+          desc: 'Protege e hidrata a pele do bebê com o delicado cheirinho Boti Baby.',
           img: '',
           emEstoque: false
         },
         higiene: {
           nome: 'Sabonete Líquido de Glicerina Boti Baby',
           tipo: 'Disponível para Encomenda',
-          desc: 'Limpeza suave, sem lágrimas, da cabeça aos pés, com a mesma fragrância delicada da linha.',
+          desc: 'Limpeza suave, sem lágrimas, da cabeça aos pés.',
           img: '',
           emEstoque: false
         },
         presente: {
-          nome: 'Kit Presente Boti Baby',
+          nome: 'Kit Presente Boti Baby Especial',
           tipo: 'Disponível para Encomenda',
-          desc: 'Combinação de colônia e cuidados de banho da linha Boti Baby, pronta para presentear.',
+          desc: 'Combinação de colônia e cuidados de banho pronta para presentear.',
           img: '',
           emEstoque: false
         }
@@ -364,7 +363,7 @@
     const quizState = {
       genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '',
       nome: '', phone: '', aceitouContato: false,
-      avaliacaoFinal: '' /* Obrigatório: começa vazio */
+      avaliacaoFinal: ''
     };
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -382,18 +381,19 @@
       showScreen('step-lead');
     }
 
-    function buildPlaceholderImg(prodName) {
+    /* Desenha um selo elegante do Boticário sem repetir o nome do produto no SVG */
+    function buildPlaceholderImg() {
       const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-        <rect width="100%" height="100%" fill="#F3F8F5" rx="12"/>
-        <circle cx="90" cy="70" r="30" fill="#0F4C2E" opacity="0.1"/>
-        <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-weight="bold" font-size="10" fill="#0F4C2E">${prodName}</text>
-        <text x="50%" y="65%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat" font-size="9" fill="#D4AF37">O Boticário</text>
+        <rect width="100%" height="100%" fill="#F8F6F2" rx="12"/>
+        <circle cx="90" cy="72" r="32" fill="#0F4C2E" opacity="0.08"/>
+        <path d="M90 52 C80 68 70 78 70 90 A20 20 0 0 0 110 90 C110 78 100 68 90 52 Z" fill="#D4AF37" opacity="0.75"/>
+        <text x="50%" y="78%" dominant-baseline="middle" text-anchor="middle" font-family="'Playfair Display', serif" font-weight="bold" font-size="11" fill="#0F4C2E" letter-spacing="1">O BOTICÁRIO</text>
       </svg>`;
       return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     }
 
-    function handleImageError(imgElem, prodName) {
-      imgElem.src = buildPlaceholderImg(prodName);
+    function handleImageError(imgElem) {
+      imgElem.src = buildPlaceholderImg();
     }
 
     function updateProgress(percent) {
@@ -542,14 +542,20 @@
       const card = document.getElementById('res-card');
       const tagClass = prod.emEstoque ? 'tag-pronta' : 'tag-encomenda';
 
-      const imgSrc = prod.img || buildPlaceholderImg(prod.nome);
-      const imgTag = `<div class="img-aura"><img src="${imgSrc}" onerror="handleImageError(this, '${prod.nome}')" alt="${prod.nome}" class="product-img"></div>`;
+      const imgSrc = prod.img || buildPlaceholderImg();
+      const imgTag = `<div class="img-aura"><img src="${imgSrc}" onerror="handleImageError(this)" alt="${prod.nome}" class="product-img"></div>`;
 
       card.innerHTML = `
         ${imgTag}
         <span class="tag-stock ${tagClass}">${prod.tipo}</span>
-        <h3 style="color: var(--primary); margin: 8px 0;">${prod.nome}</h3>
-        <p style="font-size: 0.88rem; color: var(--text-dark); line-height: 1.4;">${prod.desc}</p>
+        <div style="font-size:0.75rem; color: var(--wood-warm); font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-top:6px;">
+          Linha ${quizState.genero} • Perfil ${quizState.perfil}
+        </div>
+        <h3 style="color: var(--primary); margin: 6px 0 10px;">${prod.nome}</h3>
+        <p style="font-size: 0.88rem; color: var(--text-dark); line-height: 1.4; margin-bottom: 12px;">${prod.desc}</p>
+        <div style="font-size: 0.8rem; background: #F3F8F5; border-radius: 8px; padding: 8px 12px; color: var(--primary-light); display: inline-block;">
+          <strong>Indicado para:</strong> ${quizState.ambiente} (${quizState.objetivo})
+        </div>
       `;
 
       document.getElementById('btnConfirmarEnviar').removeAttribute('disabled');
