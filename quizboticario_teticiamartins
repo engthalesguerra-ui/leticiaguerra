@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Recomendação</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+    .quiz-step {
+      margin-bottom: 20px;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    button {
+      flex: 1;
+      padding: 12px;
+      border: 1px solid #007bff;
+      background-color: #007bff;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .card-recomendacao {
+      margin-top: 30px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+      background: #fafafa;
+    }
+    .product-img {
+      max-width: 100%;
+      height: auto;
+      max-height: 250px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+    .img-fallback-fit {
+      object-fit: contain;
+      background-color: #eee;
+    }
+    .btn-link {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .btn-link:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Quiz de Recomendação</h1>
+    <p style="text-align: center;">Clique em uma opção para consultar o catálogo no Apps Script:</p>
+
+    <!-- OPÇÕES DO QUIZ QUE ATIVAM O APPS SCRIPT -->
+    <div class="quiz-step">
+      <h3>Iluminação</h3>
+      <div class="btn-group">
+        <button onclick="finalizarQuiz('iluminacao', 'moderno')">Pendentes Modernos</button>
+        <button onclick="finalizarQuiz('iluminacao', 'industrial')">Luminárias Industriais</button>
+      </div>
+    </div>
+
+    <div class="quiz-step">
+      <h3>Revestimentos</h3>
+      <div class="btn-group">
+        <button onclick="finalizarQuiz('revestimentos', 'moderno')">Porcelanatos Grandes Formatos</button>
+      </div>
+    </div>
+
+    <!-- CARTÃO DE RESULTADO (IDs Mapeados) -->
+    <div class="card-recomendacao">
+      <h2>Recomendação Exclusiva</h2>
+      <img id="res-product-img" class="product-img" src="assets/catalogo/placeholder-default.jpg" alt="Selecione um produto" onerror="handleImageFallback(this)">
+      <h3 id="res-product-name">Aguardando seleção...</h3>
+      <p id="res-product-desc">Selecione uma categoria acima para carregar as informações do produto diretamente da API.</p>
+      <a id="res-product-link" href="#" class="btn-link" target="_blank">Ver Produto no Catálogo</a>
+    </div>
+  </div>
+
+  <!-- VÍNCULO COM O CÓDIGO JAVASCRIPT -->
+  <script src="script.js"></script>
+</body>
+</html>
