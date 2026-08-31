@@ -42,6 +42,14 @@
       padding: 20px 15px;
     }
 
+    /* iOS Safari trava/renderiza mal com background-attachment:fixed em telas de toque —
+       em telas pequenas usamos scroll normal, resolvendo o "abre mas fica estático". */
+    @media (max-width: 768px), (hover: none) and (pointer: coarse) {
+      body {
+        background-attachment: scroll;
+      }
+    }
+
     header {
       width: 100%;
       max-width: 480px;
