@@ -15,7 +15,7 @@
       --primary-light: #1E6B43;
       --accent-gold: #D4AF37;
       --wood-warm: #8B5E3C;
-      --card-bg: rgba(255, 255, 255, 0.96);
+      --card-bg: rgba(255, 255, 255, 0.95);
       --text-dark: #1A2820;
       --text-muted: #52635A;
       --radius: 20px;
@@ -59,9 +59,6 @@
 
     main { width: 100%; max-width: 480px; }
 
-    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, var(--accent-gold)); transition: width 0.4s ease; }
-
     .screen { 
       display: none; 
       background: var(--card-bg); 
@@ -69,7 +66,7 @@
       padding: 25px 20px; 
       box-shadow: var(--shadow); 
       border: 1px solid rgba(255, 255, 255, 0.8); 
-      animation: fadeIn 0.3s ease-out forwards; 
+      animation: fadeIn 0.25s ease-out forwards; 
     }
     .screen.active { display: block; }
 
@@ -122,6 +119,9 @@
 
     .product-card { text-align: center; border: 1px solid #EAE3D9; border-radius: 16px; padding: 20px; margin: 15px 0; background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
+    .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
+    .product-img { position: relative; width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: #FAF8F5; padding: 8px; }
+
     .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
     .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
     .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
@@ -137,10 +137,6 @@
   </header>
 
   <main>
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-
     <!-- TELA INICIAL -->
     <div class="screen active" id="step-home">
       <div class="hero-banner">
@@ -165,15 +161,15 @@
       <form onsubmit="handleLeadSubmit(event)">
         <div class="form-group">
           <label>Seu Nome Completo *</label>
-          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name">
+          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name" required>
         </div>
         <div class="form-group">
           <label>Seu WhatsApp com DDD *</label>
-          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel">
+          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel" required>
         </div>
         <div class="consent-box">
-          <input type="checkbox" id="consentCheck">
-          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong> (sem ligações).</label>
+          <input type="checkbox" id="consentCheck" checked>
+          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong>.</label>
         </div>
         <p id="leadError" class="error-msg"></p>
         <button type="submit" id="btnSubmitLead" class="btn-primary">Começar o Quiz ➔</button>
@@ -184,7 +180,7 @@
     <!-- PERGUNTA 1: GÊNERO -->
     <div class="screen" id="step-gender">
       <h2>Para quem será o produto?</h2>
-      <p class="subtitle">Selecione para direcionar as melhores opções do Boticário:</p>
+      <p class="subtitle">Selecione para direcionar as melhores opções:</p>
       <div class="options-grid">
         <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Linha Feminina</span> ➔</button>
         <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Linha Masculina</span> ➔</button>
@@ -192,14 +188,18 @@
       </div>
     </div>
 
-    <!-- PERGUNTA 2: OBJETIVO -->
-    <div class="screen" id="step-objective">
-      <h2>Qual é o objetivo principal?</h2>
-      <p class="subtitle">Nos conte como pretende usar:</p>
-      <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setObjective('Uso Pessoal')"><span>🛍️ Uso Pessoal e Diário</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setObjective('Presente Especial')"><span>🎁 Presente Especial</span> ➔</button>
-      </div>
+    <!-- PERGUNTA 2: CATEGORIA -->
+    <div class="screen" id="step-category">
+      <h2>Qual categoria você procura?</h2>
+      <p class="subtitle">Escolha o tipo de produto desejado:</p>
+      <div class="options-grid" id="categoryOptions"></div>
+    </div>
+
+    <!-- PERGUNTA 3: ESTILO/PERFIL -->
+    <div class="screen" id="step-fragrance">
+      <h2>Qual estilo prefere?</h2>
+      <p class="subtitle">Selecione a opção que mais combina com você:</p>
+      <div class="options-grid" id="fragranceOptions"></div>
     </div>
 
     <!-- TELA DE RESULTADO -->
@@ -209,8 +209,12 @@
       </div>
       <h2>Recomendação Exclusiva</h2>
       <div class="product-card" id="res-card">
-        <h3>Floratta Red Desodorante Colônia</h3>
-        <p style="margin-top:8px; color:var(--primary); font-weight:700;">R$ 134,90</p>
+        <div class="img-aura">
+          <img id="res-img" class="product-img" src="" alt="Produto Boticário">
+        </div>
+        <h3 id="res-title">---</h3>
+        <p id="res-desc" style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; line-height: 1.4;"></p>
+        <p id="res-price" style="margin-top:8px; color:var(--primary); font-weight:700; font-size: 1.1rem;"></p>
       </div>
 
       <div class="feedback-result-group">
@@ -224,7 +228,7 @@
       </div>
 
       <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
-      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados! Obrigado por participar. 💛</p>
+      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados com sucesso! Obrigado por participar. 💛</p>
 
       <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
       <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
@@ -232,11 +236,58 @@
   </main>
 
   <script>
+    // URL da Loja da Letícia
     const LINK_PAGINA_LETICIA = "https://minhaloja.boticario.com.br/loja-leticiamartinsguerradesouza-20675917?utm_source=app_divulgar&utm_medium=catalogos#catalogo";
+    
+    // ATENÇÃO: Cole abaixo a URL do seu App Script do Google Sheets
+    const WEBHOOK_URL_SHEETS = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
+
     document.getElementById("linkPageHome").href = LINK_PAGINA_LETICIA;
     document.getElementById("linkPageResult").href = LINK_PAGINA_LETICIA;
 
     let quizData = {};
+
+    const produtos = {
+      Feminino: {
+        Perfumaria: {
+          Florais: { title: "Floratta Red Desodorante Colônia 75ml", price: "R$ 134,90", desc: "Inspirada na maçã de Vermont, uma fragrância floral frutada marcante e apaixonante.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73826/FLORATTA_RED_DES_COL_75ml_B73826.jpg" },
+          Doces: { title: "Egeo Dolce Desodorante Colônia 90ml", price: "R$ 129,90", desc: "Tão irresistível quanto um doce! Com notas de Marshmallow e Baunilha.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B82688/EGEO_DOLCE_DES_COL_90ml_B82688.jpg" },
+          Amadeirados: { title: "Lily Le Parfum 50ml", price: "R$ 299,90", desc: "A sofisticação do lírio somada às notas amadeiradas mais nobres.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B83617/LILY_LE_PARFUM_50ml_B83617.jpg" },
+          Frescos: { title: "Anni Desodorante Colônia 100ml", price: "R$ 109,90", desc: "Fragrância delicada e fresca com combinação de notas florais e frutais.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73824/ANNI_DES_COL_100ml_B73824.jpg" }
+        },
+        Corpo: {
+          Hidratacao: { title: "Loção Hidratante Cuide-se Bem Nuvem 400ml", price: "R$ 64,90", desc: "Hidratação profunda por até 48 horas com toque aveludado.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B81648/CUIDE_SE_BEM_LOCAO_NUVEM_400ml_B81648.jpg" },
+          Banhos: { title: "Sabonete Líquido Nativa SPA Ameixa 200ml", price: "R$ 44,90", desc: "Limpa suavemente enquanto perfuma a pele com a fragrância de Ameixa.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B80183/NATIVA_SPA_SAB_LIQ_AMEIXA_200ml_B80183.jpg" }
+        },
+        Maquiagem: {
+          Labios: { title: "Batom Make B. Hyaluronic Preenchedor", price: "R$ 69,90", desc: "Lábios preenchidos e hidratados com ácido hialurônico.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B81120/MAKE_B_BATOM_HYALURONIC.jpg" },
+          Rosto: { title: "Base Líquida Make B. Mate Salicylic", price: "R$ 89,90", desc: "Trata a pele com ácido salicílico e garante acabamento mate impecável.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B82330/MAKE_B_BASE_MATE_SALICYLIC.jpg" }
+        },
+        Cabelos: {
+          Tratamento: { title: "Sérum Capilar Match Nutrition", price: "R$ 59,90", desc: "Nutrição intensa que elimina o frizz sem pesar os fios.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B80450/MATCH_SERUM_NUTRITION.jpg" }
+        }
+      },
+      Masculino: {
+        Perfumaria: {
+          Amadeirados: { title: "Malbec Desodorante Colônia 100ml", price: "R$ 179,90", desc: "Fragrância produzida com álcool vínico envelhecido em barris de carvalho.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73691/MALBEC_DES_COL_100ml_B73691.jpg" },
+          Frescos: { title: "Arbo Desodorante Colônia 100ml", price: "R$ 134,90", desc: "Notas frescas de ar puro para quem busca conexão com a natureza.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73822/ARBO_DES_COL_100ml_B73822.jpg" }
+        },
+        Barba: {
+          Cuidados: { title: "Espuma de Barbear Men 200g", price: "R$ 49,90", desc: "Proporciona um barbear suave, hidratante e sem irritações.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77114/MEN_ESPUMA_BARBEAR_200g_B77114.jpg" }
+        },
+        Corpo: {
+          Hidratacao: { title: "Shower Gel Men 200g", price: "R$ 39,90", desc: "Praticidade para limpezas de corpo e cabelo durante o banho.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77110/MEN_SHOWER_GEL_200g.jpg" }
+        }
+      },
+      KidsBebe: {
+        Bebe: {
+          Suave: { title: "Boti Baby Colônia do Sol 100ml", price: "R$ 74,90", desc: "Fragrância leve, sem álcool, testada por pediatras.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77189/BOTI_BABY_COLONIA_SOL_100ml_B77189.jpg" }
+        },
+        Infantil: {
+          Divertido: { title: "Dr. Botica Poção do Coração Colônia 120ml", price: "R$ 84,90", desc: "Aroma frutal alegre e divertido para iluminar o dia das crianças.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73830/DR_BOTICA_POCAO_CORACAO_120ml_B73830.jpg" }
+        }
+      }
+    };
 
     function showScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -245,13 +296,9 @@
       window.scrollTo(0, 0);
     }
 
-    function goToLeadStep() {
-      showScreen('step-lead');
-    }
+    function goToLeadStep() { showScreen('step-lead'); }
 
-    function declineQuiz() {
-      window.open(LINK_PAGINA_LETICIA, '_blank');
-    }
+    function declineQuiz() { window.open(LINK_PAGINA_LETICIA, '_blank'); }
 
     function handleLeadSubmit(event) {
       event.preventDefault();
@@ -272,12 +319,84 @@
 
     function setGender(gender) {
       quizData.genero = gender;
-      showScreen('step-objective');
+      const catContainer = document.getElementById('categoryOptions');
+      catContainer.innerHTML = '';
+
+      if (gender === 'Feminino') {
+        catContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setCategory('Perfumaria')"><span>🌸 Perfumaria & Colônias</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Corpo')"><span>🧴 Cuidados com o Corpo</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Maquiagem')"><span>💄 Maquiagem</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Cabelos')"><span>💇‍♀️ Cabelos e Tratamentos</span> ➔</button>
+        `;
+      } else if (gender === 'Masculino') {
+        catContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setCategory('Perfumaria')"><span>🌿 Perfumaria Masculina</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Barba')"><span>🪒 Barba e Cuidados</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Corpo')"><span>🧴 Banho & Corpo</span> ➔</button>
+        `;
+      } else {
+        catContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setCategory('Bebe')"><span>👶 Linha Bebê (0 a 2 anos)</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setCategory('Infantil')"><span>👦 Linha Infantil (3+ anos)</span> ➔</button>
+        `;
+      }
+      showScreen('step-category');
     }
 
-    function setObjective(obj) {
-      quizData.objetivo = obj;
+    function setCategory(cat) {
+      quizData.categoria = cat;
+      const fragContainer = document.getElementById('fragranceOptions');
+      fragContainer.innerHTML = '';
+
+      if (quizData.genero === 'Feminino' && cat === 'Perfumaria') {
+        fragContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setFragrance('Florais')"><span>🌹 Florais Marcantes</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Doces')"><span>🍬 Adocicadas e Irresistíveis</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Amadeirados')"><span>✨ Amadeiradas Sofisticadas</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Frescos')"><span>🍃 Leves e Frescas</span> ➔</button>
+        `;
+      } else if (quizData.genero === 'Feminino' && cat === 'Corpo') {
+        fragContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setFragrance('Hidratacao')"><span>💧 Hidratação Intensa</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Banhos')"><span>🧼 Sabonetes e Banhos</span> ➔</button>
+        `;
+      } else if (quizData.genero === 'Feminino' && cat === 'Maquiagem') {
+        fragContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setFragrance('Labios')"><span>💋 Lábios e Batons</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Rosto')"><span>✨ Preparação de Rosto</span> ➔</button>
+        `;
+      } else if (quizData.genero === 'Masculino' && cat === 'Perfumaria') {
+        fragContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setFragrance('Amadeirados')"><span>🪵 Amadeiradas e Marcantes</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Frescos')"><span>🍃 Frescas e Verdes</span> ➔</button>
+        `;
+      } else {
+        fragContainer.innerHTML = `
+          <button type="button" class="btn-option" onclick="setFragrance('Cuidados')"><span>✨ Cuidados Gerais</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Suave')"><span>🌼 Linha Suave</span> ➔</button>
+          <button type="button" class="btn-option" onclick="setFragrance('Divertido')"><span>🎈 Linha Divertida</span> ➔</button>
+        `;
+      }
+      showScreen('step-fragrance');
+    }
+
+    function setFragrance(frag) {
+      quizData.fragrancia = frag;
+      renderResult();
       showScreen('step-result');
+    }
+
+    function renderResult() {
+      let prod = produtos[quizData.genero]?.[quizData.categoria]?.[quizData.fragrancia];
+      if (!prod) {
+        prod = produtos.Feminino.Perfumaria.Florais;
+      }
+      quizData.produtoRecomendado = prod.title;
+      document.getElementById('res-title').innerText = prod.title;
+      document.getElementById('res-desc').innerText = prod.desc;
+      document.getElementById('res-price').innerText = prod.price;
+      document.getElementById('res-img').src = prod.img;
     }
 
     function submitFinalFeedback(val, btn) {
@@ -287,14 +406,33 @@
     }
 
     function confirmarEnvioQuiz(btn) {
-      document.getElementById('msgEnvioConfirmado').style.display = 'block';
-      btn.style.display = 'none';
+      const msg = document.getElementById('msgEnvioConfirmado');
+      btn.innerText = "Enviando...";
+      btn.disabled = true;
+
+      // Envio via Webhook para o Google Sheets
+      if (WEBHOOK_URL_SHEETS && WEBHOOK_URL_SHEETS !== "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI") {
+        fetch(WEBHOOK_URL_SHEETS, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(quizData)
+        }).catch(err => console.log('Erro no envio:', err));
+      }
+
+      setTimeout(() => {
+        msg.style.display = 'block';
+        btn.style.display = 'none';
+      }, 600);
     }
 
     function resetToHome() {
       quizData = {};
       document.getElementById('msgEnvioConfirmado').style.display = 'none';
-      document.getElementById('btnConfirmarEnviar').style.display = 'block';
+      const btn = document.getElementById('btnConfirmarEnviar');
+      btn.style.display = 'block';
+      btn.innerText = "✅ Confirmar e Enviar";
+      btn.disabled = false;
       showScreen('step-home');
     }
   </script>
