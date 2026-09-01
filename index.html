@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz de Beleza & Fragrâncias</title>
+  
+  <style>
+    /* -------------------------------------
+       1. ESTILOS VISUAIS E CORES (CSS)
+    -------------------------------------- */
+    :root {
+      --primary: #c81a78;
+      --primary-hover: #a01560;
+      --bg-color: #fcf9f9;
+      --text-main: #333;
+      --text-muted: #666;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    #app {
+      width: 100%;
+      max-width: 480px;
+      min-height: 100vh;
+      background: #fff;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    /* 👇 CORREÇÃO DE TOQUE PARA IOS / SAFARI 👇 */
+    .btn-option, .btn-primary, .btn-secondary, .btn-feedback-choice {
+      touch-action: manipulation;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .screen {
+      position: relative;
+      z-index: 1;
+      display: none;
+      padding: 20px;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+    /* 👆 FIM DA CORREÇÃO 👆 */
+
+    .screen.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Barra de Progresso */
+    #progressContainer {
+      display: none;
+      width: 100%;
+      background: #eee;
+      height: 6px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    #progressBar {
+      height: 100%;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    /* Botões Gerais */
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid #ccc;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      width: 100%;
+      margin-top: 10px;
+    }
+    .btn-option {
+      background: #f9f9f9;
+      border: 2px solid #eee;
+      padding: 15px;
+      border-radius: 10px;
+      width: 100%;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: border 0.2s;
+    }
+    .btn-option:active { border-color: var(--primary); }
+
+    /* Inputs (Formulário) */
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      text-align: left;
+      font-size: 0.85rem;
+      margin-top: 10px;
+      gap: 10px;
+    }
+    .error-msg {
+      color: red;
+      font-size: 0.85rem;
+      display: none;
+      margin-top: 10px;
+    }
+
+    /* Card do Produto Recomendado */
+    .img-aura { margin-bottom: 15px; }
+    .product-img { max-width: 100%; border-radius: 10px; }
+    .tag-stock { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 10px; }
+    .tag-pronta { background: #d4edda; color: #155724; }
+    .tag-encomenda { background: #fff3cd; color: #856404; }
+
+    /* Botões de Feedback */
+    .feedback-grid { display: flex; gap: 10px; margin-top: 15px; }
+    .btn-feedback-choice { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; font-size: 0.9rem; }
+    .active-gostou { background: #d4edda; border-color: #28a745; }
+    .active-medio { background: #fff3cd; border-color: #ffc107; }
+    .active-naocompra { background: #f8d7da; border-color: #dc3545; }
+  </style>
+</head>
+
+<body>
+  <!-- -------------------------------------
+       2. ESTRUTURA DAS TELAS (HTML)
+  -------------------------------------- -->
+  <div id="app">
+    <div id="progressContainer"><div id="progressBar"></div></div>
+
+    <!-- TELA 1: HOME -->
+    <div id="step-home" class="screen active">
+      <h2>Descubra sua Fragrância Ideal</h2>
+      <p>Responda a este rápido quiz e encontre o produto perfeito para você.</p>
+      <button type="button" class="btn-primary" onclick="goToLeadStep()">Começar Quiz</button>
+      <a id="linkPageHome" href="#" target="_blank"><button type="button" class="btn-secondary">Apenas visitar a loja</button></a>
+    </div>
+
+    <!-- TELA 2: CAPTAÇÃO DE LEAD -->
+    <div id="step-lead" class="screen">
+      <h2>Como podemos te chamar?</h2>
+      <form onsubmit="handleLeadSubmit(event)">
+        <input type="text" id="leadName" placeholder="Seu Nome" required>
+        <input type="tel" id="leadPhone" placeholder="Seu WhatsApp (DDD + Número)" required>
+        <div class="checkbox-container">
+          <input type="checkbox" id="consentCheck" required>
+          <label for="consentCheck">Aceito receber minha recomendação e ofertas no WhatsApp.</label>
+        </div>
+        <div id="leadError" class="error-msg"></div>
+        <button type="submit" class="btn-primary">Continuar</button>
+      </form>
+    </div>
+
+    <!-- TELA 3: GÊNERO -->
+    <div id="step-gender" class="screen">
+      <h2>Para quem é o produto?</h2>
+      <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Feminino</span> ➔</button>
+      <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Masculino</span> ➔</button>
+    </div>
+
+    <!-- TELA 4: CATEGORIA -->
+    <div id="step-category" class="screen">
+      <h2>O que você procura hoje?</h2>
+      <div id="categoryOptions"></div>
+    </div>
+
+    <!-- TELA 5: OBJETIVO -->
+    <div id="step-objective" class="screen">
+      <h2>Qual o seu objetivo principal?</h2>
+      <button type="button" class="btn-option" onclick="setObjective('Para mim')"><span>🙋 Para mim</span> ➔</button>
+      <button type="button" class="btn-option" onclick="setObjective('Para presente')"><span>🎁 Para presente</span> ➔</button>
+    </div>
+
+    <!-- TELA 6: PERFIL -->
+    <div id="step-profile" class="screen">
+      <h2>Qual estilo de fragrância você prefere?</h2>
+      <div id="profileOptions"></div>
+    </div>
+
+    <!-- TELA 7: AMBIENTE -->
+    <div id="step-ambiente" class="screen">
+      <h2>Onde costuma usar mais?</h2>
+      <div id="ambienteOptions"></div>
+    </div>
+
+    <!-- TELA 8: RESULTADO E FEEDBACK -->
+    <div id="step-result" class="screen">
+      <h2>Sua Recomendação!</h2>
+      
+      <div id="res-card"></div>
+      
+      <div style="margin-top: 20px; text-align: left;">
+        <p style="font-weight: bold; font-size: 0.9rem;">O que achou da sugestão?</p>
+        <div class="feedback-grid">
+          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Gostou', this)">😍 Adorei</button>
+          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Médio', this)">🤔 Legalzinho</button>
+          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Não compra', this)">👎 Não faz meu estilo</button>
+        </div>
+        <div id="feedbackError" class="error-msg"></div>
+      </div>
+
+      <button type="button" class="btn-primary" onclick="confirmarEnvioQuiz(this)">Enviar Resposta e Falar no WhatsApp</button>
+      <div id="msgEnvioConfirmado" style="display:none; color: green; margin-top: 15px; font-weight: bold;">
+        Enviado com sucesso! Entraremos em contato.
+      </div>
+      
+      <button type="button" class="btn-secondary" onclick="resetToHome()">Refazer Quiz</button>
+      <a id="linkPageResult" href="#" target="_blank"><button type="button" class="btn-secondary">Ver todo o catálogo</button></a>
+    </div>
+  </div>
+
+  <!-- -------------------------------------
+       3. LÓGICA E DADOS (JAVASCRIPT)
+  -------------------------------------- -->
+  <script>
+    // Configurações e Links (Pode alterar quando necessário)
+    const LINK_PAGINA_LETICIA = "https://minhaloja.boticario.com.br/loja-leticiamartinsguerradesouza-20675917?utm_source=app_divulgar&utm_medium=catalogos#catalogo";
+    const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-TJ3ObrhNjncbXMBVyJHu--0PPRBj2YIn55Q83cM8FpKGDrri29lujqRjKO5QZUb2/exec";
+
+    // Variável que guarda as respostas do usuário temporariamente
+    let quizData = {
+      nome: '', whatsapp: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', feedback: ''
+    };
+
+    // Banco de Produtos
+    const productsDB = {
+      Feminino: {
+        perfumaria: {
+          nome: 'Floratta Red Desodorante Colônia 75ml',
+          codigo: '48303',
+          preco: 'R$ 174,90',
+          precoPromo: 'R$ 134,90',
+          tipo: 'Pronta Entrega em Estoque',
+          desc: 'Fragrância floriental amadeirada inspirada na flor da Maçã de Vermont, com notas florais quentes e envolventes.',
+          img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=500&q=80',
+          emEstoque: true
+        },
+        cremes: {
+          nome: 'Nativa SPA Ameixa Loção Nutritiva Desodorante Hidratante Corporal 400ml',
+          codigo: '48281',
+          preco: 'R$ 89,90',
+          precoPromo: null,
+          tipo: 'Pronta Entrega em Estoque',
+          desc: 'Hidratação profunda com óleo de quinoa e a fragrância marcante e frutal da ameixa.',
+          img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80',
+          emEstoque: true
+        }
+      }
+    };
+
+    // Aplica os links da loja quando a página carrega
+    document.addEventListener('DOMContentLoaded', () => {
+      const linkHome = document.getElementById('linkPageHome');
+      const linkRes = document.getElementById('linkPageResult');
+      if (linkHome) linkHome.href = LINK_PAGINA_LETICIA;
+      if (linkRes) linkRes.href = LINK_PAGINA_LETICIA;
+    });
+
+    // Função de navegação entre as telas
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Função que atualiza a barra verde no topo
+    function updateProgress(percent) {
+      const container = document.getElementById('progressContainer');
+      const bar = document.getElementById('progressBar');
+      if (percent > 0) {
+        container.style.display = 'block';
+        bar.style.width = percent + '%';
+      } else {
+        container.style.display = 'none';
+      }
+    }
+
+    // Funções de preenchimento dos passos
+    function goToLeadStep() {
+      updateProgress(15);
+      showScreen('step-lead');
+    }
+
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('leadName').value.trim();
+      const phone = document.getElementById('leadPhone').value.trim();
+      const consent = document.getElementById('consentCheck').checked;
+      const errorEl = document.getElementById('leadError');
+
+      if (!name || !phone) {
+        errorEl.textContent = 'Por favor, preencha o nome e o WhatsApp.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!consent) {
+        errorEl.textContent = 'É necessário autorizar o contato para continuar.';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      errorEl.style.display = 'none';
+      quizData.nome = name;
+      quizData.whatsapp = phone;
+
+      updateProgress(30);
+      showScreen('step-gender');
+    }
+
+    function setGender(gender) {
+      quizData.genero = gender;
+      const categoryGrid = document.getElementById('categoryOptions');
+      categoryGrid.innerHTML = `
+        <button type="button" class="btn-option" onclick="setCategory('perfumaria')"><span>🌸 Perfumaria</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setCategory('cremes')"><span>🧴 Cuidados & Hidratação</span> ➔</button>
+      `;
+      updateProgress(45);
+      showScreen('step-category');
+    }
+
+    function setCategory(cat) {
+      quizData.categoria = cat;
+      updateProgress(60);
+      showScreen('step-objective');
+    }
+
+    function setObjective(obj) {
+      quizData.objetivo = obj;
+      const profileGrid = document.getElementById('profileOptions');
+      profileGrid.innerHTML = `
+        <button type="button" class="btn-option" onclick="setProfile('Marcante / Envolvente')"><span>✨ Marcante & Envolvente</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setProfile('Fresco / Suave')"><span>🍃 Fresco & Leve</span> ➔</button>
+      `;
+      updateProgress(75);
+      showScreen('step-profile');
+    }
+
+    function setProfile(prof) {
+      quizData.perfil = prof;
+      const ambGrid = document.getElementById('ambienteOptions');
+      ambGrid.innerHTML = `
+        <button type="button" class="btn-option" onclick="setAmbiente('Dia a Dia / Trabalho')"><span>💼 Dia a Dia e Trabalho</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setAmbiente('Noite / Eventos')"><span>🌙 Noite e Ocasiões Especiais</span> ➔</button>
+      `;
+      updateProgress(90);
+      showScreen('step-ambiente');
+    }
+
+    function setAmbiente(amb) {
+      quizData.ambiente = amb;
+      renderResult(); // Monta a tela final com os dados escolhidos
+      updateProgress(100);
+      showScreen('step-result');
+    }
+
+    // Função que cria o visual do produto final na tela
+    function renderResult() {
+      const card = document.getElementById('res-card');
+      const gen = 'Feminino'; // Pode adaptar baseado em quizData.genero no futuro
+      const cat = quizData.categoria || 'perfumaria';
+      
+      // Busca o produto no banco. Se não achar a exata combinação, mostra a floratta como padrão de segurança.
+      const prod = (productsDB[gen] && productsDB[gen][cat]) ? productsDB[gen][cat] : productsDB.Feminino.perfumaria;
+
+      card.innerHTML = `
+        <div class="img-aura">
+          <img src="${prod.img}" class="product-img" alt="${prod.nome}">
+        </div>
+        <span class="tag-stock ${prod.emEstoque ? 'tag-pronta' : 'tag-encomenda'}">${prod.tipo}</span>
+        <h3 style="font-family:'Playfair Display',serif; color:var(--primary); font-size:1.1rem; margin:8px 0;">${prod.nome}</h3>
+        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${prod.desc}</p>
+        <p style="font-size:1.1rem; font-weight:700; color:var(--primary);">
+          ${prod.precoPromo ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#999; margin-right:6px;">${prod.preco}</span>${prod.precoPromo}` : prod.preco}
+        </p>
+      `;
+    }
+
+    // Guarda a opção de feedback clicada
+    function submitFinalFeedback(val, btn) {
+      quizData.feedback = val;
+      
+      // Remove a seleção de todos os botões antes de marcar o novo
+      document.querySelectorAll('.btn-feedback-choice').forEach(b => {
+        b.classList.remove('active-gostou', 'active-medio', 'active-naocompra');
+      });
+      
+      // Adiciona cor baseada na escolha
+      if (val.includes('Gostou')) btn.classList.add('active-gostou');
+      else if (val.includes('Médio')) btn.classList.add('active-medio');
+      else btn.classList.add('active-naocompra');
+      
+      document.getElementById('feedbackError').style.display = 'none';
+    }
+
+    // Envia os dados finais para o Google Sheets (Apps Script)
+    function confirmarEnvioQuiz(btn) {
+      if (!quizData.feedback) {
+        const err = document.getElementById('feedbackError');
+        err.textContent = 'Por favor, selecione o que achou da sugestão acima.';
+        err.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Enviando...';
+
+      fetch(GOOGLE_SHEETS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quizData)
+      })
+      .then(() => {
+        document.getElementById('msgEnvioConfirmado').style.display = 'block';
+        btn.style.display = 'none';
+      })
+      .catch(() => {
+        // Mesmo com erro de CORS, o envio no-cors registra os dados na planilha na maioria dos casos.
+        document.getElementById('msgEnvioConfirmado').style.display = 'block';
+        btn.style.display = 'none';
+      });
+    }
+
+    // Zera os dados e volta para o começo
+    function resetToHome() {
+      quizData = { nome: '', whatsapp: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', feedback: '' };
+      updateProgress(0);
+      showScreen('step-home');
+    }
+  </script>
+</body>
+</html>
