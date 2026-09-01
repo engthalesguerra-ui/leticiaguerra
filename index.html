@@ -2,463 +2,303 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quiz de Beleza & Fragrâncias</title>
-  
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Quiz de Beleza & Fragrâncias | Consultoria Exclusiva Letícia</title>
+  <meta property="og:title" content="Consultoria Personalizada O Boticário — Letícia Guerra">
+  <meta property="og:description" content="Descubra o produto ideal do Boticário para você e garanta 5% de desconto na primeira compra.">
+  <meta property="og:type" content="website">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
   <style>
-    /* -------------------------------------
-       1. ESTILOS VISUAIS E CORES (CSS)
-    -------------------------------------- */
     :root {
-      --primary: #c81a78;
-      --primary-hover: #a01560;
-      --bg-color: #fcf9f9;
-      --text-main: #333;
-      --text-muted: #666;
+      --primary: #0F4C2E;
+      --primary-light: #1E6B43;
+      --accent-gold: #D4AF37;
+      --wood-warm: #8B5E3C;
+      --card-bg: rgba(255, 255, 255, 0.96);
+      --text-dark: #1A2820;
+      --text-muted: #52635A;
+      --radius: 20px;
+      --shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
     }
+
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; 
+      -webkit-tap-highlight-color: transparent;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-main);
-      margin: 0;
-      padding: 0;
+      background: linear-gradient(rgba(15, 30, 20, 0.4), rgba(15, 30, 20, 0.5)),
+                  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
+      background-color: #1a271d;
+      color: var(--text-dark);
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 15px;
     }
-    #app {
+
+    header {
       width: 100%;
       max-width: 480px;
-      min-height: 100vh;
-      background: #fff;
-      box-shadow: 0 0 15px rgba(0,0,0,0.05);
-      position: relative;
+      text-align: center;
+      padding: 18px 15px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      margin-bottom: 20px;
     }
 
-    /* 👇 CORREÇÃO DE TOQUE PARA IOS / SAFARI 👇 */
-    .btn-option, .btn-primary, .btn-secondary, .btn-feedback-choice {
-      touch-action: manipulation;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
+    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; letter-spacing: 0.3px; }
+    .brand-sub { font-size: 0.78rem; color: #8B5E3C; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
+
+    main { width: 100%; max-width: 480px; }
+
+    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
+    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, var(--accent-gold)); transition: width 0.4s ease; }
+
+    /* Ajustado para eliminar o travamento de camada no iOS Safari */
+    .screen { 
+      display: none; 
+      background: var(--card-bg); 
+      border-radius: var(--radius); 
+      padding: 25px 20px; 
+      box-shadow: var(--shadow); 
+      border: 1px solid rgba(255, 255, 255, 0.8); 
+      animation: fadeIn 0.3s ease-out forwards; 
     }
-    
-    .screen {
-      position: relative;
-      z-index: 1;
-      display: none;
+    .screen.active { display: block; }
+
+    @keyframes fadeIn { 
+      from { opacity: 0; } 
+      to { opacity: 1; } 
+    }
+
+    .hero-banner {
+      height: 160px;
+      border-radius: 14px;
+      background: 
+        linear-gradient(rgba(10, 35, 20, 0.55), rgba(10, 35, 20, 0.65)),
+        url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80") center/cover no-repeat;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       padding: 20px;
       text-align: center;
-      animation: fadeIn 0.4s ease;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+      border: 1px solid rgba(212, 175, 55, 0.5);
     }
-    /* 👆 FIM DA CORREÇÃO 👆 */
+    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.45; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
 
-    .screen.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.35rem; }
+    p.subtitle { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
 
-    /* Barra de Progresso */
-    #progressContainer {
-      display: none;
-      width: 100%;
-      background: #eee;
-      height: 6px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    #progressBar {
-      height: 100%;
-      background: var(--primary);
-      width: 0%;
-      transition: width 0.3s ease;
-    }
+    .options-grid { display: flex; flex-direction: column; gap: 12px; }
 
-    /* Botões Gerais */
-    .btn-primary {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: bold;
-      width: 100%;
-      margin-top: 15px;
-    }
-    .btn-secondary {
-      background: transparent;
-      color: var(--text-muted);
-      border: 1px solid #ccc;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      width: 100%;
-      margin-top: 10px;
-    }
-    .btn-option {
-      background: #f9f9f9;
-      border: 2px solid #eee;
-      padding: 15px;
-      border-radius: 10px;
-      width: 100%;
-      font-size: 1rem;
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: border 0.2s;
-    }
-    .btn-option:active { border-color: var(--primary); }
+    .btn-option { background: #FFFFFF; border: 1.5px solid #E2D9CC; border-radius: 14px; padding: 15px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
+    .btn-option:active { border-color: var(--primary); background: #F3F8F5; }
 
-    /* Inputs (Formulário) */
-    input[type="text"], input[type="tel"] {
-      width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
-    .checkbox-container {
-      display: flex;
-      align-items: flex-start;
-      text-align: left;
-      font-size: 0.85rem;
-      margin-top: 10px;
-      gap: 10px;
-    }
-    .error-msg {
-      color: red;
-      font-size: 0.85rem;
-      display: none;
-      margin-top: 10px;
-    }
+    .btn-primary { background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(15, 76, 46, 0.35); }
+    .btn-primary:active { background: linear-gradient(135deg, #1E6B43 0%, #0F4C2E 100%); }
 
-    /* Card do Produto Recomendado */
-    .img-aura { margin-bottom: 15px; }
-    .product-img { max-width: 100%; border-radius: 10px; }
-    .tag-stock { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; margin-bottom: 10px; }
-    .tag-pronta { background: #d4edda; color: #155724; }
-    .tag-encomenda { background: #fff3cd; color: #856404; }
+    .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid #CCC; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-top: 10px; }
 
-    /* Botões de Feedback */
-    .feedback-grid { display: flex; gap: 10px; margin-top: 15px; }
-    .btn-feedback-choice { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 8px; background: #fff; font-size: 0.9rem; }
-    .active-gostou { background: #d4edda; border-color: #28a745; }
-    .active-medio { background: #fff3cd; border-color: #ffc107; }
-    .active-naocompra { background: #f8d7da; border-color: #dc3545; }
+    .form-group { margin-bottom: 14px; text-align: left; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
+    
+    .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 16px; background: #FFF; }
+    .form-group input:focus { border-color: var(--primary); }
+
+    .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
+
+    .discount-badge { background: linear-gradient(135deg, #FFFDF8 0%, #F9F2E7 100%); border: 1.5px solid var(--accent-gold); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
+    .discount-badge strong { color: var(--primary); font-size: 1rem; }
+    .discount-badge p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+
+    .product-card { text-align: center; border: 1px solid #EAE3D9; border-radius: 16px; padding: 20px; margin: 15px 0; background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
+    .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
+    .product-img { position: relative; width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: #FAF8F5; padding: 8px; }
+
+    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
+    .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
+    .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
+    .error-msg { color: #dc3545; font-size: 0.8rem; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
   </style>
 </head>
-
 <body>
-  <!-- -------------------------------------
-       2. ESTRUTURA DAS TELAS (HTML)
-  -------------------------------------- -->
-  <div id="app">
-    <div id="progressContainer"><div id="progressBar"></div></div>
 
-    <!-- TELA 1: HOME -->
-    <div id="step-home" class="screen active">
-      <h2>Descubra sua Fragrância Ideal</h2>
-      <p>Responda a este rápido quiz e encontre o produto perfeito para você.</p>
-      <button type="button" class="btn-primary" onclick="goToLeadStep()">Começar Quiz</button>
-      <a id="linkPageHome" href="#" target="_blank"><button type="button" class="btn-secondary">Apenas visitar a loja</button></a>
+  <header>
+    <div class="brand-title">Letícia Martins Guerra de Souza</div>
+    <div class="brand-sub">Consultoria Exclusiva O Boticário</div>
+  </header>
+
+  <main>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <!-- TELA 2: CAPTAÇÃO DE LEAD -->
-    <div id="step-lead" class="screen">
-      <h2>Como podemos te chamar?</h2>
+    <!-- TELA INICIAL -->
+    <div class="screen active" id="step-home">
+      <div class="hero-banner">
+        <p>"Descubra a combinação perfeita para o seu estilo e rotina de cuidados."</p>
+      </div>
+      <h2>Consultoria Personalizada ✨</h2>
+      <p class="subtitle">Encontre o produto ideal do Boticário para você, para os pequenos ou para presentear quem ama — e garanta 5% de desconto na primeira compra.</p>
+      <div class="options-grid">
+        <button type="button" class="btn-primary" onclick="goToLeadStep()">✨ Iniciar Quiz Personalizado</button>
+        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #FDFBF7; border-color: var(--accent-gold);">🛍️ Ver Catálogo na Loja da Letícia</a>
+      </div>
+    </div>
+
+    <!-- CADASTRO -->
+    <div class="screen" id="step-lead">
+      <h2>Seus Dados de Contato 📝</h2>
+      <div class="discount-badge">
+        <strong>🎁 Ganhe 5% de desconto</strong>
+        <p>Preencha seus dados para participar do Quiz Personalizado e garantir 5% de desconto na sua primeira compra.</p>
+      </div>
+
       <form onsubmit="handleLeadSubmit(event)">
-        <input type="text" id="leadName" placeholder="Seu Nome" required>
-        <input type="tel" id="leadPhone" placeholder="Seu WhatsApp (DDD + Número)" required>
-        <div class="checkbox-container">
-          <input type="checkbox" id="consentCheck" required>
-          <label for="consentCheck">Aceito receber minha recomendação e ofertas no WhatsApp.</label>
+        <div class="form-group">
+          <label>Seu Nome Completo *</label>
+          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name">
         </div>
-        <div id="leadError" class="error-msg"></div>
-        <button type="submit" class="btn-primary">Continuar</button>
+        <div class="form-group">
+          <label>Seu WhatsApp com DDD *</label>
+          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel">
+        </div>
+        <div class="consent-box">
+          <input type="checkbox" id="consentCheck">
+          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong> (sem ligações).</label>
+        </div>
+        <p id="leadError" class="error-msg"></p>
+        <button type="submit" id="btnSubmitLead" class="btn-primary">Começar o Quiz ➔</button>
       </form>
+      <button type="button" class="btn-secondary" onclick="declineQuiz()">Não quero participar do quiz</button>
     </div>
 
-    <!-- TELA 3: GÊNERO -->
-    <div id="step-gender" class="screen">
-      <h2>Para quem é o produto?</h2>
-      <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Feminino</span> ➔</button>
-      <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Masculino</span> ➔</button>
+    <!-- PERGUNTA 1: GÊNERO -->
+    <div class="screen" id="step-gender">
+      <h2>Para quem será o produto?</h2>
+      <p class="subtitle">Selecione para direcionar as melhores opções do Boticário:</p>
+      <div class="options-grid">
+        <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Linha Feminina</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Linha Masculina</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setGender('KidsBebe')"><span>👶 Kids & Bebês</span> ➔</button>
+      </div>
     </div>
 
-    <!-- TELA 4: CATEGORIA -->
-    <div id="step-category" class="screen">
-      <h2>O que você procura hoje?</h2>
-      <div id="categoryOptions"></div>
+    <!-- PERGUNTA 2: OBJETIVO -->
+    <div class="screen" id="step-objective">
+      <h2>Qual é o objetivo principal?</h2>
+      <p class="subtitle">Nos conte como pretende usar:</p>
+      <div class="options-grid">
+        <button type="button" class="btn-option" onclick="setObjective('Uso Pessoal')"><span>🛍️ Uso Pessoal e Diário</span> ➔</button>
+        <button type="button" class="btn-option" onclick="setObjective('Presente Especial')"><span>🎁 Presente Especial</span> ➔</button>
+      </div>
     </div>
 
-    <!-- TELA 5: OBJETIVO -->
-    <div id="step-objective" class="screen">
-      <h2>Qual o seu objetivo principal?</h2>
-      <button type="button" class="btn-option" onclick="setObjective('Para mim')"><span>🙋 Para mim</span> ➔</button>
-      <button type="button" class="btn-option" onclick="setObjective('Para presente')"><span>🎁 Para presente</span> ➔</button>
-    </div>
+    <!-- TELA DE RESULTADO -->
+    <div class="screen" id="step-result">
+      <div class="hero-banner">
+        <p>"Sua escolha ideal para realçar sua essência e bem-estar."</p>
+      </div>
+      <h2>Recomendação Exclusiva</h2>
+      <div class="product-card" id="res-card">
+        <h3>Floratta Red Desodorante Colônia</h3>
+        <p style="margin-top:8px; color:var(--primary); font-weight:700;">R$ 134,90</p>
+      </div>
 
-    <!-- TELA 6: PERFIL -->
-    <div id="step-profile" class="screen">
-      <h2>Qual estilo de fragrância você prefere?</h2>
-      <div id="profileOptions"></div>
-    </div>
-
-    <!-- TELA 7: AMBIENTE -->
-    <div id="step-ambiente" class="screen">
-      <h2>Onde costuma usar mais?</h2>
-      <div id="ambienteOptions"></div>
-    </div>
-
-    <!-- TELA 8: RESULTADO E FEEDBACK -->
-    <div id="step-result" class="screen">
-      <h2>Sua Recomendação!</h2>
-      
-      <div id="res-card"></div>
-      
-      <div style="margin-top: 20px; text-align: left;">
-        <p style="font-weight: bold; font-size: 0.9rem;">O que achou da sugestão?</p>
-        <div class="feedback-grid">
-          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Gostou', this)">😍 Adorei</button>
-          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Médio', this)">🤔 Legalzinho</button>
-          <button type="button" class="btn-feedback-choice" onclick="submitFinalFeedback('Não compra', this)">👎 Não faz meu estilo</button>
+      <div class="feedback-result-group">
+        <p>O que achou desta sugestão? *</p>
+        <div class="feedback-buttons">
+          <button type="button" class="btn-feedback-choice" id="fb-gostou" onclick="submitFinalFeedback('Gostou / Amei', this)">💙 Gostou</button>
+          <button type="button" class="btn-feedback-choice" id="fb-medio" onclick="submitFinalFeedback('Médio', this)">😐 Médio</button>
+          <button type="button" class="btn-feedback-choice" id="fb-nao" onclick="submitFinalFeedback('Não compraria', this)">❌ Não compraria</button>
         </div>
-        <div id="feedbackError" class="error-msg"></div>
+        <p id="feedbackError" class="error-msg"></p>
       </div>
 
-      <button type="button" class="btn-primary" onclick="confirmarEnvioQuiz(this)">Enviar Resposta e Falar no WhatsApp</button>
-      <div id="msgEnvioConfirmado" style="display:none; color: green; margin-top: 15px; font-weight: bold;">
-        Enviado com sucesso! Entraremos em contato.
-      </div>
-      
-      <button type="button" class="btn-secondary" onclick="resetToHome()">Refazer Quiz</button>
-      <a id="linkPageResult" href="#" target="_blank"><button type="button" class="btn-secondary">Ver todo o catálogo</button></a>
+      <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
+      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados! Obrigado por participar. 💛</p>
+
+      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
+      <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
     </div>
-  </div>
+  </main>
 
-  <!-- -------------------------------------
-       3. LÓGICA E DADOS (JAVASCRIPT)
-  -------------------------------------- -->
   <script>
-    // Configurações e Links (Pode alterar quando necessário)
     const LINK_PAGINA_LETICIA = "https://minhaloja.boticario.com.br/loja-leticiamartinsguerradesouza-20675917?utm_source=app_divulgar&utm_medium=catalogos#catalogo";
-    const GOOGLE_SHEETS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw-TJ3ObrhNjncbXMBVyJHu--0PPRBj2YIn55Q83cM8FpKGDrri29lujqRjKO5QZUb2/exec";
+    document.getElementById("linkPageHome").href = LINK_PAGINA_LETICIA;
+    document.getElementById("linkPageResult").href = LINK_PAGINA_LETICIA;
 
-    // Variável que guarda as respostas do usuário temporariamente
-    let quizData = {
-      nome: '', whatsapp: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', feedback: ''
-    };
+    let quizData = {};
 
-    // Banco de Produtos
-    const productsDB = {
-      Feminino: {
-        perfumaria: {
-          nome: 'Floratta Red Desodorante Colônia 75ml',
-          codigo: '48303',
-          preco: 'R$ 174,90',
-          precoPromo: 'R$ 134,90',
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Fragrância floriental amadeirada inspirada na flor da Maçã de Vermont, com notas florais quentes e envolventes.',
-          img: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=500&q=80',
-          emEstoque: true
-        },
-        cremes: {
-          nome: 'Nativa SPA Ameixa Loção Nutritiva Desodorante Hidratante Corporal 400ml',
-          codigo: '48281',
-          preco: 'R$ 89,90',
-          precoPromo: null,
-          tipo: 'Pronta Entrega em Estoque',
-          desc: 'Hidratação profunda com óleo de quinoa e a fragrância marcante e frutal da ameixa.',
-          img: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=500&q=80',
-          emEstoque: true
-        }
-      }
-    };
-
-    // Aplica os links da loja quando a página carrega
-    document.addEventListener('DOMContentLoaded', () => {
-      const linkHome = document.getElementById('linkPageHome');
-      const linkRes = document.getElementById('linkPageResult');
-      if (linkHome) linkHome.href = LINK_PAGINA_LETICIA;
-      if (linkRes) linkRes.href = LINK_PAGINA_LETICIA;
-    });
-
-    // Função de navegação entre as telas
     function showScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(screenId);
-      if (target) target.classList.add('active');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if(target) target.classList.add('active');
+      window.scrollTo(0, 0);
     }
 
-    // Função que atualiza a barra verde no topo
-    function updateProgress(percent) {
-      const container = document.getElementById('progressContainer');
-      const bar = document.getElementById('progressBar');
-      if (percent > 0) {
-        container.style.display = 'block';
-        bar.style.width = percent + '%';
-      } else {
-        container.style.display = 'none';
-      }
-    }
-
-    // Funções de preenchimento dos passos
     function goToLeadStep() {
-      updateProgress(15);
       showScreen('step-lead');
     }
 
-    function handleLeadSubmit(e) {
-      e.preventDefault();
+    function declineQuiz() {
+      window.open(LINK_PAGINA_LETICIA, '_blank');
+    }
+
+    function handleLeadSubmit(event) {
+      event.preventDefault();
       const name = document.getElementById('leadName').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-      const consent = document.getElementById('consentCheck').checked;
       const errorEl = document.getElementById('leadError');
 
       if (!name || !phone) {
-        errorEl.textContent = 'Por favor, preencha o nome e o WhatsApp.';
-        errorEl.style.display = 'block';
+        errorEl.innerText = "Por favor, preencha seu nome e WhatsApp.";
+        errorEl.style.display = "block";
         return;
       }
-      if (!consent) {
-        errorEl.textContent = 'É necessário autorizar o contato para continuar.';
-        errorEl.style.display = 'block';
-        return;
-      }
-
-      errorEl.style.display = 'none';
+      errorEl.style.display = "none";
       quizData.nome = name;
-      quizData.whatsapp = phone;
-
-      updateProgress(30);
+      quizData.phone = phone;
       showScreen('step-gender');
     }
 
     function setGender(gender) {
       quizData.genero = gender;
-      const categoryGrid = document.getElementById('categoryOptions');
-      categoryGrid.innerHTML = `
-        <button type="button" class="btn-option" onclick="setCategory('perfumaria')"><span>🌸 Perfumaria</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setCategory('cremes')"><span>🧴 Cuidados & Hidratação</span> ➔</button>
-      `;
-      updateProgress(45);
-      showScreen('step-category');
-    }
-
-    function setCategory(cat) {
-      quizData.categoria = cat;
-      updateProgress(60);
       showScreen('step-objective');
     }
 
     function setObjective(obj) {
       quizData.objetivo = obj;
-      const profileGrid = document.getElementById('profileOptions');
-      profileGrid.innerHTML = `
-        <button type="button" class="btn-option" onclick="setProfile('Marcante / Envolvente')"><span>✨ Marcante & Envolvente</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setProfile('Fresco / Suave')"><span>🍃 Fresco & Leve</span> ➔</button>
-      `;
-      updateProgress(75);
-      showScreen('step-profile');
-    }
-
-    function setProfile(prof) {
-      quizData.perfil = prof;
-      const ambGrid = document.getElementById('ambienteOptions');
-      ambGrid.innerHTML = `
-        <button type="button" class="btn-option" onclick="setAmbiente('Dia a Dia / Trabalho')"><span>💼 Dia a Dia e Trabalho</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setAmbiente('Noite / Eventos')"><span>🌙 Noite e Ocasiões Especiais</span> ➔</button>
-      `;
-      updateProgress(90);
-      showScreen('step-ambiente');
-    }
-
-    function setAmbiente(amb) {
-      quizData.ambiente = amb;
-      renderResult(); // Monta a tela final com os dados escolhidos
-      updateProgress(100);
       showScreen('step-result');
     }
 
-    // Função que cria o visual do produto final na tela
-    function renderResult() {
-      const card = document.getElementById('res-card');
-      const gen = 'Feminino'; // Pode adaptar baseado em quizData.genero no futuro
-      const cat = quizData.categoria || 'perfumaria';
-      
-      // Busca o produto no banco. Se não achar a exata combinação, mostra a floratta como padrão de segurança.
-      const prod = (productsDB[gen] && productsDB[gen][cat]) ? productsDB[gen][cat] : productsDB.Feminino.perfumaria;
-
-      card.innerHTML = `
-        <div class="img-aura">
-          <img src="${prod.img}" class="product-img" alt="${prod.nome}">
-        </div>
-        <span class="tag-stock ${prod.emEstoque ? 'tag-pronta' : 'tag-encomenda'}">${prod.tipo}</span>
-        <h3 style="font-family:'Playfair Display',serif; color:var(--primary); font-size:1.1rem; margin:8px 0;">${prod.nome}</h3>
-        <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:12px;">${prod.desc}</p>
-        <p style="font-size:1.1rem; font-weight:700; color:var(--primary);">
-          ${prod.precoPromo ? `<span style="text-decoration:line-through; font-size:0.85rem; color:#999; margin-right:6px;">${prod.preco}</span>${prod.precoPromo}` : prod.preco}
-        </p>
-      `;
-    }
-
-    // Guarda a opção de feedback clicada
     function submitFinalFeedback(val, btn) {
       quizData.feedback = val;
-      
-      // Remove a seleção de todos os botões antes de marcar o novo
-      document.querySelectorAll('.btn-feedback-choice').forEach(b => {
-        b.classList.remove('active-gostou', 'active-medio', 'active-naocompra');
-      });
-      
-      // Adiciona cor baseada na escolha
-      if (val.includes('Gostou')) btn.classList.add('active-gostou');
-      else if (val.includes('Médio')) btn.classList.add('active-medio');
-      else btn.classList.add('active-naocompra');
-      
-      document.getElementById('feedbackError').style.display = 'none';
+      document.querySelectorAll('.btn-feedback-choice').forEach(b => b.style.background = '#FFF');
+      btn.style.background = '#D4EDDA';
     }
 
-    // Envia os dados finais para o Google Sheets (Apps Script)
     function confirmarEnvioQuiz(btn) {
-      if (!quizData.feedback) {
-        const err = document.getElementById('feedbackError');
-        err.textContent = 'Por favor, selecione o que achou da sugestão acima.';
-        err.style.display = 'block';
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Enviando...';
-
-      fetch(GOOGLE_SHEETS_SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quizData)
-      })
-      .then(() => {
-        document.getElementById('msgEnvioConfirmado').style.display = 'block';
-        btn.style.display = 'none';
-      })
-      .catch(() => {
-        // Mesmo com erro de CORS, o envio no-cors registra os dados na planilha na maioria dos casos.
-        document.getElementById('msgEnvioConfirmado').style.display = 'block';
-        btn.style.display = 'none';
-      });
+      document.getElementById('msgEnvioConfirmado').style.display = 'block';
+      btn.style.display = 'none';
     }
 
-    // Zera os dados e volta para o começo
     function resetToHome() {
-      quizData = { nome: '', whatsapp: '', genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '', feedback: '' };
-      updateProgress(0);
+      quizData = {};
+      document.getElementById('msgEnvioConfirmado').style.display = 'none';
+      document.getElementById('btnConfirmarEnviar').style.display = 'block';
       showScreen('step-home');
     }
   </script>
