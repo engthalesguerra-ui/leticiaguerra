@@ -2,438 +2,182 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Quiz de Beleza & Fragrâncias | Consultoria Exclusiva Letícia</title>
-  <meta property="og:title" content="Consultoria Personalizada O Boticário — Letícia Guerra">
-  <meta property="og:description" content="Descubra o produto ideal do Boticário para você e garanta 5% de desconto na primeira compra.">
-  <meta property="og:type" content="website">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Consultoria Exclusiva Letícia Guerra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #0F4C2E;
-      --primary-light: #1E6B43;
-      --accent-gold: #D4AF37;
-      --wood-warm: #8B5E3C;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --text-dark: #1A2820;
-      --text-muted: #52635A;
-      --radius: 20px;
-      --shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-    }
-
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; 
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      background: linear-gradient(rgba(15, 30, 20, 0.4), rgba(15, 30, 20, 0.5)),
-                  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
-      background-color: #1a271d;
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 15px;
-    }
-
-    header {
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      padding: 18px 15px;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      margin-bottom: 20px;
-    }
-
-    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; letter-spacing: 0.3px; }
-    .brand-sub { font-size: 0.78rem; color: #8B5E3C; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
-
+    :root { --primary: #0F4C2E; --card-bg: rgba(255, 255, 255, 0.96); }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    body { background: #1a271d; color: #1A2820; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
+    header { width: 100%; max-width: 480px; text-align: center; padding: 18px; background: var(--card-bg); border-radius: 18px; margin-bottom: 20px; }
+    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.2rem; }
     main { width: 100%; max-width: 480px; }
-
-    .screen { 
-      display: none; 
-      background: var(--card-bg); 
-      border-radius: var(--radius); 
-      padding: 25px 20px; 
-      box-shadow: var(--shadow); 
-      border: 1px solid rgba(255, 255, 255, 0.8); 
-      animation: fadeIn 0.25s ease-out forwards; 
-    }
+    .screen { display: none; background: var(--card-bg); border-radius: 18px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     .screen.active { display: block; }
-
-    @keyframes fadeIn { 
-      from { opacity: 0; } 
-      to { opacity: 1; } 
-    }
-
-    .hero-banner {
-      height: 160px;
-      border-radius: 14px;
-      background: 
-        linear-gradient(rgba(10, 35, 20, 0.55), rgba(10, 35, 20, 0.65)),
-        url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80") center/cover no-repeat;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-      border: 1px solid rgba(212, 175, 55, 0.5);
-    }
-    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.45; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
-
-    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.35rem; }
-    p.subtitle { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
-
-    .options-grid { display: flex; flex-direction: column; gap: 12px; }
-
-    .btn-option { background: #FFFFFF; border: 1.5px solid #E2D9CC; border-radius: 14px; padding: 15px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
-    .btn-option:active { border-color: var(--primary); background: #F3F8F5; }
-
-    .btn-primary { background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(15, 76, 46, 0.35); }
-    .btn-primary:active { background: linear-gradient(135deg, #1E6B43 0%, #0F4C2E 100%); }
-
-    .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid #CCC; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-top: 10px; }
-
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    
-    .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 16px; background: #FFF; }
-    .form-group input:focus { border-color: var(--primary); }
-
-    .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
-
-    .discount-badge { background: linear-gradient(135deg, #FFFDF8 0%, #F9F2E7 100%); border: 1.5px solid var(--accent-gold); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
-    .discount-badge strong { color: var(--primary); font-size: 1rem; }
-    .discount-badge p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
-
-    .product-card { text-align: center; border: 1px solid #EAE3D9; border-radius: 16px; padding: 20px; margin: 15px 0; background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-
-    .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
-    .product-img { position: relative; width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: #FAF8F5; padding: 8px; }
-
-    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
-    .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
-    .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
-    .error-msg { color: #dc3545; font-size: 0.8rem; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
+    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 12px; }
+    .options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+    .btn-option { background: #FFF; border: 1.5px solid #DDD; padding: 14px; border-radius: 12px; font-weight: 600; text-align: left; cursor: pointer; }
+    .btn-primary { background: var(--primary); color: #FFF; border: none; padding: 16px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 10px; }
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
+    .form-group input { width: 100%; padding: 12px; border: 1.5px solid #DDD; border-radius: 8px; font-size: 16px; }
+    .product-card { text-align: center; border: 1px solid #EEE; border-radius: 14px; padding: 15px; margin: 15px 0; }
+    .product-img { width: 160px; height: 160px; object-fit: contain; }
   </style>
 </head>
 <body>
 
   <header>
     <div class="brand-title">Letícia Martins Guerra de Souza</div>
-    <div class="brand-sub">Consultoria Exclusiva O Boticário</div>
+    <div style="font-size:0.75rem; color:#8B5E3C; font-weight:700;">CONSULTORIA EXCLUSIVA O BOTICÁRIO</div>
   </header>
 
   <main>
-    <!-- TELA INICIAL -->
+    <!-- HOME -->
     <div class="screen active" id="step-home">
-      <div class="hero-banner">
-        <p>"Descubra a combinação perfeita para o seu estilo e rotina de cuidados."</p>
-      </div>
       <h2>Consultoria Personalizada ✨</h2>
-      <p class="subtitle">Encontre o produto ideal do Boticário para você, para os pequenos ou para presentear quem ama — e garanta 5% de desconto na primeira compra.</p>
-      <div class="options-grid">
-        <button type="button" class="btn-primary" onclick="goToLeadStep()">✨ Iniciar Quiz Personalizado</button>
-        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #FDFBF7; border-color: var(--accent-gold);">🛍️ Ver Catálogo na Loja da Letícia</a>
-      </div>
+      <p style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:15px;">Encontre o produto ideal para seu estilo e receba atendimento exclusivo.</p>
+      <button class="btn-primary" onclick="showScreen('step-lead')">✨ Iniciar Quiz</button>
     </div>
 
-    <!-- CADASTRO -->
+    <!-- LEAD -->
     <div class="screen" id="step-lead">
       <h2>Seus Dados de Contato 📝</h2>
-      <div class="discount-badge">
-        <strong>🎁 Ganhe 5% de desconto</strong>
-        <p>Preencha seus dados para participar do Quiz Personalizado e garantir 5% de desconto na sua primeira compra.</p>
-      </div>
-
       <form onsubmit="handleLeadSubmit(event)">
         <div class="form-group">
-          <label>Seu Nome Completo *</label>
-          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name" required>
+          <label>Nome Completo</label>
+          <input type="text" id="leadName" required>
         </div>
         <div class="form-group">
-          <label>Seu WhatsApp com DDD *</label>
-          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel" required>
+          <label>WhatsApp (com DDD)</label>
+          <input type="tel" id="leadPhone" required>
         </div>
-        <div class="consent-box">
-          <input type="checkbox" id="consentCheck" checked>
-          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong>.</label>
-        </div>
-        <p id="leadError" class="error-msg"></p>
-        <button type="submit" id="btnSubmitLead" class="btn-primary">Começar o Quiz ➔</button>
+        <button type="submit" class="btn-primary">Avançar ➔</button>
       </form>
-      <button type="button" class="btn-secondary" onclick="declineQuiz()">Não quero participar do quiz</button>
     </div>
 
-    <!-- PERGUNTA 1: GÊNERO -->
+    <!-- P1: GÊNERO -->
     <div class="screen" id="step-gender">
-      <h2>Para quem será o produto?</h2>
-      <p class="subtitle">Selecione para direcionar as melhores opções:</p>
+      <h2>Para quem é o produto?</h2>
       <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Linha Feminina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Linha Masculina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('KidsBebe')"><span>👶 Kids & Bebês</span> ➔</button>
+        <button class="btn-option" onclick="setGender('feminino')">👩 Linha Feminina</button>
+        <button class="btn-option" onclick="setGender('masculino')">👨 Linha Masculina</button>
+        <button class="btn-option" onclick="setGender('kidsbebe')">👶 Kids & Bebês</button>
       </div>
     </div>
 
-    <!-- PERGUNTA 2: CATEGORIA -->
+    <!-- P2: CATEGORIA -->
     <div class="screen" id="step-category">
-      <h2>Qual categoria você procura?</h2>
-      <p class="subtitle">Escolha o tipo de produto desejado:</p>
+      <h2>Qual categoria procura?</h2>
       <div class="options-grid" id="categoryOptions"></div>
     </div>
 
-    <!-- PERGUNTA 3: ESTILO/PERFIL -->
+    <!-- P3: ESTILO -->
     <div class="screen" id="step-fragrance">
-      <h2>Qual estilo prefere?</h2>
-      <p class="subtitle">Selecione a opção que mais combina com você:</p>
+      <h2>Qual o seu estilo preferido?</h2>
       <div class="options-grid" id="fragranceOptions"></div>
     </div>
 
-    <!-- TELA DE RESULTADO -->
+    <!-- RESULTADO -->
     <div class="screen" id="step-result">
-      <div class="hero-banner">
-        <p>"Sua escolha ideal para realçar sua essência e bem-estar."</p>
+      <h2>Sua Sugestão Ideal</h2>
+      <div class="product-card">
+        <img id="res-img" class="product-img" src="" alt="Produto">
+        <h3 id="res-title" style="font-size:1rem; margin-top:10px;">Buscando...</h3>
+        <p id="res-desc" style="font-size:0.8rem; color:#666; margin-top:6px;"></p>
       </div>
-      <h2>Recomendação Exclusiva</h2>
-      <div class="product-card" id="res-card">
-        <div class="img-aura">
-          <img id="res-img" class="product-img" src="" alt="Produto Boticário">
-        </div>
-        <h3 id="res-title">---</h3>
-        <p id="res-desc" style="font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; line-height: 1.4;"></p>
-        <p id="res-price" style="margin-top:8px; color:var(--primary); font-weight:700; font-size: 1.1rem;"></p>
-      </div>
-
-      <div class="feedback-result-group">
-        <p>O que achou desta sugestão? *</p>
-        <div class="feedback-buttons">
-          <button type="button" class="btn-feedback-choice" id="fb-gostou" onclick="submitFinalFeedback('Gostou / Amei', this)">💙 Gostou</button>
-          <button type="button" class="btn-feedback-choice" id="fb-medio" onclick="submitFinalFeedback('Médio', this)">😐 Médio</button>
-          <button type="button" class="btn-feedback-choice" id="fb-nao" onclick="submitFinalFeedback('Não compraria', this)">❌ Não compraria</button>
-        </div>
-        <p id="feedbackError" class="error-msg"></p>
-      </div>
-
-      <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
-      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados com sucesso! Obrigado por participar. 💛</p>
-
-      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
-      <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
+      <button class="btn-primary" id="btnEnviar" onclick="confirmarEnvio()">✅ Enviar Escolha e Receber Atendimento</button>
+      <p id="msgSucesso" style="display:none; text-align:center; color:green; margin-top:10px; font-weight:700;">Dados enviados para o Sheets com sucesso!</p>
     </div>
   </main>
 
   <script>
-    // URL da Loja da Letícia
-    const LINK_PAGINA_LETICIA = "https://minhaloja.boticario.com.br/loja-leticiamartinsguerradesouza-20675917?utm_source=app_divulgar&utm_medium=catalogos#catalogo";
-    
-    // ATENÇÃO: Cole abaixo a URL do seu App Script do Google Sheets
-    const WEBHOOK_URL_SHEETS = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
-
-    document.getElementById("linkPageHome").href = LINK_PAGINA_LETICIA;
-    document.getElementById("linkPageResult").href = LINK_PAGINA_LETICIA;
+    // Cole aqui a URL do seu Google Apps Script publicado
+    const WEBHOOK_URL = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
 
     let quizData = {};
 
-    const produtos = {
-      Feminino: {
-        Perfumaria: {
-          Florais: { title: "Floratta Red Desodorante Colônia 75ml", price: "R$ 134,90", desc: "Inspirada na maçã de Vermont, uma fragrância floral frutada marcante e apaixonante.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73826/FLORATTA_RED_DES_COL_75ml_B73826.jpg" },
-          Doces: { title: "Egeo Dolce Desodorante Colônia 90ml", price: "R$ 129,90", desc: "Tão irresistível quanto um doce! Com notas de Marshmallow e Baunilha.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B82688/EGEO_DOLCE_DES_COL_90ml_B82688.jpg" },
-          Amadeirados: { title: "Lily Le Parfum 50ml", price: "R$ 299,90", desc: "A sofisticação do lírio somada às notas amadeiradas mais nobres.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B83617/LILY_LE_PARFUM_50ml_B83617.jpg" },
-          Frescos: { title: "Anni Desodorante Colônia 100ml", price: "R$ 109,90", desc: "Fragrância delicada e fresca com combinação de notas florais e frutais.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73824/ANNI_DES_COL_100ml_B73824.jpg" }
-        },
-        Corpo: {
-          Hidratacao: { title: "Loção Hidratante Cuide-se Bem Nuvem 400ml", price: "R$ 64,90", desc: "Hidratação profunda por até 48 horas com toque aveludado.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B81648/CUIDE_SE_BEM_LOCAO_NUVEM_400ml_B81648.jpg" },
-          Banhos: { title: "Sabonete Líquido Nativa SPA Ameixa 200ml", price: "R$ 44,90", desc: "Limpa suavemente enquanto perfuma a pele com a fragrância de Ameixa.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B80183/NATIVA_SPA_SAB_LIQ_AMEIXA_200ml_B80183.jpg" }
-        },
-        Maquiagem: {
-          Labios: { title: "Batom Make B. Hyaluronic Preenchedor", price: "R$ 69,90", desc: "Lábios preenchidos e hidratados com ácido hialurônico.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B81120/MAKE_B_BATOM_HYALURONIC.jpg" },
-          Rosto: { title: "Base Líquida Make B. Mate Salicylic", price: "R$ 89,90", desc: "Trata a pele com ácido salicílico e garante acabamento mate impecável.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B82330/MAKE_B_BASE_MATE_SALICYLIC.jpg" }
-        },
-        Cabelos: {
-          Tratamento: { title: "Sérum Capilar Match Nutrition", price: "R$ 59,90", desc: "Nutrição intensa que elimina o frizz sem pesar os fios.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B80450/MATCH_SERUM_NUTRITION.jpg" }
-        }
-      },
-      Masculino: {
-        Perfumaria: {
-          Amadeirados: { title: "Malbec Desodorante Colônia 100ml", price: "R$ 179,90", desc: "Fragrância produzida com álcool vínico envelhecido em barris de carvalho.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73691/MALBEC_DES_COL_100ml_B73691.jpg" },
-          Frescos: { title: "Arbo Desodorante Colônia 100ml", price: "R$ 134,90", desc: "Notas frescas de ar puro para quem busca conexão com a natureza.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73822/ARBO_DES_COL_100ml_B73822.jpg" }
-        },
-        Barba: {
-          Cuidados: { title: "Espuma de Barbear Men 200g", price: "R$ 49,90", desc: "Proporciona um barbear suave, hidratante e sem irritações.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77114/MEN_ESPUMA_BARBEAR_200g_B77114.jpg" }
-        },
-        Corpo: {
-          Hidratacao: { title: "Shower Gel Men 200g", price: "R$ 39,90", desc: "Praticidade para limpezas de corpo e cabelo durante o banho.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77110/MEN_SHOWER_GEL_200g.jpg" }
-        }
-      },
-      KidsBebe: {
-        Bebe: {
-          Suave: { title: "Boti Baby Colônia do Sol 100ml", price: "R$ 74,90", desc: "Fragrância leve, sem álcool, testada por pediatras.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B77189/BOTI_BABY_COLONIA_SOL_100ml_B77189.jpg" }
-        },
-        Infantil: {
-          Divertido: { title: "Dr. Botica Poção do Coração Colônia 120ml", price: "R$ 84,90", desc: "Aroma frutal alegre e divertido para iluminar o dia das crianças.", img: "https://res.cloudinary.com/beleza-na-web/image/upload/f_auto,fl_progressive,q_auto:best/v1/imagens/products/B73830/DR_BOTICA_POCAO_CORACAO_120ml_B73830.jpg" }
-        }
-      }
-    };
-
-    function showScreen(screenId) {
+    function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      const target = document.getElementById(screenId);
-      if(target) target.classList.add('active');
-      window.scrollTo(0, 0);
+      document.getElementById(id).classList.add('active');
     }
 
-    function goToLeadStep() { showScreen('step-lead'); }
-
-    function declineQuiz() { window.open(LINK_PAGINA_LETICIA, '_blank'); }
-
-    function handleLeadSubmit(event) {
-      event.preventDefault();
-      const name = document.getElementById('leadName').value.trim();
-      const phone = document.getElementById('leadPhone').value.trim();
-      const errorEl = document.getElementById('leadError');
-
-      if (!name || !phone) {
-        errorEl.innerText = "Por favor, preencha seu nome e WhatsApp.";
-        errorEl.style.display = "block";
-        return;
-      }
-      errorEl.style.display = "none";
-      quizData.nome = name;
-      quizData.phone = phone;
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      quizData.nome = document.getElementById('leadName').value;
+      quizData.phone = document.getElementById('leadPhone').value;
       showScreen('step-gender');
     }
 
-    function setGender(gender) {
-      quizData.genero = gender;
-      const catContainer = document.getElementById('categoryOptions');
-      catContainer.innerHTML = '';
-
-      if (gender === 'Feminino') {
-        catContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('Perfumaria')"><span>🌸 Perfumaria & Colônias</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Corpo')"><span>🧴 Cuidados com o Corpo</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Maquiagem')"><span>💄 Maquiagem</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Cabelos')"><span>💇‍♀️ Cabelos e Tratamentos</span> ➔</button>
-        `;
-      } else if (gender === 'Masculino') {
-        catContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('Perfumaria')"><span>🌿 Perfumaria Masculina</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Barba')"><span>🪒 Barba e Cuidados</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Corpo')"><span>🧴 Banho & Corpo</span> ➔</button>
-        `;
+    function setGender(g) {
+      quizData.genero = g;
+      const catBox = document.getElementById('categoryOptions');
+      if (g === 'feminino') {
+        catBox.innerHTML = `
+          <button class="btn-option" onclick="setCategory('perfumaria')">🌸 Perfumaria</button>
+          <button class="btn-option" onclick="setCategory('corpo')">🧴 Corpo e Banho</button>`;
+      } else if (g === 'masculino') {
+        catBox.innerHTML = `
+          <button class="btn-option" onclick="setCategory('perfumaria')">🌿 Perfumaria Masculina</button>
+          <button class="btn-option" onclick="setCategory('barba')">🪒 Barba & Cuidados</button>`;
       } else {
-        catContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setCategory('Bebe')"><span>👶 Linha Bebê (0 a 2 anos)</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setCategory('Infantil')"><span>👦 Linha Infantil (3+ anos)</span> ➔</button>
-        `;
+        catBox.innerHTML = `<button class="btn-option" onclick="setCategory('bebe')">👶 Linha Bebê</button>`;
       }
       showScreen('step-category');
     }
 
-    function setCategory(cat) {
-      quizData.categoria = cat;
-      const fragContainer = document.getElementById('fragranceOptions');
-      fragContainer.innerHTML = '';
-
-      if (quizData.genero === 'Feminino' && cat === 'Perfumaria') {
-        fragContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setFragrance('Florais')"><span>🌹 Florais Marcantes</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Doces')"><span>🍬 Adocicadas e Irresistíveis</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Amadeirados')"><span>✨ Amadeiradas Sofisticadas</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Frescos')"><span>🍃 Leves e Frescas</span> ➔</button>
-        `;
-      } else if (quizData.genero === 'Feminino' && cat === 'Corpo') {
-        fragContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setFragrance('Hidratacao')"><span>💧 Hidratação Intensa</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Banhos')"><span>🧼 Sabonetes e Banhos</span> ➔</button>
-        `;
-      } else if (quizData.genero === 'Feminino' && cat === 'Maquiagem') {
-        fragContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setFragrance('Labios')"><span>💋 Lábios e Batons</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Rosto')"><span>✨ Preparação de Rosto</span> ➔</button>
-        `;
-      } else if (quizData.genero === 'Masculino' && cat === 'Perfumaria') {
-        fragContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setFragrance('Amadeirados')"><span>🪵 Amadeiradas e Marcantes</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Frescos')"><span>🍃 Frescas e Verdes</span> ➔</button>
-        `;
+    function setCategory(c) {
+      quizData.categoria = c;
+      const fragBox = document.getElementById('fragranceOptions');
+      if (c === 'perfumaria' && quizData.genero === 'feminino') {
+        fragBox.innerHTML = `
+          <button class="btn-option" onclick="setEstilo('florais')">🌹 Florais Marcantes</button>
+          <button class="btn-option" onclick="setEstilo('doces')">🍬 Doces e Adocicados</button>`;
+      } else if (c === 'perfumaria' && quizData.genero === 'masculino') {
+        fragBox.innerHTML = `
+          <button class="btn-option" onclick="setEstilo('amadeirados')">🪵 Amadeirados</button>
+          <button class="btn-option" onclick="setEstilo('frescos')">🍃 Frescos e Cítricos</button>`;
       } else {
-        fragContainer.innerHTML = `
-          <button type="button" class="btn-option" onclick="setFragrance('Cuidados')"><span>✨ Cuidados Gerais</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Suave')"><span>🌼 Linha Suave</span> ➔</button>
-          <button type="button" class="btn-option" onclick="setFragrance('Divertido')"><span>🎈 Linha Divertida</span> ➔</button>
-        `;
+        fragBox.innerHTML = `<button class="btn-option" onclick="setEstilo('suave')">✨ Cuidados Suaves</button>`;
       }
       showScreen('step-fragrance');
     }
 
-    function setFragrance(frag) {
-      quizData.fragrancia = frag;
-      renderResult();
+    function setEstilo(e) {
+      quizData.fragrancia = e;
+      buscarProdutoAPI();
       showScreen('step-result');
     }
 
-    function renderResult() {
-      let prod = produtos[quizData.genero]?.[quizData.categoria]?.[quizData.fragrancia];
-      if (!prod) {
-        prod = produtos.Feminino.Perfumaria.Florais;
-      }
-      quizData.produtoRecomendado = prod.title;
-      document.getElementById('res-title').innerText = prod.title;
-      document.getElementById('res-desc').innerText = prod.desc;
-      document.getElementById('res-price').innerText = prod.price;
-      document.getElementById('res-img').src = prod.img;
+    function buscarProdutoAPI() {
+      const url = `${WEBHOOK_URL}?genero=${quizData.genero}&categoria=${quizData.categoria}&estilo=${quizData.fragrancia}`;
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.produto) {
+            document.getElementById('res-title').innerText = data.produto.name;
+            document.getElementById('res-desc').innerText = data.produto.description;
+            document.getElementById('res-img').src = data.produto.image;
+            quizData.produtoRecomendado = data.produto.name;
+          }
+        })
+        .catch(err => console.error("Erro na busca do produto:", err));
     }
 
-    function submitFinalFeedback(val, btn) {
-      quizData.feedback = val;
-      document.querySelectorAll('.btn-feedback-choice').forEach(b => b.style.background = '#FFF');
-      btn.style.background = '#D4EDDA';
-    }
-
-    function confirmarEnvioQuiz(btn) {
-      const msg = document.getElementById('msgEnvioConfirmado');
+    function confirmarEnvio() {
+      const btn = document.getElementById('btnEnviar');
       btn.innerText = "Enviando...";
       btn.disabled = true;
 
-      // Envio via Webhook para o Google Sheets
-      if (WEBHOOK_URL_SHEETS && WEBHOOK_URL_SHEETS !== "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI") {
-        fetch(WEBHOOK_URL_SHEETS, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(quizData)
-        }).catch(err => console.log('Erro no envio:', err));
-      }
-
-      setTimeout(() => {
-        msg.style.display = 'block';
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quizData)
+      }).then(() => {
+        document.getElementById('msgSucesso').style.display = 'block';
         btn.style.display = 'none';
-      }, 600);
-    }
-
-    function resetToHome() {
-      quizData = {};
-      document.getElementById('msgEnvioConfirmado').style.display = 'none';
-      const btn = document.getElementById('btnConfirmarEnviar');
-      btn.style.display = 'block';
-      btn.innerText = "✅ Confirmar e Enviar";
-      btn.disabled = false;
-      showScreen('step-home');
+      });
     }
   </script>
 </body>
