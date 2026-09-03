@@ -2,183 +2,118 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Consultoria Exclusiva Letícia Guerra</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicação de Vendas</title>
   <style>
-    :root { --primary: #0F4C2E; --card-bg: rgba(255, 255, 255, 0.96); }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
-    body { background: #1a271d; color: #1A2820; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px 15px; }
-    header { width: 100%; max-width: 480px; text-align: center; padding: 18px; background: var(--card-bg); border-radius: 18px; margin-bottom: 20px; }
-    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.2rem; }
-    main { width: 100%; max-width: 480px; }
-    .screen { display: none; background: var(--card-bg); border-radius: 18px; padding: 22px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-    .screen.active { display: block; }
-    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 12px; }
-    .options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-    .btn-option { background: #FFF; border: 1.5px solid #DDD; padding: 14px; border-radius: 12px; font-weight: 600; text-align: left; cursor: pointer; }
-    .btn-primary { background: var(--primary); color: #FFF; border: none; padding: 16px; border-radius: 12px; font-weight: 700; width: 100%; cursor: pointer; margin-top: 10px; }
-    .form-group { margin-bottom: 12px; }
-    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px; }
-    .form-group input { width: 100%; padding: 12px; border: 1.5px solid #DDD; border-radius: 8px; font-size: 16px; }
-    .product-card { text-align: center; border: 1px solid #EEE; border-radius: 14px; padding: 15px; margin: 15px 0; }
-    .product-img { width: 160px; height: 160px; object-fit: contain; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #cccccc;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="brand-title">Letícia Martins Guerra de Souza</div>
-    <div style="font-size:0.75rem; color:#8B5E3C; font-weight:700;">CONSULTORIA EXCLUSIVA O BOTICÁRIO</div>
-  </header>
-
-  <main>
-    <!-- HOME -->
-    <div class="screen active" id="step-home">
-      <h2>Consultoria Personalizada ✨</h2>
-      <p style="text-align:center; font-size:0.85rem; color:#555; margin-bottom:15px;">Encontre o produto ideal para seu estilo e receba atendimento exclusivo.</p>
-      <button class="btn-primary" onclick="showScreen('step-lead')">✨ Iniciar Quiz</button>
-    </div>
-
-    <!-- LEAD -->
-    <div class="screen" id="step-lead">
-      <h2>Seus Dados de Contato 📝</h2>
-      <form onsubmit="handleLeadSubmit(event)">
-        <div class="form-group">
-          <label>Nome Completo</label>
-          <input type="text" id="leadName" required>
-        </div>
-        <div class="form-group">
-          <label>WhatsApp (com DDD)</label>
-          <input type="tel" id="leadPhone" required>
-        </div>
-        <button type="submit" class="btn-primary">Avançar ➔</button>
-      </form>
-    </div>
-
-    <!-- P1: GÊNERO -->
-    <div class="screen" id="step-gender">
-      <h2>Para quem é o produto?</h2>
-      <div class="options-grid">
-        <button class="btn-option" onclick="setGender('feminino')">👩 Linha Feminina</button>
-        <button class="btn-option" onclick="setGender('masculino')">👨 Linha Masculina</button>
-        <button class="btn-option" onclick="setGender('kidsbebe')">👶 Kids & Bebês</button>
+  <div class="container">
+    <h2>Enviar Pedido</h2>
+    <form id="meuFormulario">
+      <div class="form-group">
+        <label for="nome">Nome do Cliente:</label>
+        <input type="text" id="nome" name="nome" required>
       </div>
-    </div>
 
-    <!-- P2: CATEGORIA -->
-    <div class="screen" id="step-category">
-      <h2>Qual categoria procura?</h2>
-      <div class="options-grid" id="categoryOptions"></div>
-    </div>
-
-    <!-- P3: ESTILO -->
-    <div class="screen" id="step-fragrance">
-      <h2>Qual o seu estilo preferido?</h2>
-      <div class="options-grid" id="fragranceOptions"></div>
-    </div>
-
-    <!-- RESULTADO -->
-    <div class="screen" id="step-result">
-      <h2>Sua Sugestão Ideal</h2>
-      <div class="product-card">
-        <img id="res-img" class="product-img" src="" alt="Produto">
-        <h3 id="res-title" style="font-size:1rem; margin-top:10px;">Buscando...</h3>
-        <p id="res-desc" style="font-size:0.8rem; color:#666; margin-top:6px;"></p>
+      <div class="form-group">
+        <label for="respostaQuiz">Resposta do Quiz:</label>
+        <input type="text" id="respostaQuiz" name="respostaQuiz" required>
       </div>
-      <button class="btn-primary" id="btnEnviar" onclick="confirmarEnvio()">✅ Enviar Escolha e Receber Atendimento</button>
-      <p id="msgSucesso" style="display:none; text-align:center; color:green; margin-top:10px; font-weight:700;">Dados enviados para o Sheets com sucesso!</p>
-    </div>
-  </main>
+
+      <div class="form-group">
+        <label for="pedido">Detalhes do Pedido:</label>
+        <textarea id="pedido" name="pedido" rows="4" required></textarea>
+      </div>
+
+      <button type="submit" id="btnEnviar">Enviar Dados</button>
+    </form>
+  </div>
 
   <script>
-    // Cole aqui a URL do seu Google Apps Script publicado
-    const WEBHOOK_URL = "SUA_URL_DO_GOOGLE_APPS_SCRIPT_AQUI";
+    const FORMULARIO = document.getElementById('meuFormulario');
+    const BOTAO_ENVIAR = document.getElementById('btnEnviar');
+    
+    // URL do Web App configurada
+    const URL_APPS_SCRIPT = "https://script.google.com/macros/library/d/1vhn2qsiWdamPDHrt26u2vHG3pTUuO9J1rgCl3_GMfobDo3JqXuvoAJLb/31";
 
-    let quizData = {};
-
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
-
-    function handleLeadSubmit(e) {
+    FORMULARIO.addEventListener('submit', function(e) {
       e.preventDefault();
-      quizData.nome = document.getElementById('leadName').value;
-      quizData.phone = document.getElementById('leadPhone').value;
-      showScreen('step-gender');
-    }
 
-    function setGender(g) {
-      quizData.genero = g;
-      const catBox = document.getElementById('categoryOptions');
-      if (g === 'feminino') {
-        catBox.innerHTML = `
-          <button class="btn-option" onclick="setCategory('perfumaria')">🌸 Perfumaria</button>
-          <button class="btn-option" onclick="setCategory('corpo')">🧴 Corpo e Banho</button>`;
-      } else if (g === 'masculino') {
-        catBox.innerHTML = `
-          <button class="btn-option" onclick="setCategory('perfumaria')">🌿 Perfumaria Masculina</button>
-          <button class="btn-option" onclick="setCategory('barba')">🪒 Barba & Cuidados</button>`;
-      } else {
-        catBox.innerHTML = `<button class="btn-option" onclick="setCategory('bebe')">👶 Linha Bebê</button>`;
-      }
-      showScreen('step-category');
-    }
+      BOTAO_ENVIAR.disabled = true;
+      BOTAO_ENVIAR.innerText = "Enviando...";
 
-    function setCategory(c) {
-      quizData.categoria = c;
-      const fragBox = document.getElementById('fragranceOptions');
-      if (c === 'perfumaria' && quizData.genero === 'feminino') {
-        fragBox.innerHTML = `
-          <button class="btn-option" onclick="setEstilo('florais')">🌹 Florais Marcantes</button>
-          <button class="btn-option" onclick="setEstilo('doces')">🍬 Doces e Adocicados</button>`;
-      } else if (c === 'perfumaria' && quizData.genero === 'masculino') {
-        fragBox.innerHTML = `
-          <button class="btn-option" onclick="setEstilo('amadeirados')">🪵 Amadeirados</button>
-          <button class="btn-option" onclick="setEstilo('frescos')">🍃 Frescos e Cítricos</button>`;
-      } else {
-        fragBox.innerHTML = `<button class="btn-option" onclick="setEstilo('suave')">✨ Cuidados Suaves</button>`;
-      }
-      showScreen('step-fragrance');
-    }
+      const dados = {
+        nomeCliente: document.getElementById('nome').value,
+        respostasQuiz: document.getElementById('respostaQuiz').value,
+        itensPedido: document.getElementById('pedido').value
+      };
 
-    function setEstilo(e) {
-      quizData.fragrancia = e;
-      buscarProdutoAPI();
-      showScreen('step-result');
-    }
-
-    function buscarProdutoAPI() {
-      const url = `${WEBHOOK_URL}?genero=${quizData.genero}&categoria=${quizData.categoria}&estilo=${quizData.fragrancia}`;
-      fetch(url)
-        .then(res => res.json())
-        .then(data => {
-          if (data && data.produto) {
-            document.getElementById('res-title').innerText = data.produto.name;
-            document.getElementById('res-desc').innerText = data.produto.description;
-            document.getElementById('res-img').src = data.produto.image;
-            quizData.produtoRecomendado = data.produto.name;
-          }
-        })
-        .catch(err => console.error("Erro na busca do produto:", err));
-    }
-
-    function confirmarEnvio() {
-      const btn = document.getElementById('btnEnviar');
-      btn.innerText = "Enviando...";
-      btn.disabled = true;
-
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(quizData)
-      }).then(() => {
-        document.getElementById('msgSucesso').style.display = 'block';
-        btn.style.display = 'none';
+      fetch(URL_APPS_SCRIPT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(dados)
+      })
+      .then(function() {
+        alert("Dados registrados com sucesso!");
+        FORMULARIO.reset();
+      })
+      .catch(function(erro) {
+        console.error("Erro na comunicação:", erro);
+        alert("Erro ao enviar dados. Tente novamente.");
+      })
+      .finally(function() {
+        BOTAO_ENVIAR.disabled = false;
+        BOTAO_ENVIAR.innerText = "Enviar Dados";
       });
-    }
+    });
   </script>
+
 </body>
 </html>
