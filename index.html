@@ -1,263 +1,275 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Quiz de Beleza & Fragrâncias | Consultoria Exclusiva Letícia</title>
-  <meta property="og:title" content="Consultoria Personalizada O Boticário — Letícia Guerra">
-  <meta property="og:description" content="Descubra o produto ideal do Boticário para você e garanta 5% de desconto na primeira compra.">
-  <meta property="og:type" content="website">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #0F4C2E;
-      --primary-light: #1E6B43;
-      --accent-gold: #D4AF37;
-      --wood-warm: #8B5E3C;
-      --card-bg: rgba(255, 255, 255, 0.95);
-      --text-dark: #1A2820;
-      --text-muted: #52635A;
-      --radius: 20px;
-      --shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
-    }
+// VARIÁVEIS GLOBAIS DE ESTADO DO QUIZ
+let currentScreen = 'step-home';
+let leadData = { nome: '', telefone: '', consentimento: false };
+let userChoices = { genero: '', categoria: '', objetivo: '', perfil: '', ambiente: '' };
+let finalResultItem = null;
 
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0; 
-      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif; 
-      -webkit-tap-highlight-color: transparent;
-    }
+// URL DA SUA PLANILHA GOOGLE (Substitua pela sua URL de deploy do Apps Script se necessário)
+const SCRIPT_URL = "SUA_URL_DO_WEB_APP_AQUI";
 
-    body {
-      background: linear-gradient(rgba(15, 30, 20, 0.4), rgba(15, 30, 20, 0.5)),
-                  url("https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1920&q=80") center/cover no-repeat fixed;
-      background-color: #1a271d;
-      color: var(--text-dark);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 15px;
-    }
+function initQuiz() {
+  showScreen('step-home');
+}
 
-    header {
-      width: 100%;
-      max-width: 480px;
-      text-align: center;
-      padding: 18px 15px;
-      background: rgba(255, 255, 255, 0.94);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(212, 175, 55, 0.4);
-      margin-bottom: 20px;
-      -webkit-backdrop-filter: blur(12px);
-      backdrop-filter: blur(12px);
-    }
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+  const target = document.getElementById(screenId);
+  if (target) {
+    target.classList.add('active');
+    currentScreen = screenId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    updateProgress();
+  }
+}
 
-    .brand-title { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--primary); font-size: 1.25rem; letter-spacing: 0.3px; }
-    .brand-sub { font-size: 0.78rem; color: #8B5E3C; text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-top: 3px; }
+function updateProgress() {
+  const container = document.getElementById('progressContainer');
+  const bar = document.getElementById('progressBar');
+  
+  const screensWithProgress = ['step-gender', 'step-category', 'step-objective', 'step-profile', 'step-ambiente', 'step-result'];
+  
+  if (screensWithProgress.includes(currentScreen)) {
+    container.style.display = 'block';
+    let progressMap = {
+      'step-gender': '16%',
+      'step-category': '33%',
+      'step-objective': '50%',
+      'step-profile': '68%',
+      'step-ambiente': '85%',
+      'step-result': '100%'
+    };
+    bar.style.width = progressMap[currentScreen] || '0%';
+  } else {
+    container.style.display = 'none';
+  }
+}
 
-    main { width: 100%; max-width: 480px; }
+function goToLeadStep() {
+  showScreen('step-lead');
+}
 
-    .progress-container { width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 10px; margin-bottom: 15px; overflow: hidden; display: none; }
-    .progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #28a745, var(--accent-gold)); transition: width 0.4s ease; }
+function declineQuiz() {
+  window.location.href = "https://www.boticario.com.br";
+}
 
-    .screen { display: none; background: var(--card-bg); border-radius: var(--radius); padding: 25px 20px; box-shadow: var(--shadow); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.8); animation: fadeIn 0.35s ease-out forwards; }
-    .screen.active { display: block; }
+function handleLeadSubmit(event) {
+  event.preventDefault();
+  const name = document.getElementById('leadName').value.trim();
+  const phone = document.getElementById('leadPhone').value.trim();
+  const consent = document.getElementById('consentCheck').checked;
+  const errorEl = document.getElementById('leadError');
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  if (!name || name.length < 3) {
+    errorEl.textContent = "Por favor, digite seu nome completo.";
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (!phone || phone.length < 8) {
+    errorEl.textContent = "Por favor, digite um WhatsApp válido com DDD.";
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (!consent) {
+    errorEl.textContent = "Você precisa autorizar o contato para prosseguir.";
+    errorEl.style.display = 'block';
+    return;
+  }
 
-    .hero-banner {
-      height: 160px;
-      border-radius: 14px;
-      background: 
-        linear-gradient(rgba(10, 35, 20, 0.55), rgba(10, 35, 20, 0.65)),
-        url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&w=1000&q=80") center/cover no-repeat;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.3);
-      border: 1px solid rgba(212, 175, 55, 0.5);
-    }
-    .hero-banner p { color: #FFFFFF; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; line-height: 1.45; text-shadow: 0 2px 8px rgba(0,0,0,0.7); }
+  errorEl.style.display = 'none';
+  leadData.nome = name;
+  leadData.telefone = phone;
+  leadData.consentimento = consent;
 
-    h2 { font-family: 'Playfair Display', serif; color: var(--primary); text-align: center; margin-bottom: 10px; font-size: 1.35rem; }
-    p.subtitle { text-align: center; color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px; line-height: 1.45; }
+  // Salvar lead inicial na planilha via fetch
+  enviarDadosParaPlanilha({ acao: 'salvarLead', ...leadData });
 
-    .options-grid { display: flex; flex-direction: column; gap: 12px; }
+  showScreen('step-gender');
+}
 
-    .btn-option { background: #FFFFFF; border: 1.5px solid #E2D9CC; border-radius: 14px; padding: 15px 18px; text-align: left; font-weight: 600; font-size: 0.9rem; color: var(--text-dark); cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: space-between; text-decoration: none; }
-    .btn-option:hover, .btn-option:active { border-color: var(--primary); background: #F3F8F5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+function setGender(gender) {
+  userChoices.genero = gender;
+  carregarOpcoesCategoria(gender);
+  showScreen('step-category');
+}
 
-    .btn-primary { background: linear-gradient(135deg, #0F4C2E 0%, #1E6B43 100%); color: white; border: none; padding: 16px; border-radius: 14px; font-weight: 700; font-size: 0.95rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; transition: all 0.3s ease; box-shadow: 0 4px 14px rgba(15, 76, 46, 0.35); }
-    .btn-primary:hover, .btn-primary:active { background: linear-gradient(135deg, #1E6B43 0%, #0F4C2E 100%); }
+function carregarOpcoesCategoria(genero) {
+  const container = document.getElementById('categoryOptions');
+  container.innerHTML = '';
+  
+  let opcoes = [];
+  if (genero === 'Feminino') {
+    opcoes = ['Perfumaria & Deo Colônias', 'Hidratantes & Desodorantes Corp.', 'Maquiagem & Batons', 'Cabelos (Shampoos e Tratamento)'];
+  } else if (genero === 'Masculino') {
+    opcoes = ['Perfumaria Masculina', 'Barba & Pós-Barba', 'Cabelo e Corpo (2 em 1)', 'Desodorantes e Cuidados'];
+  } else {
+    opcoes = ['Boti Baby (Bebês)', 'Cuide-se Bem Little Star / Kids', 'Colônias Infantis', 'Hidratantes e Banhos Infantis'];
+  }
 
-    .btn-secondary { background: transparent; color: var(--text-muted); border: 1.5px solid #CCC; padding: 12px; border-radius: 14px; font-weight: 600; font-size: 0.85rem; cursor: pointer; width: 100%; text-align: center; text-decoration: none; display: block; margin-top: 10px; }
+  opcoes.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-option';
+    btn.innerHTML = `<span>✨ ${opt}</span> ➔`;
+    btn.onclick = () => setCategory(opt);
+    container.appendChild(btn);
+  });
+}
 
-    .form-group { margin-bottom: 14px; text-align: left; }
-    .form-group label { display: block; font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; color: var(--text-dark); }
-    
-    .form-group input { width: 100%; padding: 13px; border: 1.5px solid #DED6CA; border-radius: 10px; outline: none; font-size: 16px; background: #FFF; }
-    .form-group input:focus { border-color: var(--primary); }
+function setCategory(cat) {
+  userChoices.categoria = cat;
+  showScreen('step-objective');
+}
 
-    .consent-box { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; text-align: left; }
+function setObjective(obj) {
+  userChoices.objetivo = obj;
+  carregarOpcoesPerfil(userChoices.genero);
+  showScreen('step-profile');
+}
 
-    .discount-badge { background: linear-gradient(135deg, #FFFDF8 0%, #F9F2E7 100%); border: 1.5px solid var(--accent-gold); border-radius: 14px; padding: 14px; margin-bottom: 18px; text-align: center; }
-    .discount-badge strong { color: var(--primary); font-size: 1rem; }
-    .discount-badge p { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+function carregarOpcoesPerfil(genero) {
+  const container = document.getElementById('profileOptions');
+  container.innerHTML = '';
 
-    .product-card { text-align: center; border: 1px solid #EAE3D9; border-radius: 16px; padding: 20px; margin: 15px 0; background: #FFFFFF; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  let perfis = [];
+  if (genero === 'Feminino') {
+    perfis = ['Floral / Romântico & Delicado', 'Marcante / Amadeirado & Sensual', 'Fresco / Cítrico & Dia a Dia', 'Doce / Gourmand / Frutal'];
+  } else if (genero === 'Masculino') {
+    perfis = ['Amadeirado / Elegante & Sofisticado', 'Fresco / Herbais / Esportivo', 'Oriental / Marcante & Intenso'];
+  } else {
+    perfis = ['Suave e Calmante (Ideal para soninho)', 'Divertido e Alegre (Frutal/Floral leve)', 'Hipoalergênico e Super Delicado'];
+  }
 
-    .img-aura { position: relative; width: 180px; height: 180px; margin: 0 auto 12px; }
-    .img-aura::before {
-      content: ''; position: absolute; inset: -14px; border-radius: 50%;
-      background: radial-gradient(circle, rgba(212,175,55,0.35) 0%, rgba(139,94,60,0.15) 55%, transparent 75%);
-      animation: auraPulse 3.2s ease-in-out infinite;
-    }
-    @keyframes auraPulse { 0%, 100% { transform: scale(0.94); opacity: 0.7; } 50% { transform: scale(1.06); opacity: 1; } }
-    .product-img { position: relative; width: 180px; height: 180px; object-fit: contain; border-radius: 12px; background: #FAF8F5; padding: 8px; }
+  perfis.forEach(p => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-option';
+    btn.innerHTML = `<span>🌿 ${p}</span> ➔`;
+    btn.onclick = () => setProfile(p);
+    container.appendChild(btn);
+  });
+}
 
-    .tag-stock { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; margin-bottom: 8px; }
-    .tag-pronta { background: #D4EDDA; color: #155724; }
-    .tag-encomenda { background: #FFF3CD; color: #856404; }
+function setProfile(prof) {
+  userChoices.perfil = prof;
+  carregarOpcoesAmbiente(userChoices.genero);
+  showScreen('step-ambiente');
+}
 
-    .feedback-result-group { margin: 20px 0 10px 0; padding: 15px; background: #F9F6F0; border-radius: 14px; border: 1px solid #E2D9CC; text-align: center; }
-    .feedback-result-group p { font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
-    .feedback-buttons { display: flex; justify-content: space-between; gap: 8px; }
-    .btn-feedback-choice { flex: 1; padding: 10px 5px; font-size: 0.78rem; font-weight: 700; border-radius: 10px; border: 1.5px solid #CCC; background: #FFF; cursor: pointer; transition: 0.2s; }
-    .btn-feedback-choice:hover, .btn-feedback-choice:active { border-color: var(--primary); background: #F3F8F5; }
-    .btn-feedback-choice.active-gostou { background: #D4EDDA; border-color: #28A745; color: #155724; }
-    .btn-feedback-choice.active-medio { background: #FFF3CD; border-color: #FFC107; color: #856404; }
-    .btn-feedback-choice.active-naocompra { background: #F8D7DA; border-color: #DC3545; color: #721C24; }
-    .error-msg { color: #dc3545; font-size: 0.8rem; font-weight: 600; margin-top: 8px; display: none; text-align: center; }
-  </style>
-</head>
-<body>
+function carregarOpcoesAmbiente(genero) {
+  const container = document.getElementById('ambienteOptions');
+  container.innerHTML = '';
 
-  <header>
-    <div class="brand-title">Letícia Martins Guerra de Souza</div>
-    <div class="brand-sub">Consultoria Exclusiva O Boticário</div>
-  </header>
+  let ambientes = genero === 'KidsBebe' 
+    ? ['Pós-banho relaxante em casa', 'Passeios e dia a dia', 'Presentear em chás de bebê']
+    : ['Trabalho e rotina diária', 'Momentos de lazer e finais de semana', 'Encontros especiais e noites'];
 
-  <main>
-    <div class="progress-container" id="progressContainer">
-      <div class="progress-bar" id="progressBar"></div>
+  ambientes.forEach(amb => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn-option';
+    btn.innerHTML = `<span>📍 ${amb}</span> ➔`;
+    btn.onclick = () => setAmbiente(amb);
+    container.appendChild(btn);
+  });
+}
+
+function setAmbiente(amb) {
+  userChoices.ambiente = amb;
+  processarResultadoFinal();
+  showScreen('step-result');
+}
+
+function processarResultadoFinal() {
+  // Lógica de recomendação inteligente com base nas escolhas
+  let produto = {
+    nome: "Egeo Dolce Desodorante Colônia 90ml",
+    tipo: "Pronta Entrega na Consultoria",
+    tagClass: "tag-pronta",
+    imagem: "https://images.tcdn.com.br/img/img_prod/1023773/desodorante_colonia_egeo_dolce_90ml_1_1562916124_1.jpg",
+    descricao: "Fragrância adocicada irresistible, perfeita para quem ama marcar presença com doçura e alegria."
+  };
+
+  if (userChoices.genero === 'Masculino') {
+    produto = {
+      nome: "Malbec Desodorante Colônia 100ml",
+      tipo: "Pronta Entrega na Consultoria",
+      tagClass: "tag-pronta",
+      imagem: "https://res.cloudinary.com/boticario/image/upload/v1/boticario-products/35656.png",
+      descricao: "O clássico amadeirado inspirado no mundo dos vinhos. Marcante e sofisticado para todas as ocasiões."
+    };
+  } else if (userChoices.genero === 'KidsBebe') {
+    produto = {
+      nome: "Boti Baby Água de Colônia 100ml",
+      tipo: "Pronta Entrega na Consultoria",
+      tagClass: "tag-pronta",
+      imagem: "https://res.cloudinary.com/boticario/image/upload/v1/boticario-products/41029.png",
+      descricao: "Cheirinho inconfundível de carinho e segurança, testado por pediatras para a pele sensível do bebê."
+    };
+  }
+
+  finalResultItem = produto;
+
+  const card = document.getElementById('res-card');
+  card.innerHTML = `
+    <div class="img-aura">
+      <img src="${produto.imagem}" class="product-img" alt="${produto.nome}">
     </div>
+    <span class="tag-stock ${produto.tagClass}">${produto.tipo}</span>
+    <h3 style="font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--primary); margin: 6px 0;">${produto.nome}</h3>
+    <p style="font-size:0.83rem; color:var(--text-muted); line-height:1.4;">${produto.descricao}</p>
+  `;
 
-    <!-- TELA INICIAL -->
-    <div class="screen active" id="step-home">
-      <div class="hero-banner">
-        <p>"Descubra a combinação perfeita para o seu estilo e rotina de cuidados."</p>
-      </div>
-      <h2>Consultoria Personalizada ✨</h2>
-      <p class="subtitle">Encontre o produto ideal do Boticário para você, para os pequenos ou para presentear quem ama — e garanta 5% de desconto na primeira compra.</p>
-      <div class="options-grid">
-        <button type="button" class="btn-primary" onclick="goToLeadStep()">✨ Iniciar Quiz Personalizado</button>
-        <a id="linkPageHome" href="#" target="_blank" class="btn-option" style="justify-content: center; background: #FDFBF7; border-color: var(--accent-gold);">🛍️ Ver Catálogo na Loja da Letícia</a>
-      </div>
-    </div>
+  // Atualiza links dinâmicos da loja com cupom automático se houver
+  const linkLoja = "https://www.boticario.com.br";
+  document.getElementById('linkPageHome').href = linkLoja;
+  document.getElementById('linkPageResult').href = linkLoja;
+}
 
-    <!-- CADASTRO -->
-    <div class="screen" id="step-lead">
-      <h2>Seus Dados de Contato 📝</h2>
-      <div class="discount-badge">
-        <strong>🎁 Ganhe 5% de desconto</strong>
-        <p>Preencha seus dados para participar do Quiz Personalizado e garantir 5% de desconto na sua primeira compra.</p>
-      </div>
+let avaliacaoFinalUsuario = '';
+function submitFinalFeedback(valor, btnElement) {
+  avaliacaoFinalUsuario = valor;
+  document.querySelectorAll('.btn-feedback-choice').forEach(b => {
+    b.className = 'btn-feedback-choice';
+  });
+  if (valor.includes('Gostou')) btnElement.classList.add('active-gostou');
+  else if (valor === 'Médio') btnElement.classList.add('active-medio');
+  else btnElement.classList.add('active-naocompra');
+}
 
-      <form onsubmit="handleLeadSubmit(event)">
-        <div class="form-group">
-          <label>Seu Nome Completo *</label>
-          <input type="text" id="leadName" placeholder="Digite seu nome" autocomplete="name">
-        </div>
-        <div class="form-group">
-          <label>Seu WhatsApp com DDD *</label>
-          <input type="tel" id="leadPhone" placeholder="(31) 99999-9999" autocomplete="tel">
-        </div>
-        <div class="consent-box">
-          <input type="checkbox" id="consentCheck">
-          <label for="consentCheck">Autorizo a consultora Letícia a enviar pesquisas, novidades e ofertas VIP <strong>exclusivamente por mensagem</strong> (sem ligações).</label>
-        </div>
-        <p id="leadError" class="error-msg"></p>
-        <button type="submit" id="btnSubmitLead" class="btn-primary">Começar o Quiz ➔</button>
-      </form>
-      <button type="button" class="btn-secondary" onclick="declineQuiz()">Não quero participar do quiz</button>
-    </div>
+function confirmarEnvioQuiz(btnEl) {
+  const err = document.getElementById('feedbackError');
+  if (!avaliacaoFinalUsuario) {
+    err.textContent = "Por favor, selecione uma opção de feedback sobre a sugestão.";
+    err.style.display = 'block';
+    return;
+  }
+  err.style.display = 'none';
+  btnEl.disabled = true;
 
-    <!-- PERGUNTA 1: GÊNERO -->
-    <div class="screen" id="step-gender">
-      <h2>Para quem será o produto?</h2>
-      <p class="subtitle">Selecione para direcionar as melhores opções do Boticário:</p>
-      <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setGender('Feminino')"><span>👩 Linha Feminina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('Masculino')"><span>👨 Linha Masculina</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setGender('KidsBebe')"><span>👶 Kids & Bebês</span> ➔</button>
-      </div>
-    </div>
+  // Enviar dados completos para o Google Sheets
+  enviarDadosParaPlanilha({
+    acao: 'salvarQuizCompleto',
+    ...leadData,
+    ...userChoices,
+    produtoIndicado: finalResultItem ? finalResultItem.nome : '',
+    feedback: avaliacaoFinalUsuario
+  });
 
-    <!-- PERGUNTA 2: CATEGORIA DE PRODUTO -->
-    <div class="screen" id="step-category">
-      <h2>Qual linha de produto você procura?</h2>
-      <p class="subtitle">Escolha o tipo de cuidado desejado:</p>
-      <div class="options-grid" id="categoryOptions"></div>
-    </div>
+  document.getElementById('msgEnvioConfirmado').style.display = 'block';
+  btnEl.style.display = 'none';
+}
 
-    <!-- PERGUNTA 3: OBJETIVO -->
-    <div class="screen" id="step-objective">
-      <h2>Qual é o objetivo principal?</h2>
-      <p class="subtitle">Nos conte como pretende usar:</p>
-      <div class="options-grid">
-        <button type="button" class="btn-option" onclick="setObjective('Uso Pessoal')"><span>🛍️ Uso Pessoal e Diário</span> ➔</button>
-        <button type="button" class="btn-option" onclick="setObjective('Presente Especial')"><span>🎁 Presente Especial</span> ➔</button>
-      </div>
-    </div>
+function enviarDadosParaPlanilha(dados) {
+  if (SCRIPT_URL === "SUA_URL_DO_WEB_APP_AQUI") return;
+  fetch(SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados)
+  }).catch(e => console.error("Erro ao enviar dados", e));
+}
 
-    <!-- PERGUNTA 4: PERFIL / FRAGRÂNCIA -->
-    <div class="screen" id="step-profile">
-      <h2>Qual o estilo ou aroma de preferência?</h2>
-      <p class="subtitle">Escolha a sensação que mais agrada:</p>
-      <div class="options-grid" id="profileOptions"></div>
-    </div>
-
-    <!-- PERGUNTA 5: AMBIENTE DE USO -->
-    <div class="screen" id="step-ambiente">
-      <h2>Onde será mais usado?</h2>
-      <p class="subtitle">Isso ajuda a Letícia a refinar ainda mais a indicação:</p>
-      <div class="options-grid" id="ambienteOptions"></div>
-    </div>
-
-    <!-- TELA DE RESULTADO -->
-    <div class="screen" id="step-result">
-      <div class="hero-banner">
-        <p>"Sua escolha ideal para realçar sua essência e bem-estar."</p>
-      </div>
-      <h2>Recomendação Exclusiva</h2>
-      <div class="product-card" id="res-card"></div>
-
-      <div class="feedback-result-group">
-        <p>O que achou desta sugestão? *</p>
-        <div class="feedback-buttons">
-          <button type="button" class="btn-feedback-choice" id="fb-gostou" onclick="submitFinalFeedback('Gostou / Amei', this)">💙 Gostou</button>
-          <button type="button" class="btn-feedback-choice" id="fb-medio" onclick="submitFinalFeedback('Médio', this)">😐 Médio</button>
-          <button type="button" class="btn-feedback-choice" id="fb-nao" onclick="submitFinalFeedback('Não compraria', this)">❌ Não compraria</button>
-        </div>
-        <p id="feedbackError" class="error-msg"></p>
-      </div>
-
-      <p style="font-size: 0.78rem; color: var(--text-muted); text-align: center; line-height: 1.4; margin: 14px 0 8px;">
-        Ao confirmar, você autoriza o uso dos seus dados para envio de promoções e novidades.
-      </p>
-      <button type="button" id="btnConfirmarEnviar" onclick="confirmarEnvioQuiz(this)" class="btn-primary">✅ Confirmar e Enviar</button>
-      <p id="msgEnvioConfirmado" style="display:none; font-size: 0.82rem; color: #155724; background: #D4EDDA; border-radius: 10px; padding: 10px; text-align: center; margin-top: 10px;">Dados enviados! Obrigado por participar. 💛</p>
-
-      <a id="linkPageResult" href="#" target="_blank" class="btn-secondary" style="margin-top: 12px; text-decoration: none; border-color: var(--accent-gold); color: var(--primary);">🛍️ Ver Mais Opções na Loja da Letícia</a>
-      <button type="button" class="btn-secondary" onclick="resetToHome()">🏠 Voltar à Tela Inicial</button>
-    </div>
-  </main>
-</body>
-</html>
+// Inicialização segura com suporte a toque duplo em iOS
+document.addEventListener("DOMContentLoaded", function() {
+  initQuiz();
+});
