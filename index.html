@@ -820,7 +820,8 @@
 
     function sendDataToSheets() {
       const categoryGroup = productsDB[quizState.genero] || productsDB.Feminino;
-      const prod = categoryGroup[quizState.categoria] || Object.values(categoryGroup)[0];
+      const opcoes = categoryGroup[quizState.categoria] || Object.values(categoryGroup)[0];
+      const prod = Array.isArray(opcoes) ? pickProduct(opcoes, quizState.perfil) : opcoes;
 
       if (!GOOGLE_SHEETS_SCRIPT_URL) return;
 
